@@ -63,11 +63,11 @@ def plot_one():
 def plot_all(n, fn, load_aimd, load_mlmd):
     # aimd
     dirs = ["rdf.hh.dft", "rdf.oh.dft", "rdf.oo.dft"]
-    # nvnmd
+    # this_work
     ds = []
     for ii in range(n):
         ds.append(load_data('ws%d/tmp.rdf'%(ii+1)))
-    # plot nvnmd
+    # plot this_work
     shx = 2
     idxs = [2, 1, 0]
     labels = ['HH','HO','OO']
@@ -92,14 +92,14 @@ def plot_all(n, fn, load_aimd, load_mlmd):
             # print(x, y)
             label = "MLMD" if ii == 1 else None
             ax1.plot(x, y, '--', color=c, label=label, linewidth=5)
-        # NVNMD
+        # this_work
         i = shx + idxs[ii]*2
         x = ds[0][:,1]
         y = [d[:,i]/2 for d in ds]
         y = np.reshape(y, [n, -1])
         y = np.mean(y, axis=0)
         c = cs.hsv_to_rgb([0.95, 0.8, 0.9])
-        label = "NVNMD" if ii == 0 else None
+        label = "this_work" if ii == 0 else None
         ax1.plot(x, y, ':', color=c, label=label, linewidth=2.5)
         #
         plt.legend(frameon=False, markerscale=2, handlelength=2, handletextpad=1, loc="upper right", ncol=2, columnspacing=0.5)

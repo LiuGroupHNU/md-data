@@ -43,7 +43,7 @@ def load_ref(fn):
     return xs, ds
 
 
-t, data = load_data('hist_nvnmd.txt', 3)
+t, data = load_data('hist_this_work.txt', 3)
 avg = np.mean(data, axis=1)
 std = np.std(data, axis=1)
 x = div(t)
@@ -65,7 +65,7 @@ print(avg)
 print(std)
 plt.plot(x0, datas[0], 'o-', color='orange', label="MLMD 2021")
 plt.errorbar(x0, avg2, yerr=std2, fmt='bh-', capsize=6, ecolor=[0.0, 0.0, 0.8], label="MLMD")
-plt.errorbar(x0, avg, yerr=std, fmt='rs-', capsize=6, ecolor=[0.8, 0.0, 0.0], label="NVNMD")
+plt.errorbar(x0, avg, yerr=std, fmt='rs-', capsize=6, ecolor=[0.8, 0.0, 0.0], label="this_work")
 plt.yscale('log')
 plt.xticks([1.0, 1.5, 2.0, 2.5, 3.0])
 plt.grid(which='both', linestyle='--')

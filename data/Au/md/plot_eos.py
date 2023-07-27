@@ -21,7 +21,7 @@ def plot(dat1, dat2):
     fig = plt.figure(figsize=[4*1.6, 3*1.6])
     ax1 = plt.axes([0.19, 0.16, 0.77, 0.80])
     ax1.plot(p2, t2, '-s', c=cs[0], label="MLMD", linewidth=2.5, markerfacecolor=cs[0], markersize=12)
-    ax1.plot(p1, t1, '-o', c=cs[1], label="NVNMD", linewidth=2.5, markerfacecolor='w', markersize=9)
+    ax1.plot(p1, t1, '-o', c=cs[1], label="this_work", linewidth=2.5, markerfacecolor='w', markersize=9)
     # A/ps -> 0.1 km/s
     # 40 -> 4.0
     # 75 -> 7.5
@@ -42,7 +42,7 @@ def plot(dat1, dat2):
     fig = plt.figure(figsize=[4*1.6, 3*1.6])
     ax1 = plt.axes([0.19, 0.16, 0.77, 0.80])
     ax1.plot(p2, r2, '-s', c=cs[0], label="MLMD", linewidth=2.5, markerfacecolor=cs[0], markersize=12)
-    ax1.plot(p1, r1, '-o', c=cs[1], label="NVNMD", linewidth=2.5, markerfacecolor='w', markersize=9)
+    ax1.plot(p1, r1, '-o', c=cs[1], label="this_work", linewidth=2.5, markerfacecolor='w', markersize=9)
     plt.xlabel('$\it{P}$ (GPa)')
     plt.ylabel('$\it \\rho$ (g/m$^3$)')
     # plt.legend(frameon=False, markerscale=1, handlelength=1, handletextpad=0.5, loc="upper center", ncol=2, columnspacing=0.5)

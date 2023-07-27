@@ -20,12 +20,12 @@ def plot_rdf(dir):
     cs = [[0.12, 0.6, 0.6], [0.9, 0.18, 0.396], [0.18, 0.396, 0.9]]
     d1 = np.loadtxt(dir + '/aimd/rdf/total.txt')
     d2 = np.loadtxt(dir + '/deepmd/rdf/total.txt')
-    d3 = np.loadtxt(dir + '/nvnmd/rdf/total.txt')
+    d3 = np.loadtxt(dir + '/this_work/rdf/total.txt')
     plt.figure()
     ax1 = plt.axes([0.15, 0.15, 0.8, 0.8])
     ax1.plot(d1[:, 0], d1[:, 1], '-' , c=cs[0], label='AIMD', linewidth=8)
     ax1.plot(d2[:, 0], d2[:, 1], '-' , c=cs[1], label='MLMD', linewidth=4)
-    ax1.plot(d3[:, 0], d3[:, 1], '--', c=cs[2], label='NVNMD', linewidth=2)
+    ax1.plot(d3[:, 0], d3[:, 1], '--', c=cs[2], label='this_work', linewidth=2)
     plt.xlabel('${\it r} \quad ({\AA})$')
     plt.ylabel('${\it g}({\it r})$')
     plt.xlim([2, 8])
@@ -42,12 +42,12 @@ def plot_adf(dir):
     cs = [[0.12, 0.6, 0.6], [0.9, 0.18, 0.396], [0.18, 0.396, 0.9]]
     d1 = np.loadtxt(dir+'/aimd/adf/total.txt')
     d2 = np.loadtxt(dir+'/deepmd/adf/total.txt')
-    d3 = np.loadtxt(dir+'/nvnmd/adf/total.txt')
+    d3 = np.loadtxt(dir+'/this_work/adf/total.txt')
     plt.figure()
     ax1 = plt.axes([0.15, 0.15, 0.8, 0.8])
     ax1.plot(d1[:, 0], d1[:, 1], '-' , c=cs[0], label='AIMD', linewidth=8)
     ax1.plot(d2[:, 0], d2[:, 1], '-' , c=cs[1], label='MLMD', linewidth=4)
-    ax1.plot(d3[:, 0], d3[:, 1], '--', c=cs[2], label='NVNMD', linewidth=2)
+    ax1.plot(d3[:, 0], d3[:, 1], '--', c=cs[2], label='this_work', linewidth=2)
     plt.xlabel(r'${\it \theta} \quad ({\degree})$')
     plt.ylabel('Distribution (%)')
     plt.xlim([0, 180])
@@ -64,7 +64,7 @@ def plot_cn(dir):
     cs = [[0.12, 0.6, 0.6], [0.9, 0.18, 0.396], [0.18, 0.396, 0.9]]
     d1 = np.loadtxt(dir + '/aimd/cn/total.txt')
     d2 = np.loadtxt(dir + '/deepmd/cn/total.txt')
-    d3 = np.loadtxt(dir + '/nvnmd/cn/total.txt')
+    d3 = np.loadtxt(dir + '/this_work/cn/total.txt')
     d1 = d1[:,1] / np.sum(d1[:,1]) * 100
     d2 = d2[:,1] / np.sum(d2[:,1]) * 100
     d3 = d3[:,1] / np.sum(d3[:,1]) * 100
@@ -74,7 +74,7 @@ def plot_cn(dir):
     ax1 = plt.axes([0.15, 0.15, 0.8, 0.8])
     ax1.bar(x+0*width, d1, width, color=cs[0], label='AIMD')
     ax1.bar(x+1*width, d2, width, color=cs[1], label='MLMD')
-    ax1.bar(x+2*width, d3, width, color=cs[2], label='NVNMD')
+    ax1.bar(x+2*width, d3, width, color=cs[2], label='this_work')
     plt.xlabel('Coordination Number')
     plt.ylabel('Distribution (%)')
     plt.xlim([1.5, 7.5])
@@ -104,11 +104,11 @@ def sub_plot_altbc(dd, ax):
     zz = resize(z, np.array(np.shape(z)) * k)
     ax.pcolor(xx, yy, zz, cmap='jet')
 
-def plot_altbc(dir, idx=[0, 1, 2], dirs=['aimd', 'deepmd', 'nvnmd']):
+def plot_altbc(dir, idx=[0, 1, 2], dirs=['aimd', 'deepmd', 'this_work']):
     ds = []
     for d in dirs:
         ds.append(load_altbc(dir+'/'+d))
-    labs = ['AIMD', 'MLMD', 'NVNMD']
+    labs = ['AIMD', 'MLMD', 'this_work']
     #
     n = len(idx)
     fig = plt.figure(figsize=[4*1.2*n, 3*1.6])
