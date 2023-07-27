@@ -1,7 +1,0 @@
-#!/bin/bash
-#SBATCH -p cpu10gpu1
-#SBATCH -N 1
-#SBATCH -o lmp.log
-
-source /software/deepmd-kit/setvars.sh 2.1.5 gpu high
-lmp -i input.lammps
