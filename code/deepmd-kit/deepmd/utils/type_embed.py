@@ -12,8 +12,8 @@ from deepmd.common import (
 from deepmd.env import (
     tf,
 )
-from deepmd.nvnmd.utils.config import (
-    nvnmd_cfg,
+from deepmd.mdpu.utils.config import (
+    mdpu_cfg,
 )
 from deepmd.utils.graph import (
     get_tensor_by_name_from_graph,
@@ -145,11 +145,11 @@ class TypeEmbedNet:
         ebd_type = tf.reshape(ebd_type, [-1, ntypes])
         name = "type_embed_net" + suffix
         if (
-            nvnmd_cfg.enable
-            and (nvnmd_cfg.version == 1)
-            and (nvnmd_cfg.restore_descriptor or nvnmd_cfg.restore_fitting_net)
+            mdpu_cfg.enable
+            and (mdpu_cfg.version == 1)
+            and (mdpu_cfg.restore_descriptor or mdpu_cfg.restore_fitting_net)
         ):
-            self.type_embedding_net_variables = nvnmd_cfg.get_dp_init_weights()
+            self.type_embedding_net_variables = mdpu_cfg.get_dp_init_weights()
         with tf.variable_scope(name, reuse=reuse):
             ebd_type = embedding_net(
                 ebd_type,

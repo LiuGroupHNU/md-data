@@ -18,8 +18,8 @@ from deepmd.common import (
     ACTIVATION_FN_DICT,
     PRECISION_DICT,
 )
-from deepmd.nvnmd.utils.argcheck import (
-    nvnmd_args,
+from deepmd.mdpu.utils.argcheck import (
+    mdpu_args,
 )
 from deepmd.utils.plugin import (
     Plugin,
@@ -1652,7 +1652,7 @@ def gen_args(**kwargs) -> List[Argument]:
         loss_args(),
         loss_dict_args(),
         training_args(),
-        nvnmd_args(),
+        mdpu_args(),
     ]
 
 

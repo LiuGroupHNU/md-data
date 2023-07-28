@@ -27,7 +27,7 @@ from deepmd.env import (
     REMOVE_SUFFIX_DICT,
     tf,
 )
-from deepmd.nvnmd.entrypoints.freeze import (
+from deepmd.mdpu.entrypoints.freeze import (
     save_weight,
 )
 from deepmd.utils.errors import (
@@ -469,7 +469,7 @@ def freeze(
     checkpoint_folder: str,
     output: str,
     node_names: Optional[str] = None,
-    nvnmd_weight: Optional[str] = None,
+    mdpu_weight: Optional[str] = None,
     united_model: bool = False,
     **kwargs,
 ):
@@ -483,8 +483,8 @@ def freeze(
         output file name
     node_names : Optional[str], optional
         names of nodes to output, by default None
-    nvnmd_weight : Optional[str], optional
-        nvnmd weight file
+    mdpu_weight : Optional[str], optional
+        mdpu weight file
     united_model : bool
         when in multi-task mode, freeze all nodes into one unit model
     **kwargs
@@ -541,8 +541,8 @@ def freeze(
             )
         else:
             modifier_type = None
-        if nvnmd_weight is not None:
-            save_weight(sess, nvnmd_weight)  # nvnmd
+        if mdpu_weight is not None:
+            save_weight(sess, mdpu_weight)  # mdpu
         if model_type != "multi_task":
             freeze_graph(
                 sess,

@@ -32,11 +32,11 @@ from deepmd.loss.ener import (
 from deepmd.loss.loss import (
     Loss,
 )
-from deepmd.nvnmd.fit.ener import (
-    one_layer_nvnmd,
+from deepmd.mdpu.fit.ener import (
+    one_layer_mdpu,
 )
-from deepmd.nvnmd.utils.config import (
-    nvnmd_cfg,
+from deepmd.mdpu.utils.config import (
+    mdpu_cfg,
 )
 from deepmd.utils.errors import (
     GraphWithoutTensorError,
@@ -377,8 +377,8 @@ class EnerFitting(Fitting):
             ext_aparam = tf.cast(ext_aparam, self.fitting_precision)
             layer = tf.concat([layer, ext_aparam], axis=1)
 
-        if nvnmd_cfg.enable:
-            one_layer = one_layer_nvnmd
+        if mdpu_cfg.enable:
+            one_layer = one_layer_mdpu
         else:
             one_layer = one_layer_deepmd
         for ii in range(0, len(self.n_neuron)):
@@ -603,12 +603,12 @@ class EnerFitting(Fitting):
             atype_filter = tf.cast(self.atype_nloc >= 0, GLOBAL_TF_FLOAT_PRECISION)
             self.atype_nloc = tf.reshape(self.atype_nloc, [-1])
         if (
-            nvnmd_cfg.enable
-            and nvnmd_cfg.quantize_descriptor
-            and nvnmd_cfg.restore_descriptor
-            and (nvnmd_cfg.version == 1)
+            mdpu_cfg.enable
+            and mdpu_cfg.quantize_descriptor
+            and mdpu_cfg.restore_descriptor
+            and (mdpu_cfg.version == 1)
         ):
-            type_embedding = nvnmd_cfg.map["t_ebd"]
+            type_embedding = mdpu_cfg.map["t_ebd"]
         if type_embedding is not None:
             atype_embed = tf.nn.embedding_lookup(type_embedding, self.atype_nloc)
         else:

@@ -7,7 +7,7 @@
 /model.ckpt-1.data-00000-of-00001
 /model.ckpt-1.index
 /v.out
-/nvnmd/out/map.npy
-/nvnmd/out/train_cnn.json
-/nvnmd/out/train_qnn.json
-/nvnmd/out/weight.npy
+/mdpu/out/map.npy
+/mdpu/out/train_cnn.json
+/mdpu/out/train_qnn.json
+/mdpu/out/weight.npy

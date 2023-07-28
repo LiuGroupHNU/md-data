@@ -28,8 +28,8 @@ from deepmd.entrypoints import (
 from deepmd.loggers import (
     set_log_handles,
 )
-from deepmd.nvnmd.entrypoints.train import (
-    train_nvnmd,
+from deepmd.mdpu.entrypoints.train import (
+    train_mdpu,
 )
 from deepmd_cli.main import (
     get_ll,
@@ -87,8 +87,8 @@ def main(args: Optional[Union[List[str], argparse.Namespace]] = None):
         convert(**dict_args)
     elif args.command == "neighbor-stat":
         neighbor_stat(**dict_args)
-    elif args.command == "train-nvnmd":  # nvnmd
-        train_nvnmd(**dict_args)
+    elif args.command == "train-mdpu":  # mdpu
+        train_mdpu(**dict_args)
     elif args.command is None:
         pass
     else:

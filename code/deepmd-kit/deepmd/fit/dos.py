@@ -26,11 +26,11 @@ from deepmd.loss.dos import (
 from deepmd.loss.loss import (
     Loss,
 )
-from deepmd.nvnmd.fit.ener import (
-    one_layer_nvnmd,
+from deepmd.mdpu.fit.ener import (
+    one_layer_mdpu,
 )
-from deepmd.nvnmd.utils.config import (
-    nvnmd_cfg,
+from deepmd.mdpu.utils.config import (
+    mdpu_cfg,
 )
 from deepmd.utils.errors import (
     GraphWithoutTensorError,
@@ -308,8 +308,8 @@ class DOSFitting(Fitting):
             ext_aparam = tf.cast(ext_aparam, self.fitting_precision)
             layer = tf.concat([layer, ext_aparam], axis=1)
 
-        if nvnmd_cfg.enable:
-            one_layer = one_layer_nvnmd
+        if mdpu_cfg.enable:
+            one_layer = one_layer_mdpu
         else:
             one_layer = one_layer_deepmd
         for ii in range(0, len(self.n_neuron)):

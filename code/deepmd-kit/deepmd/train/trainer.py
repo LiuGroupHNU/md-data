@@ -65,9 +65,9 @@ from deepmd.utils.sess import (
 
 log = logging.getLogger(__name__)
 
-# nvnmd
-from deepmd.nvnmd.utils.config import (
-    nvnmd_cfg,
+# mdpu
+from deepmd.mdpu.utils.config import (
+    mdpu_cfg,
 )
 
 
@@ -92,13 +92,13 @@ class DPTrainer:
         if "fitting_key" in model_param:
             model_param["type"] = "multi"
 
-        # nvnmd
-        self.nvnmd_param = jdata.get("nvnmd", {})
-        nvnmd_cfg.init_from_jdata(self.nvnmd_param)
-        if nvnmd_cfg.enable:
-            nvnmd_cfg.init_from_deepmd_input(model_param)
-            nvnmd_cfg.disp_message()
-            nvnmd_cfg.save()
+        # mdpu
+        self.mdpu_param = jdata.get("mdpu", {})
+        mdpu_cfg.init_from_jdata(self.mdpu_param)
+        if mdpu_cfg.enable:
+            mdpu_cfg.init_from_deepmd_input(model_param)
+            mdpu_cfg.disp_message()
+            mdpu_cfg.save()
 
         # init model
         self.model = Model(**model_param)

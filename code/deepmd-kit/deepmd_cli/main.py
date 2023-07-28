@@ -223,7 +223,7 @@ def main_parser() -> argparse.ArgumentParser:
     )
     parser_frz.add_argument(
         "-w",
-        "--nvnmd-weight",
+        "--mdpu-weight",
         type=str,
         default=None,
         help="the name of weight file (.npy), if set, save the model's weight into the file",
@@ -524,32 +524,32 @@ def main_parser() -> argparse.ArgumentParser:
         "--version", action="version", version="DeePMD-kit v%s" % __version__
     )
 
-    # * train nvnmd script ******************************************************************
-    parser_train_nvnmd = subparsers.add_parser(
-        "train-nvnmd",
+    # * train mdpu script ******************************************************************
+    parser_train_mdpu = subparsers.add_parser(
+        "train-mdpu",
         parents=[parser_log],
-        help="train nvnmd model",
+        help="train mdpu model",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
-    parser_train_nvnmd.add_argument(
+    parser_train_mdpu.add_argument(
         "INPUT", help="the input parameter file in json format"
     )
-    parser_train_nvnmd.add_argument(
+    parser_train_mdpu.add_argument(
         "-r",
         "--restart",
         type=str,
         default=None,
         help="Restart the training from the provided checkpoint.",
     )
-    parser_train_nvnmd.add_argument(
+    parser_train_mdpu.add_argument(
         "-s",
         "--step",
         default="s1",
         type=str,
         choices=["s1", "s2"],
-        help="steps to train model of NVNMD: s1 (train CNN), s2 (train QNN)",
+        help="steps to train model of MDPU: s1 (train CNN), s2 (train QNN)",
     )
-    parser_train_nvnmd.add_argument(
+    parser_train_mdpu.add_argument(
         "--skip-neighbor-stat",
         action="store_true",
         help="Skip calculating neighbor statistics. Sel checking, automatic sel, and model compression will be disabled.",

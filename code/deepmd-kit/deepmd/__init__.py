@@ -15,7 +15,7 @@ from . import (
     descriptor,
     fit,
     loss,
-    nvnmd,
+    mdpu,
     utils,
 )
 from .env import (
