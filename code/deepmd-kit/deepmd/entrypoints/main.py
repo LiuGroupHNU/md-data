@@ -15,7 +15,6 @@ from deepmd.common import (
     clear_session,
 )
 from deepmd.entrypoints import (
-    compress,
     convert,
     doc_train_input,
     freeze,
@@ -23,7 +22,6 @@ from deepmd.entrypoints import (
     neighbor_stat,
     test,
     train_dp,
-    transfer,
 )
 from deepmd.loggers import (
     set_log_handles,
@@ -75,10 +73,6 @@ def main(args: Optional[Union[List[str], argparse.Namespace]] = None):
         freeze(**dict_args)
     elif args.command == "test":
         test(**dict_args)
-    elif args.command == "transfer":
-        transfer(**dict_args)
-    elif args.command == "compress":
-        compress(**dict_args)
     elif args.command == "doc-train-input":
         doc_train_input(**dict_args)
     elif args.command == "model-devi":

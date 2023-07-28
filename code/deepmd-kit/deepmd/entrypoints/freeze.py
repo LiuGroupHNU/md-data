@@ -225,55 +225,6 @@ def _make_node_names(
             "fitting_attr/dfparam",
             "fitting_attr/daparam",
         ]
-    elif model_type == "dos":
-        nodes += [
-            "o_dos",
-            "fitting_attr/numb_dos",
-            "fitting_attr/dfparam",
-            "fitting_attr/daparam",
-        ]
-    elif model_type == "wfc":
-        nodes += [
-            "o_wfc",
-            "model_attr/sel_type",
-            "model_attr/output_dim",
-        ]
-    elif model_type == "dipole":
-        nodes += [
-            "o_dipole",
-            "o_global_dipole",
-            "o_force",
-            "o_virial",
-            "o_atom_virial",
-            "o_rmat",
-            "o_rmat_deriv",
-            "o_nlist",
-            "o_rij",
-            "descrpt_attr/sel",
-            "descrpt_attr/ndescrpt",
-            "model_attr/sel_type",
-            "model_attr/output_dim",
-        ]
-    elif model_type == "polar":
-        nodes += [
-            "o_polar",
-            "o_global_polar",
-            "o_force",
-            "o_virial",
-            "o_atom_virial",
-            "model_attr/sel_type",
-            "model_attr/output_dim",
-        ]
-    elif model_type == "global_polar":
-        nodes += [
-            "o_global_polar",
-            "model_attr/sel_type",
-            "model_attr/output_dim",
-        ]
-    elif model_type == "multi_task":
-        assert (
-            node_names is not None
-        ), "node_names must be defined in multi-task united model! "
     else:
         raise RuntimeError(f"unknown model type {model_type}")
     if modifier_type == "dipole_charge":

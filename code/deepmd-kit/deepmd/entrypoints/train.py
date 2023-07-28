@@ -24,9 +24,6 @@ from deepmd.env import (
     reset_default_tf_session_config,
     tf,
 )
-from deepmd.infer.data_modifier import (
-    DipoleChargeModifier,
-)
 from deepmd.train.run_options import (
     BUILD,
     CITATION,
@@ -336,20 +333,7 @@ def get_data(jdata: Dict[str, Any], rcut, type_map, modifier, multi_task_mode=Fa
 
 
 def get_modifier(modi_data=None):
-    modifier: Optional[DipoleChargeModifier]
-    if modi_data is not None:
-        if modi_data["type"] == "dipole_charge":
-            modifier = DipoleChargeModifier(
-                modi_data["model_name"],
-                modi_data["model_charge_map"],
-                modi_data["sys_charge_map"],
-                modi_data["ewald_h"],
-                modi_data["ewald_beta"],
-            )
-        else:
-            raise RuntimeError("unknown modifier type " + str(modi_data["type"]))
-    else:
-        modifier = None
+    modifier = None
     return modifier
 
 

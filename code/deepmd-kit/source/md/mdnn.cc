@@ -150,7 +150,7 @@ int main(int argc, char* argv[]) {
 
   // compute force at step 0
   nnp.compute(dener, dforce, dvirial, dcoord, dtype, dbox);
-  // change virial to gromacs convention
+  // change virial
   for (int ii = 0; ii < 9; ++ii) {
     dvirial[ii] *= -0.5;
   }
@@ -170,7 +170,7 @@ int main(int argc, char* argv[]) {
     inte.stepCoord(dcoord, dveloc, 0.5 * dt);
     normalize_coord<VALUETYPE>(dcoord, region);
     nnp.compute(dener, dforce, dvirial, dae, dav, dcoord, dtype, dbox);
-    // change virial to gromacs convention
+    // change virial
     for (int ii = 0; ii < 9; ++ii) {
       dvirial[ii] *= -0.5;
     }

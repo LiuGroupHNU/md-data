@@ -1,8 +1,7 @@
-Freeze and Compress
+Freeze
 ===================
 
 .. toctree::
    :maxdepth: 1
 
    freeze
-   compress

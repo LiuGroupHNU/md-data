@@ -237,7 +237,7 @@ def make_model_devi(
         The output file for model deviation results
     frequency : int
         The number of steps that elapse between writing coordinates
-        in a trajectory by a MD engine (such as Gromacs / Lammps).
+        in a trajectory by a MD engine (such as Lammps).
         This paramter is used to determine the index in the output file.
     **kwargs
         Arbitrary keyword arguments.

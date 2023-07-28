@@ -1,4 +1,3 @@
-# Freeze and Compress
+# Freeze
 
 - [Freeze a model](freeze.md)
-- [Compress a model](compress.md)

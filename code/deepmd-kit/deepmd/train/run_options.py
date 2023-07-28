@@ -41,19 +41,17 @@ log = logging.getLogger(__name__)
 
 # http://patorjk.com/software/taag. Font:Big"
 WELCOME = (  # noqa
-    r" _____               _____   __  __  _____           _     _  _   ",
-    r"|  __ \             |  __ \ |  \/  ||  __ \         | |   (_)| |  ",
-    r"| |  | |  ___   ___ | |__) || \  / || |  | | ______ | | __ _ | |_ ",
-    r"| |  | | / _ \ / _ \|  ___/ | |\/| || |  | ||______|| |/ /| || __|",
-    r"| |__| ||  __/|  __/| |     | |  | || |__| |        |   < | || |_ ",
-    r"|_____/  \___| \___||_|     |_|  |_||_____/         |_|\_\|_| \__|",
+    r" __  __   _____    _____    _    _            _      _   _   ",
+    r"|  \/  | |  __ \  |  __ \  | |  | |          | |    (_) | |  ",
+    r"| \  / | | |  | | | |__) | | |  | |  ______  | | __  _  | |_ ",
+    r"| |\/| | | |  | | |  ___/  | |  | | |______| | |/ / | | | __|",
+    r"| |  | | | |__| | | |      | |__| |          |   <  | | | |_ ",
+    r"|_|  |_| |_____/  |_|       \____/           |_|\_\ |_|  \__|",
 )
 
 CITATION = (
     "Please read and cite:",
-    "Wang, Zhang, Han and E, Comput.Phys.Comm. 228, 178-184 (2018)",
-    "Zeng et al, arXiv:2304.09409",
-    "See https://deepmd.rtfd.io/credits/ for details.",
+    "{Breaking the Speed, Power, Cost and Size Limits of Molecular Dynamics with Ab Initio Accuracy}",
 )
 
 _sep = "\n                      "

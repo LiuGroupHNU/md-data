@@ -25,9 +25,6 @@ from .infer import (
     DeepEval,
     DeepPotential,
 )
-from .infer.data_modifier import (
-    DipoleChargeModifier,
-)
 
 set_mkl()
 
@@ -56,6 +53,5 @@ __all__ = [
     "network",
     "DeepEval",
     "DeepPotential",
-    "DipoleChargeModifier",
-    "nvnmd",
+    "mdpu",
 ]

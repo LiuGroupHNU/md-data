@@ -82,20 +82,10 @@ class Model(ABC):
         if cls is Model:
             # init model
             # infer model type by fitting_type
-            from deepmd.model.multi import (
-                MultiModel,
-            )
-            from deepmd.model.pairwise_dprc import (
-                PairwiseDPRc,
-            )
 
             model_type = kwargs.get("type", "standard")
             if model_type == "standard":
                 cls = StandardModel
-            elif model_type == "multi":
-                cls = MultiModel
-            elif model_type == "pairwise_dprc":
-                cls = PairwiseDPRc
             else:
                 raise ValueError(f"unknown model type: {model_type}")
             return cls.__new__(cls, *args, **kwargs)
@@ -388,10 +378,6 @@ class Model(ABC):
         """Get the number of atomic parameters."""
         return 0
 
-    def get_numb_dos(self) -> Union[int, dict]:
-        """Get the number of gridpoints in energy space."""
-        return 0
-
     @abstractmethod
     def get_fitting(self) -> Union[str, dict]:
         """Get the fitting(s)."""
@@ -478,15 +464,8 @@ class StandardModel(Model):
     """
 
     def __new__(cls, *args, **kwargs):
-        from .dos import (
-            DOSModel,
-        )
         from .ener import (
             EnerModel,
-        )
-        from .tensor import (
-            DipoleModel,
-            PolarModel,
         )
 
         if cls is StandardModel:
@@ -495,12 +474,6 @@ class StandardModel(Model):
             # infer model type by fitting_type
             if fitting_type == "ener":
                 cls = EnerModel
-            elif fitting_type == "dos":
-                cls = DOSModel
-            elif fitting_type == "dipole":
-                cls = DipoleModel
-            elif fitting_type == "polar":
-                cls = PolarModel
             else:
                 raise RuntimeError("get unknown fitting type when building model")
             return cls.__new__(cls)

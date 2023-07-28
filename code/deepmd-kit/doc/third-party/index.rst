@@ -9,6 +9,4 @@ Note that the model for inference is required to be compatible with the DeePMD-k
    ase
    lammps
    lammps-command
-   ipi
-   gromacs
    out-of-deepmd-kit

@@ -38,9 +38,6 @@ from deepmd.env import (
 from deepmd.fit.ener import (
     EnerFitting,
 )
-from deepmd.model import (
-    MultiModel,
-)
 from deepmd.model.model import (
     Model,
 )
@@ -102,7 +99,7 @@ class DPTrainer:
 
         # init model
         self.model = Model(**model_param)
-        self.multi_task_mode = isinstance(self.model, MultiModel)
+        self.multi_task_mode = False
         self.fitting = self.model.get_fitting()
 
         def get_lr_and_coef(lr_param):

@@ -14,9 +14,6 @@ import numpy as np
 from deepmd.common import (
     make_default_mesh,
 )
-from deepmd.infer.data_modifier import (
-    DipoleChargeModifier,
-)
 from deepmd.infer.deep_eval import (
     DeepEval,
 )
@@ -172,33 +169,6 @@ class DeepPot(DeepEval):
             self.descriptor_type = jdata["model"]["descriptor"]["type"]
         except (ValueError, KeyError):
             self.descriptor_type = None
-
-        if self.modifier_type == "dipole_charge":
-            t_mdl_name = self._get_tensor("modifier_attr/mdl_name:0")
-            t_mdl_charge_map = self._get_tensor("modifier_attr/mdl_charge_map:0")
-            t_sys_charge_map = self._get_tensor("modifier_attr/sys_charge_map:0")
-            t_ewald_h = self._get_tensor("modifier_attr/ewald_h:0")
-            t_ewald_beta = self._get_tensor("modifier_attr/ewald_beta:0")
-            [mdl_name, mdl_charge_map, sys_charge_map, ewald_h, ewald_beta] = run_sess(
-                self.sess,
-                [
-                    t_mdl_name,
-                    t_mdl_charge_map,
-                    t_sys_charge_map,
-                    t_ewald_h,
-                    t_ewald_beta,
-                ],
-            )
-            mdl_name = mdl_name.decode("UTF-8")
-            mdl_charge_map = [int(ii) for ii in mdl_charge_map.decode("UTF-8").split()]
-            sys_charge_map = [int(ii) for ii in sys_charge_map.decode("UTF-8").split()]
-            self.dm = DipoleChargeModifier(
-                mdl_name,
-                mdl_charge_map,
-                sys_charge_map,
-                ewald_h=ewald_h,
-                ewald_beta=ewald_beta,
-            )
 
     def _run_default_sess(self):
         if self.has_spin is True:

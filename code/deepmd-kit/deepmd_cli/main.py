@@ -100,32 +100,6 @@ def main_parser() -> argparse.ArgumentParser:
         "means each process will output its own log",
     )
 
-    # * transfer script ****************************************************************
-    parser_transfer = subparsers.add_parser(
-        "transfer", parents=[parser_log], help="pass parameters to another model"
-    )
-    parser_transfer.add_argument(
-        "-r",
-        "--raw-model",
-        default="raw_frozen_model.pb",
-        type=str,
-        help="the model receiving parameters",
-    )
-    parser_transfer.add_argument(
-        "-O",
-        "--old-model",
-        default="old_frozen_model.pb",
-        type=str,
-        help="the model providing parameters",
-    )
-    parser_transfer.add_argument(
-        "-o",
-        "--output",
-        default="frozen_model.pb",
-        type=str,
-        help="the model after passing parameters",
-    )
-
     # * config parser ******************************************************************
     parser_train = subparsers.add_parser(
         "train",
@@ -437,44 +411,6 @@ def main_parser() -> argparse.ArgumentParser:
         default=1,
         type=int,
         help="The trajectory frequency of the system",
-    )
-
-    # * convert models
-    parser_transform = subparsers.add_parser(
-        "convert-from",
-        parents=[parser_log],
-        help="convert lower model version to supported version",
-        formatter_class=RawTextArgumentDefaultsHelpFormatter,
-        epilog=textwrap.dedent(
-            """\
-        examples:
-            dp convert-from -i graph.pb -o graph_new.pb
-            dp convert-from auto -i graph.pb -o graph_new.pb
-            dp convert-from 1.0 -i graph.pb -o graph_new.pb
-        """
-        ),
-    )
-    parser_transform.add_argument(
-        "FROM",
-        nargs="?",
-        default="auto",
-        type=str,
-        choices=["auto", "0.12", "1.0", "1.1", "1.2", "1.3", "2.0", "pbtxt"],
-        help="The original model compatibility",
-    )
-    parser_transform.add_argument(
-        "-i",
-        "--input-model",
-        default="frozen_model.pb",
-        type=str,
-        help="the input model",
-    )
-    parser_transform.add_argument(
-        "-o",
-        "--output-model",
-        default="convert_out.pb",
-        type=str,
-        help="the output model",
     )
 
     # neighbor_stat

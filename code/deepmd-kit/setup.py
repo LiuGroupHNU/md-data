@@ -52,8 +52,7 @@ if os.environ.get("DP_BUILD_TESTING", "0") == "1":
 if os.environ.get("DP_ENABLE_NATIVE_OPTIMIZATION", "0") == "1":
     cmake_args.append("-DENABLE_NATIVE_OPTIMIZATION:BOOL=TRUE")
 dp_lammps_version = os.environ.get("DP_LAMMPS_VERSION", "")
-dp_ipi = os.environ.get("DP_ENABLE_IPI", "0")
-if dp_lammps_version != "" or dp_ipi == "1":
+if dp_lammps_version != "":
     cmake_args.append("-DBUILD_CPP_IF:BOOL=TRUE")
     cmake_args.append("-DUSE_TF_PYTHON_LIBS:BOOL=TRUE")
 else:
@@ -61,9 +60,6 @@ else:
 
 if dp_lammps_version != "":
     cmake_args.append(f"-DLAMMPS_VERSION={dp_lammps_version}")
-if dp_ipi == "1":
-    cmake_args.append("-DENABLE_IPI:BOOL=TRUE")
-    extra_scripts.append("dp_ipi = deepmd.entrypoints.ipi:dp_ipi")
 
 
 tf_install_dir, _ = find_tensorflow()
@@ -136,10 +132,6 @@ setup(
         "lmp": [
             "lammps~=2022.6.23.4.0; platform_system=='Linux'",
             "lammps~=2022.6.23.4.0; platform_system!='Linux'",
-            *find_libpython_requires,
-        ],
-        "ipi": [
-            "i-PI",
             *find_libpython_requires,
         ],
         **get_tf_requirement(tf_version),

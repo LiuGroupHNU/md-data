@@ -4,4 +4,3 @@ Note that the model for inference is required to be compatible with the DeePMD-k
 
 - [Python interface](python.md)
 - [C++ interface](cxx.md)
-- [Node.js interface](nodejs.md)

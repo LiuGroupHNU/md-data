@@ -53,35 +53,6 @@ One may enable the environment using
 conda activate deepmd
 ```
 
-### conda-forge channel
-
-DeePMD-kit is also available on the [conda-forge](https://conda-forge.org/) channel:
-
-```bash
-conda create -n deepmd deepmd-kit lammps -c conda-forge
-```
-
-The supported platform includes Linux x86-64, macOS x86-64, and macOS arm64.
-Read [conda-forge FAQ](https://conda-forge.org/docs/user/tipsandtricks.html#installing-cuda-enabled-packages-like-tensorflow-and-pytorch) to learn how to install CUDA-enabled packages.
-
-## Install with docker
-A docker for installing the DeePMD-kit is available [here](https://github.com/orgs/deepmodeling/packages/container/package/deepmd-kit).
-
-To pull the CPU version:
-```bash
-docker pull ghcr.io/deepmodeling/deepmd-kit:2.1.1_cpu
-```
-
-To pull the GPU version:
-```bash
-docker pull ghcr.io/deepmodeling/deepmd-kit:2.1.1_cuda11.6_gpu
-```
-
-To pull the ROCm version:
-```bash
-docker pull deepmodeling/dpmdkit-rocm:dp2.0.3-rocm4.5.2-tf2.6-lmp29Sep2021
-```
-
 ## Install Python interface with pip
 
 If you have no existing TensorFlow installed, you can use `pip` to install the pre-built package of the Python interface with CUDA 11 supported:
@@ -97,9 +68,9 @@ Or install the CPU version without CUDA supported:
 pip install deepmd-kit[cpu]
 ```
 
-[The LAMMPS module](../third-party/lammps-command.md) and [the i-Pi driver](../third-party/ipi.md) are only provided on Linux and macOS. To install LAMMPS and/or i-Pi, add `lmp` and/or `ipi` to extras:
+[The LAMMPS module](../third-party/lammps-command.md) are only provided on Linux and macOS. To install LAMMPS and/or i-Pi, add `lmp` to extras:
 ```bash
-pip install deepmd-kit[gpu,cu11,lmp,ipi]
+pip install deepmd-kit[gpu,cu11,lmp]
 ```
 MPICH is required for parallel running. (The macOS arm64 package doesn't support MPI yet.)
 

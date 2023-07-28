@@ -188,12 +188,11 @@ if(BUILD_CPP_IF)
   endif()
   if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 4.8)
     set(LIB_DEEPMD_NATIVE "deepmd_native_md")
-    set(LIB_DEEPMD_IPI "deepmd_ipi")
     set(LIB_DEEPMD_GROMACS "deepmd_gromacs")
   else()
     message(
       STATUS
-        "Your gcc/g++ version is ${CMAKE_CXX_COMPILER_VERSION}, so native MD, ipi and gromacs plugin are disabled. To enable them, use gcc/g++ >= 4.8."
+        "Your gcc/g++ version is ${CMAKE_CXX_COMPILER_VERSION}, so native MD is disabled. To enable them, use gcc/g++ >= 4.8."
     )
   endif()
 endif(BUILD_CPP_IF)
@@ -249,13 +248,6 @@ if(BUILD_CPP_IF)
     add_subdirectory(lmp/)
   endif()
   if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 4.8)
-    # add_subdirectory (md/)
-    if(ENABLE_IPI
-       OR NOT BUILD_PY_IF
-       AND NOT DEEPMD_C_ROOT)
-      # ipi has a dependency on libdeepmd
-      add_subdirectory(ipi/)
-    endif()
     if(NOT BUILD_PY_IF)
       add_subdirectory(gmx/)
     endif()
