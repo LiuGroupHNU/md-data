@@ -17,7 +17,7 @@ Reading data file ...
   read_data CPU = 0.155 seconds
 mass            1 63.54600000
 
-pair_style 		nvnmd model.pb
+pair_style 		mdpu model.pb
 # pair_style 		deepmd model.pb
 # pair_style 	deepmd copper1.pb copper2.pb copper3.pb copper4.pb 100 model-devi.out
 pair_coeff		* *				# Coefficient of petential function
@@ -51,7 +51,7 @@ Neighbor list info ...
       pair build: copy
       stencil: none
       bin: none
-  (2) pair nvnmd, perpetual
+  (2) pair mdpu, perpetual
       attributes: full, newton on
       pair build: full/bin/atomonly
       stencil: full/bin/3d
@@ -80,7 +80,7 @@ Neighbor list info ...
   ghost atom cutoff = 8
   binsize = 4, bins = 30 30 30
   2 neighbor lists, perpetual/occasional/extra = 1 1 0
-  (1) pair nvnmd, perpetual
+  (1) pair mdpu, perpetual
       attributes: full, newton on
       pair build: full/bin/atomonly
       stencil: full/bin/3d

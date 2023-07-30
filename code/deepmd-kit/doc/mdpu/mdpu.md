@@ -12,7 +12,7 @@ Our training procedure consists of not only continuous neural network (CNN) trai
 
 To train an ML model that can decently reproduce the PES, a training and testing data set should be prepared first. This can be done by using either the state-of-the-art active learning tools or the outdated (i.e., less efficient) brute-force density functional theory (DFT)-based ab-initio molecular dynamics (AIMD) sampling.
 
-If you just want to simply test the training function, you can use the example in the `$deepmd_source_dir/examples/mdpu` directory. If you want to fully experience training and running MD functions, you can download the complete example from the [website](https://github.com/LiuGroupHNU/mdpu-example).
+If you just want to simply test the training function, you can use the example in the `$deepmd_source_dir/examples/mdpu` directory. .
 
 Then, copy the data set to the working directory
 
@@ -179,7 +179,7 @@ dp train-mdpu train_cnn.json -s s1
 dp train-mdpu train_qnn.json -s s2
 ```
 
-After the training process, you will get two folders: `mdpu_cnn` and `mdpu_qnn`. The `mdpu_cnn` contains the model after continuous neural network (CNN) training. The `mdpu_qnn` contains the model after quantized neural network (QNN) training. The binary file `mdpu_qnn/model.pb` is the model file that is used to perform MDPU in the server [http://mdpu.picp.vip].
+After the training process, you will get two folders: `mdpu_cnn` and `mdpu_qnn`. The `mdpu_cnn` contains the model after continuous neural network (CNN) training. The `mdpu_qnn` contains the model after quantized neural network (QNN) training. The binary file `mdpu_qnn/model.pb` is the model file that is used to perform MDPU in the server [https://bohrium.dp.tech].
 
 You can also restart the CNN training from the checkpoint (`mdpu_cnn/model.ckpt`) by
 

@@ -24,7 +24,7 @@ Replicating atoms ...
 
 #pair_style      deepmd ./frozen_model.pb
 # pair_style      deepmd ./graph.003.pb ./graph.002.pb ./graph.001.pb ./graph.000.pb  out_freq 100 out_file model_devi.out
-pair_style      nvnmd model.pb
+pair_style      mdpu model.pb
 pair_coeff      * *
 
 variable        run0    equal   5000
@@ -71,7 +71,7 @@ Neighbor list info ...
   ghost atom cutoff = 8
   binsize = 4, bins = 7 7 7
   1 neighbor lists, perpetual/occasional/extra = 1 0 0
-  (1) pair nvnmd, perpetual
+  (1) pair mdpu, perpetual
       attributes: full, newton on
       pair build: full/bin/atomonly
       stencil: full/bin/3d

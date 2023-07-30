@@ -1,5 +1,5 @@
 {
-    "nvnmd": {
+    "mdpu": {
         "net_size": 128,
         "config_file": "none",
         "weight_file": "none",

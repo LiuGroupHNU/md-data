@@ -10,7 +10,7 @@ neigh_modify    every 10 delay 0 check no		# Check no, rebuild anyway
 read_data   	copper.lmp
 mass            1 63.54600000 
 
-pair_style 		nvnmd model.pb
+pair_style 		mdpu model.pb
 # pair_style 		deepmd model.pb
 # pair_style 	deepmd copper1.pb copper2.pb copper3.pb copper4.pb 100 model-devi.out
 pair_coeff		* *				# Coefficient of petential function

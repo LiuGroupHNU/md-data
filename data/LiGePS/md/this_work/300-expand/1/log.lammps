@@ -27,7 +27,7 @@ Reading data file ...
   reading atoms ...
   900 atoms
   read_data CPU = 0.001 seconds
-pair_style      nvnmd model.pb
+pair_style      mdpu model.pb
 pair_coeff * *
 
 ## velocity, timestep
@@ -52,7 +52,7 @@ Neighbor list info ...
   ghost atom cutoff = 8
   binsize = 4, bins = 7 7 7
   1 neighbor lists, perpetual/occasional/extra = 1 0 0
-  (1) pair nvnmd, perpetual
+  (1) pair mdpu, perpetual
       attributes: full, newton on
       pair build: full/bin/atomonly
       stencil: full/bin/3d

@@ -1,0 +1,78 @@
+{
+    "mdpu": {
+        "net_size": 128,
+        "config_file": "none",
+        "weight_file": "mdpu_cnn/weight.npy",
+        "map_file": "mdpu_cnn/map.npy",
+        "enable": true,
+        "restore_descriptor": true,
+        "restore_fitting_net": true,
+        "quantize_descriptor": true,
+        "quantize_fitting_net": true
+    },
+    "learning_rate": {
+        "type": "exp",
+        "start_lr": 1e-07,
+        "stop_lr": 3.51e-08,
+        "decay_steps": 50000
+    },
+    "loss": {
+        "start_pref_e": 0.02,
+        "limit_pref_e": 1,
+        "start_pref_f": 1000,
+        "limit_pref_f": 1,
+        "start_pref_v": 0,
+        "limit_pref_v": 0
+    },
+    "training": {
+        "seed": 320152394,
+        "stop_batch": 1,
+        "numb_test": 2,
+        "disp_file": "mdpu_qnn/lcurve.out",
+        "disp_freq": 1,
+        "save_ckpt": "mdpu_qnn/model.ckpt",
+        "save_freq": 1,
+        "training_data": {
+            "systems": "/home/mph/WorkSpace/DP_DATA/MgZnY/data",
+            "batch_size": "auto"
+        },
+        "disp_training": true,
+        "time_training": true,
+        "profiling": false
+    },
+    "model": {
+        "descriptor": {
+            "seed": 1,
+            "type": "se_a",
+            "sel": [
+                58,
+                134,
+                42
+            ],
+            "rcut": 6.0,
+            "rcut_smth": 2.0,
+            "neuron": [
+                8,
+                16,
+                32
+            ],
+            "type_one_side": true,
+            "axis_neuron": 4,
+            "resnet_dt": false
+        },
+        "fitting_net": {
+            "seed": 1,
+            "neuron": [
+                128,
+                128,
+                128
+            ],
+            "resnet_dt": false
+        },
+        "type_map": [
+            "Mg",
+            "Zn",
+            "Y"
+        ]
+    }
+}

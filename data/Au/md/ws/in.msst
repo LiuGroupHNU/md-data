@@ -15,7 +15,7 @@ boundary        p p p
 read_restart	restart.equil_Au
 
 # DEBUG2, add new rcut
-pair_style	nvnmd model.pb
+pair_style	mdpu model.pb
 pair_coeff	* *
 
 ## DEBUG1, add neighbor

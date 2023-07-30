@@ -50,7 +50,7 @@ Neighbor list info ...
   ghost atom cutoff = 8
   binsize = 4, bins = 7 7 7
   2 neighbor lists, perpetual/occasional/extra = 1 1 0
-  (1) pair nvnmd, perpetual
+  (1) pair mdpu, perpetual
       attributes: full, newton on
       pair build: full/bin/atomonly
       stencil: full/bin/3d

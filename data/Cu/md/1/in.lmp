@@ -10,7 +10,7 @@ neigh_modify    every 10 delay 0 check no
 read_data   	copper.lmp
 mass            1 63.54600000 
 
-pair_style 		nvnmd model.pb
+pair_style 		mdpu model.pb
 pair_coeff		* *
 
 variable        Ttarget equal 300.0			# Target tempture for annealing and MD

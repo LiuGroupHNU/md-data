@@ -18,7 +18,7 @@ mass            2 2
 
 replicate       2 2 2
 
-pair_style      nvnmd model.pb
+pair_style      mdpu model.pb
 #pair_style      deepmd model.pb
 pair_coeff	    * *
 

@@ -20,7 +20,7 @@ neigh_modify    every 10 delay 0 check no
 
 ## data.lmp, potential
 read_data       data.lmp
-pair_style      nvnmd model.pb
+pair_style      mdpu model.pb
 pair_coeff * *
 
 ## velocity, timestep

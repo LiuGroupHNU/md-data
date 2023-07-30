@@ -17,7 +17,7 @@ Reading data file ...
   read_data CPU = 0.126 seconds
 mass            1 63.54600000
 
-pair_style 		nvnmd model.pb
+pair_style 		mdpu model.pb
 pair_coeff		* *
 
 variable        Ttarget equal 300.0			# Target tempture for annealing and MD
@@ -49,7 +49,7 @@ Neighbor list info ...
       pair build: copy
       stencil: none
       bin: none
-  (2) pair nvnmd, perpetual
+  (2) pair mdpu, perpetual
       attributes: full, newton on
       pair build: full/bin/atomonly
       stencil: full/bin/3d
@@ -78,7 +78,7 @@ Neighbor list info ...
   ghost atom cutoff = 8
   binsize = 4, bins = 30 30 30
   2 neighbor lists, perpetual/occasional/extra = 1 1 0
-  (1) pair nvnmd, perpetual
+  (1) pair mdpu, perpetual
       attributes: full, newton on
       pair build: full/bin/atomonly
       stencil: full/bin/3d

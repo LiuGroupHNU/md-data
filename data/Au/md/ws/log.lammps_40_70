@@ -24,7 +24,7 @@ Created 4000 atoms
   using lattice units in orthogonal box = (0 0 0) to (40.8 40.8 40.8)
   create_atoms CPU = 0.000 seconds
 
-pair_style	nvnmd model.pb
+pair_style	mdpu model.pb
 pair_coeff	* *
 
 thermo		1000
@@ -64,7 +64,7 @@ Neighbor list info ...
   ghost atom cutoff = 8
   binsize = 4, bins = 11 11 11
   1 neighbor lists, perpetual/occasional/extra = 1 0 0
-  (1) pair nvnmd, perpetual
+  (1) pair mdpu, perpetual
       attributes: full, newton on
       pair build: full/bin/atomonly
       stencil: full/bin/3d
@@ -230,12 +230,12 @@ Reading restart file ...
   restoring atom style atomic from restart
   orthogonal box = (0.023407936 0.023407936 0.023407936) to (40.776592 40.776592 40.776592)
   1 by 2 by 2 MPI processor grid
-  restoring pair style nvnmd from restart
+  restoring pair style mdpu from restart
   4000 atoms
   read_restart CPU = 0.000 seconds
 
 # DEBUG2, add new rcut
-pair_style	nvnmd model.pb
+pair_style	mdpu model.pb
 pair_coeff	* *
 
 ## DEBUG1, add neighbor
@@ -310,7 +310,7 @@ Neighbor list info ...
   ghost atom cutoff = 6
   binsize = 3, bins = 14 14 14
   2 neighbor lists, perpetual/occasional/extra = 1 1 0
-  (1) pair nvnmd, perpetual
+  (1) pair mdpu, perpetual
       attributes: full, newton on
       pair build: full/bin/atomonly
       stencil: full/bin/3d
@@ -585,12 +585,12 @@ Reading restart file ...
   restoring atom style atomic from restart
   orthogonal box = (0.023407936 0.023407936 0.023407936) to (40.776592 40.776592 40.776592)
   1 by 2 by 2 MPI processor grid
-  restoring pair style nvnmd from restart
+  restoring pair style mdpu from restart
   4000 atoms
   read_restart CPU = 0.000 seconds
 
 # DEBUG2, add new rcut
-pair_style	nvnmd model.pb
+pair_style	mdpu model.pb
 pair_coeff	* *
 
 ## DEBUG1, add neighbor
@@ -665,7 +665,7 @@ Neighbor list info ...
   ghost atom cutoff = 6
   binsize = 3, bins = 14 14 14
   2 neighbor lists, perpetual/occasional/extra = 1 1 0
-  (1) pair nvnmd, perpetual
+  (1) pair mdpu, perpetual
       attributes: full, newton on
       pair build: full/bin/atomonly
       stencil: full/bin/3d
@@ -940,12 +940,12 @@ Reading restart file ...
   restoring atom style atomic from restart
   orthogonal box = (0.023407936 0.023407936 0.023407936) to (40.776592 40.776592 40.776592)
   1 by 2 by 2 MPI processor grid
-  restoring pair style nvnmd from restart
+  restoring pair style mdpu from restart
   4000 atoms
   read_restart CPU = 0.000 seconds
 
 # DEBUG2, add new rcut
-pair_style	nvnmd model.pb
+pair_style	mdpu model.pb
 pair_coeff	* *
 
 ## DEBUG1, add neighbor
@@ -1020,7 +1020,7 @@ Neighbor list info ...
   ghost atom cutoff = 6
   binsize = 3, bins = 14 14 14
   2 neighbor lists, perpetual/occasional/extra = 1 1 0
-  (1) pair nvnmd, perpetual
+  (1) pair mdpu, perpetual
       attributes: full, newton on
       pair build: full/bin/atomonly
       stencil: full/bin/3d
@@ -1295,12 +1295,12 @@ Reading restart file ...
   restoring atom style atomic from restart
   orthogonal box = (0.023407936 0.023407936 0.023407936) to (40.776592 40.776592 40.776592)
   1 by 2 by 2 MPI processor grid
-  restoring pair style nvnmd from restart
+  restoring pair style mdpu from restart
   4000 atoms
   read_restart CPU = 0.000 seconds
 
 # DEBUG2, add new rcut
-pair_style	nvnmd model.pb
+pair_style	mdpu model.pb
 pair_coeff	* *
 
 ## DEBUG1, add neighbor
@@ -1375,7 +1375,7 @@ Neighbor list info ...
   ghost atom cutoff = 6
   binsize = 3, bins = 14 14 14
   2 neighbor lists, perpetual/occasional/extra = 1 1 0
-  (1) pair nvnmd, perpetual
+  (1) pair mdpu, perpetual
       attributes: full, newton on
       pair build: full/bin/atomonly
       stencil: full/bin/3d
@@ -1650,12 +1650,12 @@ Reading restart file ...
   restoring atom style atomic from restart
   orthogonal box = (0.023407936 0.023407936 0.023407936) to (40.776592 40.776592 40.776592)
   1 by 2 by 2 MPI processor grid
-  restoring pair style nvnmd from restart
+  restoring pair style mdpu from restart
   4000 atoms
   read_restart CPU = 0.000 seconds
 
 # DEBUG2, add new rcut
-pair_style	nvnmd model.pb
+pair_style	mdpu model.pb
 pair_coeff	* *
 
 ## DEBUG1, add neighbor
@@ -1730,7 +1730,7 @@ Neighbor list info ...
   ghost atom cutoff = 6
   binsize = 3, bins = 14 14 14
   2 neighbor lists, perpetual/occasional/extra = 1 1 0
-  (1) pair nvnmd, perpetual
+  (1) pair mdpu, perpetual
       attributes: full, newton on
       pair build: full/bin/atomonly
       stencil: full/bin/3d
@@ -2005,12 +2005,12 @@ Reading restart file ...
   restoring atom style atomic from restart
   orthogonal box = (0.023407936 0.023407936 0.023407936) to (40.776592 40.776592 40.776592)
   1 by 2 by 2 MPI processor grid
-  restoring pair style nvnmd from restart
+  restoring pair style mdpu from restart
   4000 atoms
   read_restart CPU = 0.000 seconds
 
 # DEBUG2, add new rcut
-pair_style	nvnmd model.pb
+pair_style	mdpu model.pb
 pair_coeff	* *
 
 ## DEBUG1, add neighbor
@@ -2085,7 +2085,7 @@ Neighbor list info ...
   ghost atom cutoff = 6
   binsize = 3, bins = 14 14 14
   2 neighbor lists, perpetual/occasional/extra = 1 1 0
-  (1) pair nvnmd, perpetual
+  (1) pair mdpu, perpetual
       attributes: full, newton on
       pair build: full/bin/atomonly
       stencil: full/bin/3d
@@ -2360,12 +2360,12 @@ Reading restart file ...
   restoring atom style atomic from restart
   orthogonal box = (0.023407936 0.023407936 0.023407936) to (40.776592 40.776592 40.776592)
   1 by 2 by 2 MPI processor grid
-  restoring pair style nvnmd from restart
+  restoring pair style mdpu from restart
   4000 atoms
   read_restart CPU = 0.000 seconds
 
 # DEBUG2, add new rcut
-pair_style	nvnmd model.pb
+pair_style	mdpu model.pb
 pair_coeff	* *
 
 ## DEBUG1, add neighbor
@@ -2440,7 +2440,7 @@ Neighbor list info ...
   ghost atom cutoff = 6
   binsize = 3, bins = 14 14 14
   2 neighbor lists, perpetual/occasional/extra = 1 1 0
-  (1) pair nvnmd, perpetual
+  (1) pair mdpu, perpetual
       attributes: full, newton on
       pair build: full/bin/atomonly
       stencil: full/bin/3d

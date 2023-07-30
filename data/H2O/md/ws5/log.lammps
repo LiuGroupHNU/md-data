@@ -33,7 +33,7 @@ Replicating atoms ...
   1536 atoms
   replicate CPU = 0.000 seconds
 
-pair_style      nvnmd model.pb
+pair_style      mdpu model.pb
 #pair_style      deepmd model.pb
 pair_coeff	    * *
 
@@ -62,7 +62,7 @@ Neighbor list info ...
   ghost atom cutoff = 8
   binsize = 4, bins = 7 7 7
   2 neighbor lists, perpetual/occasional/extra = 1 1 0
-  (1) pair nvnmd, perpetual
+  (1) pair mdpu, perpetual
       attributes: full, newton on
       pair build: full/bin/atomonly
       stencil: full/bin/3d

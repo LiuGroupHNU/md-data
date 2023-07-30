@@ -14,7 +14,7 @@ region		sim_box block 0 ${Num} 0 ${Num} 0 ${Num}
 create_box	1 sim_box
 create_atoms	1 box
 
-pair_style	nvnmd model.pb
+pair_style	mdpu model.pb
 pair_coeff	* *
 
 thermo		1000

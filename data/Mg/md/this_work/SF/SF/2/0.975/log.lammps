@@ -20,7 +20,7 @@ mass            2 65
 mass            3 88
 #mass            2 88.906
 neigh_modify    every 1 delay 0 check no
-pair_style nvnmd model.pb
+pair_style mdpu model.pb
 pair_coeff * *
 compute         mype all pe
 thermo          1
@@ -38,7 +38,7 @@ Neighbor list info ...
   ghost atom cutoff = 8
   binsize = 4, bins = 5 3 5
   1 neighbor lists, perpetual/occasional/extra = 1 0 0
-  (1) pair nvnmd, perpetual
+  (1) pair mdpu, perpetual
       attributes: full, newton on
       pair build: full/bin/atomonly
       stencil: full/bin/3d
