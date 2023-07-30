@@ -2,7 +2,7 @@
 This is open-sourced code and data for paper entitiled "Breaking the Speed, Power, Cost and Size Limits of Molecular Dynamics with Ab Initio Accuracy" (manuscript # NATCOMPUTSCI-23-0729).
 
 # code
-The `code/deepmd-kit` folder, which contains the generation that implements mdpu training, is obtained by modifying it based on [deepmd-kit](https://github.com/deepmodeling/deepmd-kit/tree/devel). You can install and use the code according to the [documentation](code/deepmd-kit/README.md).
+The `code/deepmd-kit` folder, which contains the generation that implements mdpu (Molecular Dynamics Processing Unit) training, is obtained by modifying it based on [deepmd-kit](https://github.com/deepmodeling/deepmd-kit/tree/devel). You can install and use the code according to the [documentation](code/deepmd-kit/README.md).
 
 # data
 For each material, two folders (`train` and `md`) are kept in its corresponding directory.
