@@ -14,3 +14,6 @@ the result of this_work
 | H2O | 10.1016/j.cpc.2020.107206, 10.1103/PhysRevLett.126.236001 | DP-GEN |
 | LiGePS | 10.1063/5.0041849 | DP-GEN |
 
+
+# how to use
+

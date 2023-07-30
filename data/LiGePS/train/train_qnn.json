@@ -1,0 +1,36 @@
+{
+  "mdpu": {
+    "version": 0,
+    "net_size": 128,
+    "sel": [44, 12, 16, 50],
+    "rcut": 7.0,
+    "rcut_smth": 1.5
+  },
+  "learning_rate": {
+    "type": "exp",
+    "start_lr": 1e-7,
+    "stop_lr": 3.51e-08,
+    "decay_steps": 5000
+  },
+  "loss": {
+    "start_pref_e": 0.02,
+    "limit_pref_e": 1,
+    "start_pref_f": 1000,
+    "limit_pref_f": 1,
+    "start_pref_v": 0.0,
+    "limit_pref_v": 0.0
+  },
+  "training": {
+    "seed": 320152394,
+    "stop_batch": 1,
+    "numb_test": 1,
+    "disp_file": "lcurve.out",
+    "disp_freq": 1,
+    "save_ckpt": "model.ckpt",
+    "save_freq": 1,
+    "training_data": {
+      "systems": "/home/mph/WorkSpace/DP_DATA/LiGePS/data",
+      "batch_size": "auto"
+  }
+  }
+}
