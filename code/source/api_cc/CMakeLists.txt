@@ -9,7 +9,7 @@ set(libname "${LIB_MDPU_CC}")
 
 add_library(${libname} SHARED ${LIB_SRC})
 
-# link: libmdpu libmdpu_op libtensorflow_cc libtensorflow_framework
+# link: libmdpukit libmdpukit_op libtensorflow_cc libtensorflow_framework
 target_link_libraries(${libname} PUBLIC ${LIB_MDPU})
 target_link_libraries(${libname} PRIVATE TensorFlow::tensorflow_cc
                                          TensorFlow::tensorflow_framework)
@@ -33,16 +33,16 @@ endif()
 target_compile_features(${libname} PUBLIC cxx_std_11)
 
 if(BUILD_PY_IF)
-  install(TARGETS ${libname} DESTINATION mdpu/op/)
+  install(TARGETS ${libname} DESTINATION mdpukit/op/)
 else(BUILD_PY_IF)
   install(
     TARGETS ${libname}
     EXPORT ${CMAKE_PROJECT_NAME}Targets
     DESTINATION lib/)
 
-  install(FILES ${INC_SRC} DESTINATION include/mdpu)
+  install(FILES ${INC_SRC} DESTINATION include/mdpukit)
 
-  # make a link to libmdpu_cc_low.so for compatibility
+  # make a link to libmdpukit_cc_low.so for compatibility
   install(
     CODE "execute_process( \
 COMMAND ${CMAKE_COMMAND} -E create_symlink \

@@ -1,6 +1,6 @@
 # new in 3.16: GET_RUNTIME_DEPENDENCIES, target_precompile_headers
 cmake_minimum_required(VERSION 3.16)
-project(mdpu)
+project(MDPU)
 
 option(BUILD_TESTING "Build test and enable converage" OFF)
 set(MDPU_C_ROOT
@@ -174,21 +174,21 @@ if(ENABLE_NATIVE_OPTIMIZATION)
 endif()
 
 # define names of libs
-set(LIB_MDPU "mdpu")
-set(LIB_MDPU_OP "_op")
+set(LIB_MDPU "mdpukit")
+set(LIB_MDPU_OP "mdpukit_op")
 if(BUILD_CPP_IF)
-  set(LIB_MDPU_CC "_cc")
-  set(LIB_MDPU_C "_c")
+  set(LIB_MDPU_CC "mdpukit_cc")
+  set(LIB_MDPU_C "mdpukit_c")
   if(USE_CUDA_TOOLKIT)
-    set(LIB_MDPU_OP_DEVICE "_op_cuda")
+    set(LIB_MDPU_OP_DEVICE "mdpukit_op_cuda")
   elseif(USE_ROCM_TOOLKIT)
-    set(LIB_MDPU_OP_DEVICE "_op_rocm")
+    set(LIB_MDPU_OP_DEVICE "mdpukit_op_rocm")
   else()
-    set(LIB_MDPU_OP_DEVICE "_op")
+    set(LIB_MDPU_OP_DEVICE "mdpukit_op")
   endif()
   if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 4.8)
-    set(LIB_MDPU_NATIVE "_native_md")
-    set(LIB_MDPU_GROMACS "_gromacs")
+    set(LIB_MDPU_NATIVE "mdpukit_native_md")
+    set(LIB_MDPU_GROMACS "mdpukit_gromacs")
   else()
     message(
       STATUS
@@ -202,16 +202,16 @@ option(DP_USING_C_API "Build third-party interface with C API" ON)
 if(MDPU_C_ROOT)
   # find c library
   find_path(
-    MDPU_INCLUDE_C_DIR mdpu/mdpu.hpp mdpu/c_api.h
+    MDPU_INCLUDE_C_DIR mdpukit/mdpukit.hpp mdpukit/c_api.h
     HINTS ${MDPU_C_ROOT}
     PATH_SUFFIXES "include")
   find_library(
-    mdpu_c
-    NAMES mdpu_c
+    mdpukit_c
+    NAMES mdpukit_c
     HINTS ${MDPU_C_ROOT}
     PATH_SUFFIXES "lib")
   include(FindPackageHandleStandardArgs)
-  find_package_handle_standard_args(MDPU_C DEFAULT_MSG mdpu_c
+  find_package_handle_standard_args(MDPU_C DEFAULT_MSG mdpukit_c
                                     MDPU_INCLUDE_C_DIR)
   if(NOT MDPU_C_FOUND)
     message(
@@ -224,9 +224,9 @@ if(MDPU_C_ROOT)
   set_target_properties(
     ${LIB_MDPU_C}
     PROPERTIES IMPORTED_LINK_INTERFACE_LANGUAGES "C"
-               IMPORTED_LOCATION "${_c}"
-               INTERFACE_INCLUDE_DIRECTORIES "${MDPU_INCLUDE_C_DIR}/mdpu")
-  # use variable for TF path to set _c path
+               IMPORTED_LOCATION "${mdpukit_c}"
+               INTERFACE_INCLUDE_DIRECTORIES "${MDPU_INCLUDE_C_DIR}/mdpukit")
+  # use variable for TF path to set mdpukit_c path
   set(TensorFlow_LIBRARY_PATH "${MDPU_C_ROOT}/lib")
   set(TENSORFLOW_INCLUDE_DIRS "${MDPU_C_ROOT}/include")
 endif()

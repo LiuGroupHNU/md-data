@@ -33,7 +33,7 @@ function(_add_md_variant variant_name prec_def)
     add_executable(${dp_mdad_name} ${MDAD_SOURCE_FILES})
   endif()
 
-  # link: libmdpu_native libmdpu_cc libxdr
+  # link: libmdpukit_native libmdpukit_cc libxdr
   target_link_libraries(
     ${dp_mdnn_name} PRIVATE ${libname} ${LIB_MDPU_CC}${variant_name}
                             ${XDRFILE_LIBRARIES})

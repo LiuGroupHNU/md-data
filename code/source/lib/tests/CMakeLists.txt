@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.9)
-project(libmdpu_test)
+project(libmdpukit_test)
 
 file(GLOB TEST_SRC test_*.cc)
 add_executable(runUnitTests_lib ${TEST_SRC})

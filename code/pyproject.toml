@@ -59,7 +59,7 @@ documentation = "https://docs.deepmodeling.com/projects/mdpu-kit"
 repository = "https://github.com/deepmodeling/mdpu-kit"
 
 [tool.setuptools_scm]
-write_to = "mdpu/_version.py"
+write_to = "mdpukit/_version.py"
 
 [tool.cibuildwheel]
 test-command = [

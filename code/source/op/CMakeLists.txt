@@ -20,14 +20,9 @@ file(
   prod_virial.cc
   descrpt.cc
   descrpt_se_a_ef.cc
-  descrpt_se_a_ef.cc
-  descrpt_se_a_ef_para.cc
-  descrpt_se_a_ef_vert.cc
-  descrpt_se_a_mask.cc
   pair_tab.cc
   prod_force_multi_device.cc
   prod_virial_multi_device.cc
-  prod_force_se_a_mask.cc
   soft_min.cc
   soft_min_force.cc
   soft_min_virial.cc
@@ -45,7 +40,6 @@ file(
   custom_op.cc
   prod_force_grad.cc
   prod_force_grad_multi_device.cc
-  prod_force_se_a_mask_grad.cc
   prod_virial_grad.cc
   prod_virial_grad_multi_device.cc
   soft_min_force_grad.cc
@@ -76,7 +70,7 @@ target_precompile_headers(${LIB_MDPU_OP} PRIVATE custom_op.h)
 
 if(BUILD_PY_IF)
   add_library(op_grads MODULE ${OP_GRADS_SRC})
-  # link: libmdpu libtensorflow_framework
+  # link: libmdpukit libtensorflow_framework
   target_link_libraries(op_grads PRIVATE ${LIB_MDPU})
   target_link_libraries(op_grads PRIVATE TensorFlow::tensorflow_framework)
   if(APPLE)

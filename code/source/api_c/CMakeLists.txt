@@ -1,12 +1,12 @@
 file(GLOB LIB_SRC src/*.cc src/*.cpp)
 # only install public headers
-file(GLOB INC_SRC include/c_api.h include/mdpu.hpp)
+file(GLOB INC_SRC include/c_api.h include/mdpukit.hpp)
 
 set(libname "${LIB_MDPU_C}")
 
 add_library(${libname} SHARED ${LIB_SRC})
 
-# link: libmdpu libmdpu_op libtensorflow_cc libtensorflow_framework
+# link: libmdpukit libmdpukit_op libtensorflow_cc libtensorflow_framework
 target_link_libraries(${libname} PRIVATE ${LIB_MDPU_CC})
 target_include_directories(
   ${libname} PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -19,14 +19,14 @@ if(CMAKE_TESTING_ENABLED)
 endif()
 
 if(BUILD_PY_IF)
-  install(TARGETS ${libname} DESTINATION mdpu/op/)
+  install(TARGETS ${libname} DESTINATION mdpukit/op/)
 else(BUILD_PY_IF)
   install(
     TARGETS ${libname}
     EXPORT ${CMAKE_PROJECT_NAME}Targets
     DESTINATION lib/)
 
-  install(FILES ${INC_SRC} DESTINATION include/mdpu)
+  install(FILES ${INC_SRC} DESTINATION include/mdpukit)
 endif(BUILD_PY_IF)
 
 if(PACKAGE_C)
@@ -49,16 +49,16 @@ if(PACKAGE_C)
       )
     message(STATUS "Runtime dependencies: ${_r_deps}")
     foreach(_file ${_r_deps})
-      file(INSTALL ${_file} DESTINATION libmdpu_c/lib
+      file(INSTALL ${_file} DESTINATION libmdpukit_c/lib
         FOLLOW_SYMLINK_CHAIN
       )
     endforeach()
     ]])
   install(FILES ${INC_SRC}
-          DESTINATION ${CMAKE_BINARY_DIR}/libmdpu_c/include/mdpu)
-  install(TARGETS ${libname} DESTINATION ${CMAKE_BINARY_DIR}/libmdpu_c/lib)
+          DESTINATION ${CMAKE_BINARY_DIR}/libmdpukit_c/include/mdpukit)
+  install(TARGETS ${libname} DESTINATION ${CMAKE_BINARY_DIR}/libmdpukit_c/lib)
   install(TARGETS ${LIB_MDPU_OP}
-          DESTINATION ${CMAKE_BINARY_DIR}/libmdpu_c/lib)
+          DESTINATION ${CMAKE_BINARY_DIR}/libmdpukit_c/lib)
 endif()
 
 if(CMAKE_TESTING_ENABLED)
