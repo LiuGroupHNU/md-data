@@ -65,7 +65,7 @@ compute    TEMP all temp
 ### Description
 Evaluate the interaction of the system by using [Deep Potential][DP] or [Deep Potential Smooth Edition][DP-SE]. It is noticed that deep potential is not a "pairwise" interaction, but a multi-body interaction.
 
-This pair style takes the deep potential defined in a model file that usually has the .pb extension. The model can be trained and frozen by package [mdpu-kit](https://github.com/deepmodeling/deepmd-kit), which can have either double or single float precision interface.
+This pair style takes the deep potential defined in a model file that usually has the .pb extension. The model can be trained and frozen by package mdpu-kit, which can have either double or single float precision interface.
 
 The model deviation evalulates the consistency of the force predictions from multiple models. By default, only the maximal, minimal and average model deviations are output. If the key `atomic` is set, then the model deviation of force prediction of each atom will be output.
 
@@ -89,99 +89,3 @@ If the training parameter {ref}`type_map <model/type_map>` is not set, atom name
 
 Spin is specified by keywords `virtual_len` and `spin_norm`. If the keyword `virtual_len` is set, the distance between virtual atom and its corresponding real atom for each type of magnetic atoms will be fed to the model as the spin parameters. If the keyword `spin_norm` is set, the magnitude of the magnetic moment for each type of magnetic atoms will be fed to the model as the spin parameters.
 
-### Restrictions
-- The `mdpu` pair style is provided in the USER-mdpu package, which is compiled from the mdpu-kit, visit the [mdpu-kit website](https://github.com/deepmodeling/deepmd-kit) for more information.
-
-
-## Compute tensorial properties
-
-The mdpu-kit package provides the compute `deeptensor/atom` for computing atomic tensorial properties.
-
-```lammps
-compute ID group-ID deeptensor/atom model_file
-```
-- ID: user-assigned name of the computation
-- group-ID: ID of the group of atoms to compute
-- deeptensor/atom: the style of this compute
-- model_file: the name of the binary model file.
-
-At this time, the training parameter {ref}`type_map <model/type_map>` will be mapped to LAMMPS atom types.
-
-### Examples
-```lammps
-compute         dipole all deeptensor/atom dipole.pb
-```
-The result of the compute can be dumped to trajectory file by
-```lammps
-dump            1 all custom 100 water.dump id type c_dipole[1] c_dipole[2] c_dipole[3]
-```
-
-### Restrictions
-- The `deeptensor/atom` compute is provided in the USER-mdpu package, which is compiled from the mdpu-kit, visit the [mdpu-kit website](https://github.com/deepmodeling/deepmd-kit) for more information.
-
-
-## Long-range interaction
-The reciprocal space part of the long-range interaction can be calculated by LAMMPS command `kspace_style`. To use it with mdpu-kit, one writes
-```lammps
-pair_style	mdpu graph.pb
-pair_coeff  * *
-kspace_style	pppm 1.0e-5
-kspace_modify	gewald 0.45
-```
-Please notice that the mdpu does nothing to the direct space part of the electrostatic interaction, because this part is assumed to be fitted in the mdpu model (the direct space cut-off is thus the cut-off of the mdpu model). The splitting parameter `gewald` is modified by the `kspace_modify` command.
-
-## Use of the centroid/stress/atom to get the full 3x3 "atomic-virial"
-
-The [mdpu-kit](https://github.com/deepmodeling/deepmd-kit) also allows the computation of per-atom stress tensor defined as:
-
-$$dvatom=-\sum_{m}( \mathbf{r}_n- \mathbf{r}_m) \frac{de_m}{d\mathbf{r}_n}$$
-
-Where $\mathbf{r}_n$ is the atomic position of nth atom, $\mathbf{v}_n$ velocity of the atom and $\frac{de_m}{d\mathbf{r}_n}$ the derivative of the atomic energy.
-
-In LAMMPS one can get the per-atom stress using the command `centroid/stress/atom`:
-```lammps
-compute ID group-ID centroid/stress/atom NULL virial
-```
-see [LAMMPS doc page](https://docs.lammps.org/compute_stress_atom.html#thompson2) for more details on the meaning of the keywords.
-
-:::{versionchanged} v2.2.3
-v2.2.2 or previous versions passed per-atom stress (`cvatom`) with the per-atom pressure tensor, which is inconsistent with [LAMMPS's definition](https://docs.lammps.org/compute_stress_atom.html). LAMMPS defines per-atom stress as the negative of the per-atom pressure tensor. Such behavior is corrected in v2.2.3.
-:::
-
-### Examples
-In order of computing the 9-component per-atom stress
-```lammps
-compute stress all centroid/stress/atom NULL virial
-```
-Thus `c_stress` is an array with 9 components in the order `xx,yy,zz,xy,xz,yz,yx,zx,zy`.
-
-If you use this feature please cite [D. Tisi, L. Zhang, R. Bertossa, H. Wang, R. Car, S. Baroni - arXiv preprint arXiv:2108.10850, 2021](https://arxiv.org/abs/2108.10850)
-
-## Computation of heat flux
-Using a per-atom stress tensor one can, for example, compute the heat flux defined as:
-
-$$\mathbf J = \sum_n e_n \mathbf v_n + \sum_{n,m} ( \mathbf r_m- \mathbf r_n) \frac{de_m}{d\mathbf r_n} \mathbf v_n$$
-
-to compute the heat flux with LAMMPS:
-```lammps
-compute ke_ID all ke/atom
-compute pe_ID all pe/atom
-compute stress_ID group-ID centroid/stress/atom NULL virial
-compute flux_ID all heat/flux ke_ID pe_ID stress_ID
-```
-
-### Examples
-
-```lammps
-compute ke all ke/atom
-compute pe all pe/atom
-compute stress all centroid/stress/atom NULL virial
-compute flux all heat/flux ke pe stress
-```
-`c_flux` is a global vector of length 6. The first three components are the $x$, $y$ and $z$ components of the full heat flux vector. The others are the components of the so-called convective portion, see [LAMMPS doc page](https://docs.lammps.org/compute_heat_flux.html) for more detailes.
-
-If you use these features please cite [D. Tisi, L. Zhang, R. Bertossa, H. Wang, R. Car, S. Baroni - arXiv preprint arXiv:2108.10850, 2021](https://arxiv.org/abs/2108.10850)
-
-
-[DP]:https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.120.143001
-[DP-SE]:https://dl.acm.org/doi/10.5555/3327345.3327356

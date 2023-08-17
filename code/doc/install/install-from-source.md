@@ -9,7 +9,7 @@ The `--recursive` option clones all [submodules](https://git-scm.com/book/en/v2/
 
 For convenience, you may want to record the location of the source to a variable, saying `mdpu_source_dir` by
 ```bash
-cd mdpu-kit
+cd mdpu-kit/code
 mdpu_source_dir=`pwd`
 ```
 
