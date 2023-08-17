@@ -61,12 +61,12 @@ jobs:
     - name: Test files exist
       run: |
         test -f dp/bin/dp_ipi &&
-        test -f dp/lib/libdeepmd_cc.so &&
-        test -f dp/lib/libdeepmd_c.so &&
-        test -f dp/lib/libdeepmd_op.so &&
-        test -f dp/lib/libdeepmd_ipi.so &&
-        test -f dp/lib/libdeepmd_lmp.so &&
-        test -f dp/lib/libdeepmd.so
+        test -f dp/lib/libmdpukit_cc.so &&
+        test -f dp/lib/libmdpukit_c.so &&
+        test -f dp/lib/libmdpukit_op.so &&
+        test -f dp/lib/libmdpukit_ipi.so &&
+        test -f dp/lib/libmdpukit_lmp.so &&
+        test -f dp/lib/libmdpukit.so
   pass:
     name: Pass building C++
     needs: [buildcc]

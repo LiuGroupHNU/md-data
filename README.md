@@ -1,8 +1,8 @@
-# md-data
+# NATCOMPUTSCI-23-0729
 This is open-sourced code and data for paper entitiled "Breaking the Speed, Power, Cost and Size Limits of Molecular Dynamics with Ab Initio Accuracy" (manuscript # NATCOMPUTSCI-23-0729).
 
 # code
-The `code/deepmd-kit` folder, which contains the generation that implements mdpu (Molecular Dynamics Processing Unit) training, is obtained by modifying it based on [deepmd-kit](https://github.com/deepmodeling/deepmd-kit/tree/devel). You can install and use the code according to the [documentation](code/deepmd-kit/README.md).
+The `code` folder, which contains the generation that implements mdpu (Molecular Dynamics Processing Unit) training. You can install and use the code according to the [documentation](code/README.md).
 
 # data
 For each material, two folders (`train` and `md`) are kept in its corresponding directory.
@@ -11,4 +11,4 @@ The `train` contains the input scripts and results of the training. The training
 
 The `md` contains the input scripts for the mdpu MD, the model files, the output files, and the post-processing files for the results. You can run mdpu MD by uploading input scripts and model files to an online server and running MD through the [Bohrium](https://bohrium.dp.tech).
 
-For more details about `train` and `md`, please refer to the [documentation](code/deepmd-kit/doc/mdpu/index.md).
+For more details about `train` and `md`, please refer to the [documentation](code/doc/mdpu/index.md).

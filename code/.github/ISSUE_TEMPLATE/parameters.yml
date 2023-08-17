@@ -17,7 +17,7 @@ body:
     id: details
     attributes:
       label: Detailed Description
-      description: "Please explain how you would like to see deepmd-kit enhanced. Specify your material system, and exactly what behaviors or properties you are looking for, or what specific problems this will solve. If possible, provide references to relevant background information like publications or web pages, and whether you are planning to implement the enhancement yourself or would like to participate in the implementation."
+      description: "Please explain how you would like to see mdpu-kit enhanced. Specify your material system, and exactly what behaviors or properties you are looking for, or what specific problems this will solve. If possible, provide references to relevant background information like publications or web pages, and whether you are planning to implement the enhancement yourself or would like to participate in the implementation."
       placeholder:
       value:
     validations:

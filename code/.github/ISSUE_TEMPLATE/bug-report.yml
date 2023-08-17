@@ -1,5 +1,5 @@
 name: Bug report
-description: Create a bug report to help us eliminate issues and improve deepmd-kit.
+description: Create a bug report to help us eliminate issues and improve mdpu-kit.
 title: "[BUG] _Replace With Suitable Title_"
 labels: bug
 assignees: []
@@ -16,7 +16,7 @@ body:
   - type: input
     id: version
     attributes:
-      label: DeePMD-kit Version
+      label: MDPU-kit Version
       description: "`dp --version`"
     validations:
       required: true
@@ -24,7 +24,7 @@ body:
     id: tf-version
     attributes:
       label: TensorFlow Version
-      description: "The version will be printed when running DeePMD-kit."
+      description: "The version will be printed when running MDPU-kit."
     validations:
       required: true
   - type: dropdown

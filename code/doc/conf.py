@@ -17,11 +17,11 @@ from datetime import (
     date,
 )
 
-from deepmd.common import (
+from mdpukit.common import (
     ACTIVATION_FN_DICT,
     PRECISION_DICT,
 )
-from deepmd.utils.argcheck import (
+from mdpukit.utils.argcheck import (
     list_to_doc,
 )
 
@@ -120,9 +120,9 @@ def classify_index_TS():
 
 # -- Project information -----------------------------------------------------
 
-project = "DeePMD-kit"
-copyright = "2017-%d, DeepModeling" % date.today().year
-author = "DeepModeling"
+project = "MDPU-kit"
+copyright = "2023-%d, Jie Liu" % date.today().year
+author = "Jie Liu"
 
 
 def run_apidoc(_):
@@ -134,7 +134,7 @@ def run_apidoc(_):
 
     sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
     cur_dir = os.path.abspath(os.path.dirname(__file__))
-    module = os.path.join(cur_dir, "..", "deepmd")
+    module = os.path.join(cur_dir, "..", "mdpukit")
     main(
         [
             "-M",

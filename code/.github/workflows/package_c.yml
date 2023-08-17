@@ -16,15 +16,15 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
-          name: libdeepmd_c
-          path: ./libdeepmd_c.tar.gz
+          name: libmdpukit_c
+          path: ./libmdpukit_c.tar.gz
       - name: Test C library
         run: ./source/install/docker_test_package_c.sh
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: libdeepmd_c.tar.gz
+          files: libmdpukit_c.tar.gz
   test_c:
     name: Test building from C library
     needs: [build_c]
@@ -34,12 +34,12 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
-          name: libdeepmd_c
-      - run: tar -vxzf ./libdeepmd_c.tar.gz
+          name: libmdpukit_c
+      - run: tar -vxzf ./libmdpukit_c.tar.gz
       - name: Test C library
         run: ./source/install/build_from_c.sh
         env:
-          DEEPMD_C_ROOT: ${{ github.workspace }}/libdeepmd_c
+          DEEPMD_C_ROOT: ${{ github.workspace }}/libmdpukit_c
   pass:
     name: Pass building c library
     needs: [build_c, test_c]

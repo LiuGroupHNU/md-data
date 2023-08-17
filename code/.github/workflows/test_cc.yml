@@ -30,15 +30,15 @@ jobs:
         python -m pip install -e .[cpu,test,lmp] "ase @ https://github.com/rosswhitfield/ase/archive/edd03571aff6944b77b4a4b055239f3c3e4eeb66.zip"
       env:
         DP_BUILD_TESTING: 1
-    - run: pytest --cov=deepmd source/lmp/tests
+    - run: pytest --cov=mdpukit source/lmp/tests
       env:
         OMP_NUM_THREADS: 1
         TF_INTRA_OP_PARALLELISM_THREADS: 1
         TF_INTER_OP_PARALLELISM_THREADS: 1
-        LAMMPS_PLUGIN_PATH: ${{ github.workspace }}/dp_test/lib/deepmd_lmp
+        LAMMPS_PLUGIN_PATH: ${{ github.workspace }}/dp_test/lib/mdpukit_lmp
         LD_LIBRARY_PATH: ${{ github.workspace }}/dp_test/lib
     # test ipi
-    - run: pytest --cov=deepmd source/ipi/tests
+    - run: pytest --cov=mdpukit source/ipi/tests
       env:
         OMP_NUM_THREADS: 1
         TF_INTRA_OP_PARALLELISM_THREADS: 1
