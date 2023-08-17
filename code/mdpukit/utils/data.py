@@ -9,19 +9,19 @@ from typing import (
 
 import numpy as np
 
-from deepmd.env import (
+from mdpukit.env import (
     GLOBAL_ENER_FLOAT_PRECISION,
     GLOBAL_NP_FLOAT_PRECISION,
 )
-from deepmd.utils import random as dp_random
-from deepmd.utils.path import (
+from mdpukit.utils import random as dp_random
+from mdpukit.utils.path import (
     DPPath,
 )
 
 log = logging.getLogger(__name__)
 
 
-class DeepmdData:
+class MDPUData:
     """Class for a data system.
 
     It loads data from hard disk, and mantains the data as a `data_dict`

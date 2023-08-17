@@ -5,6 +5,6 @@ This is a project based on C/C++ API described in the documentation.
 Build the project using
 
 ```sh
-cmake -DCMAKE_PREFIX_PATH=$deepmd_root .
+cmake -DCMAKE_PREFIX_PATH=$mdpu_root .
 make
 ```

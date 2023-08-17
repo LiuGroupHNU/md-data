@@ -1,10 +1,10 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 import numpy as np
 
-from deepmd.common import (
+from mdpukit.common import (
     get_precision,
 )
-from deepmd.env import (
+from mdpukit.env import (
     GLOBAL_TF_FLOAT_PRECISION,
     tf,
 )

@@ -3,7 +3,7 @@ jdata_sys = {"debug": False}
 
 jdata_config_v0 = {
     "dscp": {
-        # basic config from deepmd model
+        # basic config from mdpukit model
         "sel": [60, 60],
         "rcut": 6.0,
         "rcut_smth": 0.5,
@@ -36,7 +36,7 @@ jdata_config_v0 = {
         "smax": 14,
     },
     "fitn": {
-        # basic config from deepmd model
+        # basic config from mdpukit model
         "neuron": [128, 128, 128],
         "resnet_dt": False,
         "NNODE_FITS": "(M1*M2, neuron, 1)",
@@ -118,7 +118,7 @@ jdata_config_v0 = {
 
 jdata_config_v1 = {
     "dscp": {
-        # basic config from deepmd model
+        # basic config from mdpukit model
         "sel": 128,
         "rcut": 6.0,
         "rcut_smth": 0.5,
@@ -149,7 +149,7 @@ jdata_config_v1 = {
         "smax": 14,
     },
     "fitn": {
-        # basic config from deepmd model
+        # basic config from mdpukit model
         "neuron": [128, 128, 128],
         "resnet_dt": False,
         "NNODE_FITS": "(M1*M2, neuron, 1)",
@@ -230,7 +230,7 @@ jdata_config_v1 = {
     "end": "",
 }
 
-jdata_deepmd_input_v0 = {
+jdata_mdpukit_input_v0 = {
     "model": {
         "descriptor": {
             "seed": 1,
@@ -286,7 +286,7 @@ jdata_deepmd_input_v0 = {
     },
 }
 
-jdata_deepmd_input_v1 = {
+jdata_mdpukit_input_v1 = {
     "model": {
         "descriptor": {
             "seed": 1,

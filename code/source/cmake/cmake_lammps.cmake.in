@@ -1,4 +1,4 @@
-set (LMP_INSTALL_PREFIX "@CMAKE_BINARY_DIR@/USER-DEEPMD")
+set (LMP_INSTALL_PREFIX "@CMAKE_BINARY_DIR@/USER-MDPU")
 file(READ "@CMAKE_BINARY_DIR@/lmp/lammps_install_list.txt" files)
 string(REGEX REPLACE "\n" "" files "${files}")
 
@@ -20,5 +20,5 @@ file (
 file (
   INSTALL DESTINATION "${LMP_INSTALL_PREFIX}"
   TYPE FILE
-  FILES "@CMAKE_BINARY_DIR@/lmp/deepmd_version.h"
+  FILES "@CMAKE_BINARY_DIR@/lmp/mdpu_version.h"
 )

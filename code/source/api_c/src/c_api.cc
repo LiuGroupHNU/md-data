@@ -14,26 +14,26 @@
 extern "C" {
 
 DP_Nlist::DP_Nlist() {}
-DP_Nlist::DP_Nlist(deepmd::InputNlist& nl) : nl(nl) {}
+DP_Nlist::DP_Nlist(mdpu::InputNlist& nl) : nl(nl) {}
 
 DP_Nlist* DP_NewNlist(int inum_,
                       int* ilist_,
                       int* numneigh_,
                       int** firstneigh_) {
   DP_NEW_OK(DP_Nlist,
-            deepmd::InputNlist nl(inum_, ilist_, numneigh_, firstneigh_);
+            mdpu::InputNlist nl(inum_, ilist_, numneigh_, firstneigh_);
             DP_Nlist* new_nl = new DP_Nlist(nl); return new_nl;)
 }
 
 DP_DeepPot::DP_DeepPot() {}
-DP_DeepPot::DP_DeepPot(deepmd::DeepPot& dp) : dp(dp) {
+DP_DeepPot::DP_DeepPot(mdpu::DeepPot& dp) : dp(dp) {
   dfparam = dp.dim_fparam();
   daparam = dp.dim_aparam();
 }
 
 DP_DeepPot* DP_NewDeepPot(const char* c_model) {
   std::string model(c_model);
-  DP_NEW_OK(DP_DeepPot, deepmd::DeepPot dp(model);
+  DP_NEW_OK(DP_DeepPot, mdpu::DeepPot dp(model);
             DP_DeepPot* new_dp = new DP_DeepPot(dp); return new_dp;)
 }
 
@@ -43,10 +43,10 @@ DP_DeepPot* DP_NewDeepPotWithParam(const char* c_model,
   std::string model(c_model);
   std::string file_content(c_file_content);
   DP_NEW_OK(DP_DeepPot,
-            if (file_content.size() > 0) throw deepmd::deepmd_exception(
+            if (file_content.size() > 0) throw mdpu::mdpu_exception(
                 "file_content is broken in DP_NewDeepPotWithParam. Use "
                 "DP_NewDeepPotWithParam2 instead.");
-            deepmd::DeepPot dp(model, gpu_rank, file_content);
+            mdpu::DeepPot dp(model, gpu_rank, file_content);
             DP_DeepPot* new_dp = new DP_DeepPot(dp); return new_dp;)
 }
 
@@ -56,12 +56,12 @@ DP_DeepPot* DP_NewDeepPotWithParam2(const char* c_model,
                                     const int size_file_content) {
   std::string model(c_model);
   std::string file_content(c_file_content, c_file_content + size_file_content);
-  DP_NEW_OK(DP_DeepPot, deepmd::DeepPot dp(model, gpu_rank, file_content);
+  DP_NEW_OK(DP_DeepPot, mdpu::DeepPot dp(model, gpu_rank, file_content);
             DP_DeepPot* new_dp = new DP_DeepPot(dp); return new_dp;)
 }
 
 DP_DeepPotModelDevi::DP_DeepPotModelDevi() {}
-DP_DeepPotModelDevi::DP_DeepPotModelDevi(deepmd::DeepPotModelDevi& dp)
+DP_DeepPotModelDevi::DP_DeepPotModelDevi(mdpu::DeepPotModelDevi& dp)
     : dp(dp) {
   dfparam = dp.dim_fparam();
   daparam = dp.dim_aparam();
@@ -70,7 +70,7 @@ DP_DeepPotModelDevi::DP_DeepPotModelDevi(deepmd::DeepPotModelDevi& dp)
 DP_DeepPotModelDevi* DP_NewDeepPotModelDevi(const char** c_models,
                                             int n_models) {
   std::vector<std::string> model(c_models, c_models + n_models);
-  DP_NEW_OK(DP_DeepPotModelDevi, deepmd::DeepPotModelDevi dp(model);
+  DP_NEW_OK(DP_DeepPotModelDevi, mdpu::DeepPotModelDevi dp(model);
             DP_DeepPotModelDevi* new_dp = new DP_DeepPotModelDevi(dp);
             return new_dp;)
 }
@@ -90,17 +90,17 @@ DP_DeepPotModelDevi* DP_NewDeepPotModelDeviWithParam(
         c_file_contents[ii], c_file_contents[ii] + size_file_contents[ii]));
   }
   DP_NEW_OK(DP_DeepPotModelDevi,
-            deepmd::DeepPotModelDevi dp(model, gpu_rank, file_content);
+            mdpu::DeepPotModelDevi dp(model, gpu_rank, file_content);
             DP_DeepPotModelDevi* new_dp = new DP_DeepPotModelDevi(dp);
             return new_dp;)
 }
 
 DP_DeepTensor::DP_DeepTensor() {}
-DP_DeepTensor::DP_DeepTensor(deepmd::DeepTensor& dt) : dt(dt) {}
+DP_DeepTensor::DP_DeepTensor(mdpu::DeepTensor& dt) : dt(dt) {}
 
 DP_DeepTensor* DP_NewDeepTensor(const char* c_model) {
   std::string model(c_model);
-  DP_NEW_OK(DP_DeepTensor, deepmd::DeepTensor dt(model);
+  DP_NEW_OK(DP_DeepTensor, mdpu::DeepTensor dt(model);
             DP_DeepTensor* new_dt = new DP_DeepTensor(dt); return new_dt;)
 }
 
@@ -109,18 +109,18 @@ DP_DeepTensor* DP_NewDeepTensorWithParam(const char* c_model,
                                          const char* c_name_scope) {
   std::string model(c_model);
   std::string name_scope(c_name_scope);
-  DP_NEW_OK(DP_DeepTensor, deepmd::DeepTensor dt(model, gpu_rank, name_scope);
+  DP_NEW_OK(DP_DeepTensor, mdpu::DeepTensor dt(model, gpu_rank, name_scope);
             DP_DeepTensor* new_dt = new DP_DeepTensor(dt); return new_dt;)
 }
 
 DP_DipoleChargeModifier::DP_DipoleChargeModifier() {}
 DP_DipoleChargeModifier::DP_DipoleChargeModifier(
-    deepmd::DipoleChargeModifier& dcm)
+    mdpu::DipoleChargeModifier& dcm)
     : dcm(dcm) {}
 
 DP_DipoleChargeModifier* DP_NewDipoleChargeModifier(const char* c_model) {
   std::string model(c_model);
-  DP_NEW_OK(DP_DipoleChargeModifier, deepmd::DipoleChargeModifier dcm(model);
+  DP_NEW_OK(DP_DipoleChargeModifier, mdpu::DipoleChargeModifier dcm(model);
             DP_DipoleChargeModifier* new_dcm = new DP_DipoleChargeModifier(dcm);
             return new_dcm;)
 }
@@ -130,7 +130,7 @@ DP_DipoleChargeModifier* DP_NewDipoleChargeModifierWithParam(
   std::string model(c_model);
   std::string name_scope(c_name_scope);
   DP_NEW_OK(DP_DipoleChargeModifier,
-            deepmd::DipoleChargeModifier dcm(model, gpu_rank, name_scope);
+            mdpu::DipoleChargeModifier dcm(model, gpu_rank, name_scope);
             DP_DipoleChargeModifier* new_dcm = new DP_DipoleChargeModifier(dcm);
             return new_dcm;)
 }
@@ -1328,18 +1328,18 @@ const char* DP_DipoleChargeModifierCheckOK(DP_DipoleChargeModifier* dcm) {
 void DP_ConvertPbtxtToPb(const char* c_pbtxt, const char* c_pb) {
   std::string pbtxt(c_pbtxt);
   std::string pb(c_pb);
-  deepmd::convert_pbtxt_to_pb(pbtxt, pb);
+  mdpu::convert_pbtxt_to_pb(pbtxt, pb);
 }
 
 void DP_PrintSummary(const char* c_pre) {
   std::string pre(c_pre);
-  deepmd::print_summary(pre);
+  mdpu::print_summary(pre);
 }
 
 const char* DP_ReadFileToChar(const char* c_model) {
   std::string model(c_model);
   std::string file_content;
-  deepmd::read_file_to_string(model, file_content);
+  mdpu::read_file_to_string(model, file_content);
   return string_to_char(file_content);
 }
 
@@ -1347,8 +1347,8 @@ const char* DP_ReadFileToChar2(const char* c_model, int* size) {
   std::string model(c_model);
   std::string file_content;
   try {
-    deepmd::read_file_to_string(model, file_content);
-  } catch (deepmd::deepmd_exception& ex) {
+    mdpu::read_file_to_string(model, file_content);
+  } catch (mdpu::mdpu_exception& ex) {
     // use negtive size to indicate error
     std::string error_message = std::string(ex.what());
     *size = -error_message.size();
@@ -1371,7 +1371,7 @@ void DP_SelectByType(const int natoms,
   std::vector<int> sel_type_(sel_type, sel_type + nsel_type);
   std::vector<int> fwd_map_, bkw_map_;
   int nghost_real_;
-  deepmd::select_by_type(fwd_map_, bkw_map_, nghost_real_,
+  mdpu::select_by_type(fwd_map_, bkw_map_, nghost_real_,
                          std::vector<double>(), atype_, nghost, sel_type_);
   if (fwd_map) {
     std::copy(fwd_map_.begin(), fwd_map_.end(), fwd_map);
@@ -1396,7 +1396,7 @@ void DP_SelectMapInt(const int* in,
   std::vector<int> in_(in, in + stride * nall1);
   std::vector<int> fwd_map_(fwd_map, fwd_map + nall1);
   std::vector<int> out_(stride * nall2);
-  deepmd::select_map(out_, in_, fwd_map_, stride);
+  mdpu::select_map(out_, in_, fwd_map_, stride);
   if (out) {
     std::copy(out_.begin(), out_.end(), out);
   }

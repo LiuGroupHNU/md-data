@@ -26,7 +26,7 @@ class SoftMinVirialGradOp : public OpKernel {
   }
 
   void Compute(OpKernelContext* context) override {
-    deepmd::safe_compute(
+    mdpu::safe_compute(
         context, [this](OpKernelContext* context) { this->_Compute(context); });
   }
 
@@ -112,7 +112,7 @@ class SoftMinVirialGradOp : public OpKernel {
     // loop over frames
 #pragma omp parallel for
     for (int kk = 0; kk < nframes; ++kk) {
-      deepmd::soft_min_switch_virial_grad_cpu(&grad_net(kk, 0), &grad(kk, 0),
+      mdpu::soft_min_switch_virial_grad_cpu(&grad_net(kk, 0), &grad(kk, 0),
                                               &sw_deriv(kk, 0), &rij(kk, 0),
                                               &nlist(kk, 0), nloc, nnei);
     }

@@ -22,7 +22,7 @@ class MapAparamOp : public OpKernel {
   }
 
   void Compute(OpKernelContext* context) override {
-    deepmd::safe_compute(
+    mdpu::safe_compute(
         context, [this](OpKernelContext* context) { this->_Compute(context); });
   }
 
@@ -77,7 +77,7 @@ class MapAparamOp : public OpKernel {
       int output_iter = kk * nloc * nnei * numb_aparam;
       int aparam_iter = kk * nall * numb_aparam;
       int nlist_iter = kk * nloc * nnei;
-      deepmd::map_aparam_cpu(&output(output_iter), &aparam(aparam_iter),
+      mdpu::map_aparam_cpu(&output(output_iter), &aparam(aparam_iter),
                              &nlist(nlist_iter), nloc, nnei, numb_aparam);
     }
   }

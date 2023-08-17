@@ -114,11 +114,11 @@ class TestInferDeepPotAFparamAparamNFrames : public ::testing::Test {
   std::vector<double> expected_tot_e;
   std::vector<VALUETYPE> expected_tot_v;
 
-  deepmd::DeepPot dp;
+  mdpu::DeepPot dp;
 
   void SetUp() override {
     std::string file_name = "../../tests/infer/fparam_aparam.pbtxt";
-    deepmd::convert_pbtxt_to_pb("../../tests/infer/fparam_aparam.pbtxt",
+    mdpu::convert_pbtxt_to_pb("../../tests/infer/fparam_aparam.pbtxt",
                                 "fparam_aparam.pb");
 
     dp.init("fparam_aparam.pb");
@@ -162,7 +162,7 @@ TYPED_TEST(TestInferDeepPotAFparamAparamNFrames, cpu_build_nlist) {
   int& nframes = this->nframes;
   std::vector<double>& expected_tot_e = this->expected_tot_e;
   std::vector<VALUETYPE>& expected_tot_v = this->expected_tot_v;
-  deepmd::DeepPot& dp = this->dp;
+  mdpu::DeepPot& dp = this->dp;
   std::vector<double> ener;
   std::vector<VALUETYPE> force, virial;
   dp.compute(ener, force, virial, coord, atype, box, fparam, aparam);
@@ -196,7 +196,7 @@ TYPED_TEST(TestInferDeepPotAFparamAparamNFrames, cpu_build_nlist_atomic) {
   int& nframes = this->nframes;
   std::vector<double>& expected_tot_e = this->expected_tot_e;
   std::vector<VALUETYPE>& expected_tot_v = this->expected_tot_v;
-  deepmd::DeepPot& dp = this->dp;
+  mdpu::DeepPot& dp = this->dp;
   std::vector<double> ener;
   std::vector<VALUETYPE> force, virial, atom_ener, atom_vir;
   dp.compute(ener, force, virial, atom_ener, atom_vir, coord, atype, box,
@@ -239,7 +239,7 @@ TYPED_TEST(TestInferDeepPotAFparamAparamNFrames, cpu_lmp_nlist) {
   int& nframes = this->nframes;
   std::vector<double>& expected_tot_e = this->expected_tot_e;
   std::vector<VALUETYPE>& expected_tot_v = this->expected_tot_v;
-  deepmd::DeepPot& dp = this->dp;
+  mdpu::DeepPot& dp = this->dp;
   float rc = dp.cutoff();
   std::vector<VALUETYPE> coord_first(coord.begin(), coord.begin() + 3 * natoms);
   std::vector<VALUETYPE> box_first(box.begin(), box.begin() + 9);
@@ -252,7 +252,7 @@ TYPED_TEST(TestInferDeepPotAFparamAparamNFrames, cpu_lmp_nlist) {
   int nall = coord_cpy.size() / 3;
   std::vector<int> ilist(nloc), numneigh(nloc);
   std::vector<int*> firstneigh(nloc);
-  deepmd::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
+  mdpu::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
   convert_nlist(inlist, nlist_data);
   std::vector<VALUETYPE> coord_cpy2(nframes * nall * 3);
   for (int ii = 0; ii < nframes; ++ii) {
@@ -318,7 +318,7 @@ TYPED_TEST(TestInferDeepPotAFparamAparamNFrames, cpu_lmp_nlist_atomic) {
   int& nframes = this->nframes;
   std::vector<double>& expected_tot_e = this->expected_tot_e;
   std::vector<VALUETYPE>& expected_tot_v = this->expected_tot_v;
-  deepmd::DeepPot& dp = this->dp;
+  mdpu::DeepPot& dp = this->dp;
   float rc = dp.cutoff();
   std::vector<VALUETYPE> coord_first(coord.begin(), coord.begin() + 3 * natoms);
   std::vector<VALUETYPE> box_first(box.begin(), box.begin() + 9);
@@ -331,7 +331,7 @@ TYPED_TEST(TestInferDeepPotAFparamAparamNFrames, cpu_lmp_nlist_atomic) {
   int nall = coord_cpy.size() / 3;
   std::vector<int> ilist(nloc), numneigh(nloc);
   std::vector<int*> firstneigh(nloc);
-  deepmd::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
+  mdpu::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
   convert_nlist(inlist, nlist_data);
   std::vector<VALUETYPE> coord_cpy2(nframes * nall * 3);
   for (int ii = 0; ii < nframes; ++ii) {
@@ -419,7 +419,7 @@ TYPED_TEST(TestInferDeepPotAFparamAparamNFrames, cpu_lmp_nlist_2rc) {
   int& nframes = this->nframes;
   std::vector<double>& expected_tot_e = this->expected_tot_e;
   std::vector<VALUETYPE>& expected_tot_v = this->expected_tot_v;
-  deepmd::DeepPot& dp = this->dp;
+  mdpu::DeepPot& dp = this->dp;
   float rc = dp.cutoff();
   std::vector<VALUETYPE> coord_first(coord.begin(), coord.begin() + 3 * natoms);
   std::vector<VALUETYPE> box_first(box.begin(), box.begin() + 9);
@@ -432,7 +432,7 @@ TYPED_TEST(TestInferDeepPotAFparamAparamNFrames, cpu_lmp_nlist_2rc) {
   int nall = coord_cpy.size() / 3;
   std::vector<int> ilist(nloc), numneigh(nloc);
   std::vector<int*> firstneigh(nloc);
-  deepmd::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
+  mdpu::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
   convert_nlist(inlist, nlist_data);
   std::vector<VALUETYPE> coord_cpy2(nframes * nall * 3);
   for (int ii = 0; ii < nframes; ++ii) {
@@ -498,7 +498,7 @@ TYPED_TEST(TestInferDeepPotAFparamAparamNFrames, cpu_lmp_nlist_type_sel) {
   int& nframes = this->nframes;
   std::vector<double>& expected_tot_e = this->expected_tot_e;
   std::vector<VALUETYPE>& expected_tot_v = this->expected_tot_v;
-  deepmd::DeepPot& dp = this->dp;
+  mdpu::DeepPot& dp = this->dp;
   float rc = dp.cutoff();
 
   // add vir atoms
@@ -534,7 +534,7 @@ TYPED_TEST(TestInferDeepPotAFparamAparamNFrames, cpu_lmp_nlist_type_sel) {
   int nall = coord_cpy.size() / 3;
   std::vector<int> ilist(nloc), numneigh(nloc);
   std::vector<int*> firstneigh(nloc);
-  deepmd::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
+  mdpu::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
   convert_nlist(inlist, nlist_data);
   std::vector<VALUETYPE> coord_cpy2(nframes * nall * 3);
   for (int ii = 0; ii < nframes; ++ii) {
@@ -584,7 +584,7 @@ TYPED_TEST(TestInferDeepPotAFparamAparamNFrames,
   int& nframes = this->nframes;
   std::vector<double>& expected_tot_e = this->expected_tot_e;
   std::vector<VALUETYPE>& expected_tot_v = this->expected_tot_v;
-  deepmd::DeepPot& dp = this->dp;
+  mdpu::DeepPot& dp = this->dp;
   float rc = dp.cutoff();
 
   // add vir atoms
@@ -621,7 +621,7 @@ TYPED_TEST(TestInferDeepPotAFparamAparamNFrames,
   int nall = coord_cpy.size() / 3;
   std::vector<int> ilist(nloc), numneigh(nloc);
   std::vector<int*> firstneigh(nloc);
-  deepmd::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
+  mdpu::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
   convert_nlist(inlist, nlist_data);
   std::vector<VALUETYPE> coord_cpy2(nframes * nall * 3);
   for (int ii = 0; ii < nframes; ++ii) {
@@ -755,11 +755,11 @@ class TestInferDeepPotAFparamAparamNFramesSingleParam : public ::testing::Test {
   std::vector<double> expected_tot_e;
   std::vector<VALUETYPE> expected_tot_v;
 
-  deepmd::DeepPot dp;
+  mdpu::DeepPot dp;
 
   void SetUp() override {
     std::string file_name = "../../tests/infer/fparam_aparam.pbtxt";
-    deepmd::convert_pbtxt_to_pb("../../tests/infer/fparam_aparam.pbtxt",
+    mdpu::convert_pbtxt_to_pb("../../tests/infer/fparam_aparam.pbtxt",
                                 "fparam_aparam.pb");
 
     dp.init("fparam_aparam.pb");
@@ -803,7 +803,7 @@ TYPED_TEST(TestInferDeepPotAFparamAparamNFramesSingleParam, cpu_build_nlist) {
   int& nframes = this->nframes;
   std::vector<double>& expected_tot_e = this->expected_tot_e;
   std::vector<VALUETYPE>& expected_tot_v = this->expected_tot_v;
-  deepmd::DeepPot& dp = this->dp;
+  mdpu::DeepPot& dp = this->dp;
   std::vector<double> ener;
   std::vector<VALUETYPE> force, virial;
   dp.compute(ener, force, virial, coord, atype, box, fparam, aparam);
@@ -838,7 +838,7 @@ TYPED_TEST(TestInferDeepPotAFparamAparamNFramesSingleParam,
   int& nframes = this->nframes;
   std::vector<double>& expected_tot_e = this->expected_tot_e;
   std::vector<VALUETYPE>& expected_tot_v = this->expected_tot_v;
-  deepmd::DeepPot& dp = this->dp;
+  mdpu::DeepPot& dp = this->dp;
   std::vector<double> ener;
   std::vector<VALUETYPE> force, virial, atom_ener, atom_vir;
   dp.compute(ener, force, virial, atom_ener, atom_vir, coord, atype, box,
@@ -881,7 +881,7 @@ TYPED_TEST(TestInferDeepPotAFparamAparamNFramesSingleParam, cpu_lmp_nlist) {
   int& nframes = this->nframes;
   std::vector<double>& expected_tot_e = this->expected_tot_e;
   std::vector<VALUETYPE>& expected_tot_v = this->expected_tot_v;
-  deepmd::DeepPot& dp = this->dp;
+  mdpu::DeepPot& dp = this->dp;
   float rc = dp.cutoff();
   std::vector<VALUETYPE> coord_first(coord.begin(), coord.begin() + 3 * natoms);
   std::vector<VALUETYPE> box_first(box.begin(), box.begin() + 9);
@@ -894,7 +894,7 @@ TYPED_TEST(TestInferDeepPotAFparamAparamNFramesSingleParam, cpu_lmp_nlist) {
   int nall = coord_cpy.size() / 3;
   std::vector<int> ilist(nloc), numneigh(nloc);
   std::vector<int*> firstneigh(nloc);
-  deepmd::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
+  mdpu::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
   convert_nlist(inlist, nlist_data);
   std::vector<VALUETYPE> coord_cpy2(nframes * nall * 3);
   for (int ii = 0; ii < nframes; ++ii) {
@@ -961,7 +961,7 @@ TYPED_TEST(TestInferDeepPotAFparamAparamNFramesSingleParam,
   int& nframes = this->nframes;
   std::vector<double>& expected_tot_e = this->expected_tot_e;
   std::vector<VALUETYPE>& expected_tot_v = this->expected_tot_v;
-  deepmd::DeepPot& dp = this->dp;
+  mdpu::DeepPot& dp = this->dp;
   float rc = dp.cutoff();
   std::vector<VALUETYPE> coord_first(coord.begin(), coord.begin() + 3 * natoms);
   std::vector<VALUETYPE> box_first(box.begin(), box.begin() + 9);
@@ -974,7 +974,7 @@ TYPED_TEST(TestInferDeepPotAFparamAparamNFramesSingleParam,
   int nall = coord_cpy.size() / 3;
   std::vector<int> ilist(nloc), numneigh(nloc);
   std::vector<int*> firstneigh(nloc);
-  deepmd::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
+  mdpu::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
   convert_nlist(inlist, nlist_data);
   std::vector<VALUETYPE> coord_cpy2(nframes * nall * 3);
   for (int ii = 0; ii < nframes; ++ii) {
@@ -1062,7 +1062,7 @@ TYPED_TEST(TestInferDeepPotAFparamAparamNFramesSingleParam, cpu_lmp_nlist_2rc) {
   int& nframes = this->nframes;
   std::vector<double>& expected_tot_e = this->expected_tot_e;
   std::vector<VALUETYPE>& expected_tot_v = this->expected_tot_v;
-  deepmd::DeepPot& dp = this->dp;
+  mdpu::DeepPot& dp = this->dp;
   float rc = dp.cutoff();
   std::vector<VALUETYPE> coord_first(coord.begin(), coord.begin() + 3 * natoms);
   std::vector<VALUETYPE> box_first(box.begin(), box.begin() + 9);
@@ -1075,7 +1075,7 @@ TYPED_TEST(TestInferDeepPotAFparamAparamNFramesSingleParam, cpu_lmp_nlist_2rc) {
   int nall = coord_cpy.size() / 3;
   std::vector<int> ilist(nloc), numneigh(nloc);
   std::vector<int*> firstneigh(nloc);
-  deepmd::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
+  mdpu::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
   convert_nlist(inlist, nlist_data);
   std::vector<VALUETYPE> coord_cpy2(nframes * nall * 3);
   for (int ii = 0; ii < nframes; ++ii) {
@@ -1142,7 +1142,7 @@ TYPED_TEST(TestInferDeepPotAFparamAparamNFramesSingleParam,
   int& nframes = this->nframes;
   std::vector<double>& expected_tot_e = this->expected_tot_e;
   std::vector<VALUETYPE>& expected_tot_v = this->expected_tot_v;
-  deepmd::DeepPot& dp = this->dp;
+  mdpu::DeepPot& dp = this->dp;
   float rc = dp.cutoff();
 
   // add vir atoms
@@ -1178,7 +1178,7 @@ TYPED_TEST(TestInferDeepPotAFparamAparamNFramesSingleParam,
   int nall = coord_cpy.size() / 3;
   std::vector<int> ilist(nloc), numneigh(nloc);
   std::vector<int*> firstneigh(nloc);
-  deepmd::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
+  mdpu::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
   convert_nlist(inlist, nlist_data);
   std::vector<VALUETYPE> coord_cpy2(nframes * nall * 3);
   for (int ii = 0; ii < nframes; ++ii) {
@@ -1227,7 +1227,7 @@ TYPED_TEST(TestInferDeepPotAFparamAparamNFramesSingleParam,
   int& nframes = this->nframes;
   std::vector<double>& expected_tot_e = this->expected_tot_e;
   std::vector<VALUETYPE>& expected_tot_v = this->expected_tot_v;
-  deepmd::DeepPot& dp = this->dp;
+  mdpu::DeepPot& dp = this->dp;
   float rc = dp.cutoff();
 
   // add vir atoms
@@ -1264,7 +1264,7 @@ TYPED_TEST(TestInferDeepPotAFparamAparamNFramesSingleParam,
   int nall = coord_cpy.size() / 3;
   std::vector<int> ilist(nloc), numneigh(nloc);
   std::vector<int*> firstneigh(nloc);
-  deepmd::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
+  mdpu::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
   convert_nlist(inlist, nlist_data);
   std::vector<VALUETYPE> coord_cpy2(nframes * nall * 3);
   for (int ii = 0; ii < nframes; ++ii) {

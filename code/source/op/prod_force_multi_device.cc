@@ -62,7 +62,7 @@ class ProdForceSeAOp : public OpKernel {
   }
 
   void Compute(OpKernelContext* context) override {
-    deepmd::safe_compute(
+    mdpu::safe_compute(
         context, [this](OpKernelContext* context) { this->_Compute(context); });
   }
 
@@ -129,7 +129,7 @@ class ProdForceSeAOp : public OpKernel {
     int start_index = 0, end_index = nloc, nloc_loc = nloc;
     if (parallel) {
       if (device != "CPU") {
-        throw deepmd::deepmd_exception(
+        throw mdpu::mdpu_exception(
             "Auto parallelization for ProdForceA is not supported on GPUs!");
       }
       // we split in_deriv, net_deriv, and nlist along nloc
@@ -143,16 +143,16 @@ class ProdForceSeAOp : public OpKernel {
 
     if (device == "GPU") {
 #if GOOGLE_CUDA
-      deepmd::prod_force_a_gpu_cuda(p_force, p_net_deriv, p_in_deriv, p_nlist,
+      mdpu::prod_force_a_gpu_cuda(p_force, p_net_deriv, p_in_deriv, p_nlist,
                                     nloc, nall, nnei, nframes);
 #endif  // GOOGLE_CUDA
 
 #if TENSORFLOW_USE_ROCM
-      deepmd::prod_force_a_gpu_rocm(p_force, p_net_deriv, p_in_deriv, p_nlist,
+      mdpu::prod_force_a_gpu_rocm(p_force, p_net_deriv, p_in_deriv, p_nlist,
                                     nloc, nall, nnei, nframes);
 #endif  // TENSORFLOW_USE_ROCM
     } else if (device == "CPU") {
-      deepmd::prod_force_a_cpu(p_force, p_net_deriv, p_in_deriv, p_nlist, nloc,
+      mdpu::prod_force_a_cpu(p_force, p_net_deriv, p_in_deriv, p_nlist, nloc,
                                nall, nnei, nframes, nloc_loc,
                                start_index = start_index);
     }
@@ -229,16 +229,16 @@ class ProdForceSeROp : public OpKernel {
 
     if (device == "GPU") {
 #if GOOGLE_CUDA
-      deepmd::prod_force_r_gpu_cuda(p_force, p_net_deriv, p_in_deriv, p_nlist,
+      mdpu::prod_force_r_gpu_cuda(p_force, p_net_deriv, p_in_deriv, p_nlist,
                                     nloc, nall, nnei, nframes);
 #endif  // GOOGLE_CUDA
 
 #if TENSORFLOW_USE_ROCM
-      deepmd::prod_force_r_gpu_rocm(p_force, p_net_deriv, p_in_deriv, p_nlist,
+      mdpu::prod_force_r_gpu_rocm(p_force, p_net_deriv, p_in_deriv, p_nlist,
                                     nloc, nall, nnei, nframes);
 #endif  // TENSORFLOW_USE_ROCM
     } else if (device == "CPU") {
-      deepmd::prod_force_r_cpu(p_force, p_net_deriv, p_in_deriv, p_nlist, nloc,
+      mdpu::prod_force_r_cpu(p_force, p_net_deriv, p_in_deriv, p_nlist, nloc,
                                nall, nnei, nframes);
     }
   }

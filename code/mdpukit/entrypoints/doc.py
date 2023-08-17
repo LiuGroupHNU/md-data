@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 """Module that prints train input arguments docstrings."""
 
-from deepmd.utils.argcheck import (
+from mdpukit.utils.argcheck import (
     gen_doc,
     gen_json,
 )

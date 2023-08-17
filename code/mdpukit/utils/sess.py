@@ -1,10 +1,10 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 import os
 
-from deepmd.env import (
+from mdpukit.env import (
     tf,
 )
-from deepmd.utils.errors import (
+from mdpukit.utils.errors import (
     OutOfMemoryError,
 )
 

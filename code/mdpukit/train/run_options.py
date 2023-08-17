@@ -12,16 +12,16 @@ from typing import (
     Optional,
 )
 
-from deepmd.cluster import (
+from mdpukit.cluster import (
     get_resource,
 )
-from deepmd.env import (
+from mdpukit.env import (
     GLOBAL_CONFIG,
     get_tf_default_nthreads,
     global_float_prec,
     tf,
 )
-from deepmd.loggers import (
+from mdpukit.loggers import (
     set_log_handles,
 )
 

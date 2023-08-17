@@ -47,7 +47,7 @@ class DescrptSeAMaskOp : public OpKernel {
   }
 
   void Compute(OpKernelContext *context) override {
-    deepmd::safe_compute(
+    mdpu::safe_compute(
         context, [this](OpKernelContext *context) { this->_Compute(context); });
   }
 
@@ -250,7 +250,7 @@ class DescrptSeAMaskOp : public OpKernel {
             rij_atom[jj * 3 + dd] = temp_diff[dd];
           }
 
-          temp_rr = deepmd::dot3<compute_t>(temp_diff, temp_diff);
+          temp_rr = mdpu::dot3<compute_t>(temp_diff, temp_diff);
 
           compute_t x = temp_diff[0];
           compute_t y = temp_diff[1];
@@ -332,7 +332,7 @@ class DescrptSeAMaskOp : public OpKernel {
       if (d_mask[j_idx] == 0 || j_idx == i_idx) {
         rr = max_distance;
       } else {
-        rr = sqrt(deepmd::dot3<compute_t>(diff, diff));
+        rr = sqrt(mdpu::dot3<compute_t>(diff, diff));
       }
       sel_nei.push_back(NeighborInfo<double>(d_type[j_idx], rr, j_idx));
     }

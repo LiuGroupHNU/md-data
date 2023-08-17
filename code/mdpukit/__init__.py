@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
-"""Root of the deepmd package, exposes all public classes and submodules."""
+"""Root of the mdpukit package, exposes all public classes and submodules."""
 
 try:
     from importlib import (
@@ -8,7 +8,7 @@ try:
 except ImportError:  # for Python<3.8
     import importlib_metadata as metadata
 
-import deepmd.utils.network as network
+import mdpukit.utils.network as network
 
 from . import (
     cluster,
@@ -37,9 +37,9 @@ except ImportError:
 
 # load third-party plugins
 try:
-    eps = metadata.entry_points(group="deepmd")
+    eps = metadata.entry_points(group="mdpukit")
 except TypeError:
-    eps = metadata.entry_points().get("deepmd", [])
+    eps = metadata.entry_points().get("mdpukit", [])
 for ep in eps:
     ep.load()
 

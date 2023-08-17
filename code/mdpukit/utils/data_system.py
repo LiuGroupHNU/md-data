@@ -12,24 +12,24 @@ from typing import (
 
 import numpy as np
 
-from deepmd.common import (
+from mdpukit.common import (
     make_default_mesh,
 )
-from deepmd.env import (
+from mdpukit.env import (
     GLOBAL_NP_FLOAT_PRECISION,
 )
-from deepmd.utils import random as dp_random
-from deepmd.utils.data import (
-    DeepmdData,
+from mdpukit.utils import random as dp_random
+from mdpukit.utils.data import (
+    MDPUData,
 )
 
 log = logging.getLogger(__name__)
 
 
-class DeepmdDataSystem:
+class MDPUDataSystem:
     """Class for manipulating many data systems.
 
-    It is implemented with the help of DeepmdData
+    It is implemented with the help of MDPUData
     """
 
     def __init__(
@@ -93,7 +93,7 @@ class DeepmdDataSystem:
         self.data_systems = []
         for ii in self.system_dirs:
             self.data_systems.append(
-                DeepmdData(
+                MDPUData(
                     ii,
                     set_prefix=set_prefix,
                     shuffle_test=shuffle_test,
@@ -542,7 +542,7 @@ class DeepmdDataSystem:
         """Get the number of data systems."""
         return self.nsystems
 
-    def get_sys(self, idx: int) -> DeepmdData:
+    def get_sys(self, idx: int) -> MDPUData:
         """Get a certain data system."""
         return self.data_systems[idx]
 

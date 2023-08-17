@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "deepmd/c_api.h"
+#include "mdpu/c_api.h"
 
 int main() {
   const char* model = "graph.pb";

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 #include "DataModifier.h"
 
-using namespace deepmd;
+using namespace mdpu;
 using namespace tensorflow;
 
 DipoleChargeModifier::DipoleChargeModifier()
@@ -20,7 +20,7 @@ void DipoleChargeModifier::init(const std::string& model,
                                 const int& gpu_rank,
                                 const std::string& name_scope_) {
   if (inited) {
-    std::cerr << "WARNING: deepmd-kit should not be initialized twice, do "
+    std::cerr << "WARNING: mdpu-kit should not be initialized twice, do "
                  "nothing at the second call of initializer"
               << std::endl;
     return;
@@ -30,10 +30,10 @@ void DipoleChargeModifier::init(const std::string& model,
   get_env_nthreads(num_intra_nthreads, num_inter_nthreads);
   options.config.set_inter_op_parallelism_threads(num_inter_nthreads);
   options.config.set_intra_op_parallelism_threads(num_intra_nthreads);
-  deepmd::load_op_library();
-  deepmd::check_status(NewSession(options, &session));
-  deepmd::check_status(ReadBinaryProto(Env::Default(), model, graph_def));
-  deepmd::check_status(session->Create(*graph_def));
+  mdpu::load_op_library();
+  mdpu::check_status(NewSession(options, &session));
+  mdpu::check_status(ReadBinaryProto(Env::Default(), model, graph_def));
+  mdpu::check_status(session->Create(*graph_def));
   // int nnodes = graph_def.node_size();
   // for (int ii = 0; ii < nnodes; ++ii){
   //   cout << ii << " \t " << graph_def.node(ii).name() << endl;
@@ -80,7 +80,7 @@ void DipoleChargeModifier::run_model(
   }
 
   std::vector<Tensor> output_tensors;
-  deepmd::check_status(session->Run(input_tensors,
+  mdpu::check_status(session->Run(input_tensors,
                                     {"o_dm_force", "o_dm_virial", "o_dm_av"},
                                     {}, &output_tensors));
   int cc = 0;
@@ -323,5 +323,5 @@ template void DipoleChargeModifier::compute<float>(
     const InputNlist& lmp_list);
 
 void DipoleChargeModifier::print_summary(const std::string& pre) const {
-  deepmd::print_summary(pre);
+  mdpu::print_summary(pre);
 }

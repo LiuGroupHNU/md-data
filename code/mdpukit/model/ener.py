@@ -7,19 +7,19 @@ from typing import (
 
 import numpy as np
 
-from deepmd.env import (
+from mdpukit.env import (
     MODEL_VERSION,
     global_cvt_2_ener_float,
     op_module,
     tf,
 )
-from deepmd.utils.data_system import (
-    DeepmdDataSystem,
+from mdpukit.utils.data_system import (
+    MDPUDataSystem,
 )
-from deepmd.utils.spin import (
+from mdpukit.utils.spin import (
     Spin,
 )
-from deepmd.utils.type_embed import (
+from mdpukit.utils.type_embed import (
     TypeEmbedNet,
 )
 
@@ -480,7 +480,7 @@ class EnerModel(StandardModel):
 
     def change_energy_bias(
         self,
-        data: DeepmdDataSystem,
+        data: MDPUDataSystem,
         frozen_model: str,
         origin_type_map: list,
         full_type_map: str,
@@ -490,7 +490,7 @@ class EnerModel(StandardModel):
 
         Parameters
         ----------
-        data : DeepmdDataSystem
+        data : MDPUDataSystem
             The training data.
         frozen_model : str
             The path file of frozen model.

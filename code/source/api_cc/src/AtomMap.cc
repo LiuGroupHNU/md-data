@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <cassert>
 
-using namespace deepmd;
+using namespace mdpu;
 
 AtomMap::AtomMap() {}
 

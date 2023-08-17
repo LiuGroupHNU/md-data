@@ -5,15 +5,15 @@ from typing import (
 
 import numpy as np
 
-from deepmd.common import (
+from mdpukit.common import (
     add_data_requirement,
 )
-from deepmd.env import (
+from mdpukit.env import (
     global_cvt_2_ener_float,
     global_cvt_2_tf_float,
     tf,
 )
-from deepmd.utils.sess import (
+from mdpukit.utils.sess import (
     run_sess,
 )
 

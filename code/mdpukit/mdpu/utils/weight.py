@@ -1,10 +1,10 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 import logging
 
-from deepmd.env import (
+from mdpukit.env import (
     tf,
 )
-from deepmd.mdpu.utils.config import (
+from mdpukit.mdpu.utils.config import (
     mdpu_cfg,
 )
 

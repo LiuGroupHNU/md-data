@@ -7,49 +7,49 @@ from typing import (
 
 import numpy as np
 
-from deepmd.common import (
+from mdpukit.common import (
     add_data_requirement,
     cast_precision,
     get_activation_func,
     get_precision,
 )
-from deepmd.env import (
+from mdpukit.env import (
     GLOBAL_TF_FLOAT_PRECISION,
     global_cvt_2_tf_float,
     tf,
 )
-from deepmd.fit.fitting import (
+from mdpukit.fit.fitting import (
     Fitting,
 )
-from deepmd.infer import (
+from mdpukit.infer import (
     DeepPotential,
 )
-from deepmd.loss.ener import (
+from mdpukit.loss.ener import (
     EnerDipoleLoss,
     EnerSpinLoss,
     EnerStdLoss,
 )
-from deepmd.loss.loss import (
+from mdpukit.loss.loss import (
     Loss,
 )
-from deepmd.mdpu.fit.ener import (
+from mdpukit.mdpu.fit.ener import (
     one_layer_mdpu,
 )
-from deepmd.mdpu.utils.config import (
+from mdpukit.mdpu.utils.config import (
     mdpu_cfg,
 )
-from deepmd.utils.errors import (
+from mdpukit.utils.errors import (
     GraphWithoutTensorError,
 )
-from deepmd.utils.graph import (
+from mdpukit.utils.graph import (
     get_fitting_net_variables_from_graph_def,
     get_tensor_by_name_from_graph,
 )
-from deepmd.utils.network import one_layer as one_layer_deepmd
-from deepmd.utils.network import (
+from mdpukit.utils.network import one_layer as one_layer_mdpukit
+from mdpukit.utils.network import (
     one_layer_rand_seed_shift,
 )
-from deepmd.utils.spin import (
+from mdpukit.utils.spin import (
     Spin,
 )
 
@@ -380,7 +380,7 @@ class EnerFitting(Fitting):
         if mdpu_cfg.enable:
             one_layer = one_layer_mdpu
         else:
-            one_layer = one_layer_deepmd
+            one_layer = one_layer_mdpukit
         for ii in range(0, len(self.n_neuron)):
             if self.layer_name is not None and self.layer_name[ii] is not None:
                 layer_suffix = "share_" + self.layer_name[ii] + type_suffix
@@ -782,7 +782,7 @@ class EnerFitting(Fitting):
 
         Parameters
         ----------
-        data : DeepmdDataSystem
+        data : MDPUDataSystem
             The training data.
         frozen_model : str
             The path file of frozen model.

@@ -25,7 +25,7 @@ class NeighborStatOp : public OpKernel {
   }
 
   void Compute(OpKernelContext* context) override {
-    deepmd::safe_compute(
+    mdpu::safe_compute(
         context, [this](OpKernelContext* context) { this->_Compute(context); });
   }
 
@@ -78,7 +78,7 @@ class NeighborStatOp : public OpKernel {
       // no pbc
       nei_mode = -1;
     } else {
-      throw deepmd::deepmd_exception("invalid mesh tensor");
+      throw mdpu::mdpu_exception("invalid mesh tensor");
     }
     // if region is given extended, do not use pbc
     bool b_pbc = (nei_mode >= 1 || nei_mode == -1) ? false : true;
@@ -163,7 +163,7 @@ class NeighborStatOp : public OpKernel {
     } else if (nei_mode == -1) {
       ::build_nlist(d_nlist_a, d_nlist_r, d_coord3, -1, rcut, NULL);
     } else {
-      throw deepmd::deepmd_exception("unknow neighbor mode");
+      throw mdpu::mdpu_exception("unknow neighbor mode");
     }
 
     int MAX_NNEI = 0;
@@ -171,7 +171,7 @@ class NeighborStatOp : public OpKernel {
       MAX_NNEI =
           MAX_NNEI < d_nlist_r[ii].size() ? d_nlist_r[ii].size() : MAX_NNEI;
     }
-    // allocate output tensor for deepmd-kit
+    // allocate output tensor for mdpu-kit
     TensorShape min_nbor_dist_shape;
     min_nbor_dist_shape.AddDim(nloc * MAX_NNEI);
     Tensor* min_nbor_dist_tensor = NULL;

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
-"""DeePMD-Kit entry point module."""
+"""mdpu-Kit entry point module."""
 
 import argparse
 from pathlib import (
@@ -11,10 +11,10 @@ from typing import (
     Union,
 )
 
-from deepmd.common import (
+from mdpukit.common import (
     clear_session,
 )
-from deepmd.entrypoints import (
+from mdpukit.entrypoints import (
     convert,
     doc_train_input,
     freeze,
@@ -23,13 +23,13 @@ from deepmd.entrypoints import (
     test,
     train_dp,
 )
-from deepmd.loggers import (
+from mdpukit.loggers import (
     set_log_handles,
 )
-from deepmd.mdpu.entrypoints.train import (
+from mdpukit.mdpu.entrypoints.train import (
     train_mdpu,
 )
-from deepmd_cli.main import (
+from mdpukit_cli.main import (
     get_ll,
     main_parser,
     parse_args,
@@ -39,7 +39,7 @@ __all__ = ["main", "parse_args", "get_ll", "main_parser"]
 
 
 def main(args: Optional[Union[List[str], argparse.Namespace]] = None):
-    """DeePMD-Kit entry point.
+    """mdpu-Kit entry point.
 
     Parameters
     ----------

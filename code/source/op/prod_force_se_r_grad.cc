@@ -20,7 +20,7 @@ class ProdForceSeRGradOp : public OpKernel {
       : OpKernel(context) {}
 
   void Compute(OpKernelContext* context) override {
-    deepmd::safe_compute(
+    mdpu::safe_compute(
         context, [this](OpKernelContext* context) { this->_Compute(context); });
   }
 
@@ -99,7 +99,7 @@ class ProdForceSeRGradOp : public OpKernel {
       int nlist_iter = kk * nloc * nnei;
       int grad_net_iter = kk * nloc * ndescrpt;
 
-      deepmd::prod_force_grad_r_cpu(&grad_net(grad_net_iter), &grad(grad_iter),
+      mdpu::prod_force_grad_r_cpu(&grad_net(grad_net_iter), &grad(grad_iter),
                                     &in_deriv(in_iter), &nlist(nlist_iter),
                                     nloc, nnei);
     }

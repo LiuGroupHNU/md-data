@@ -5,7 +5,7 @@ from tensorflow.python.framework import (
     ops,
 )
 
-from deepmd.env import (
+from mdpukit.env import (
     op_module,
     tf,
 )

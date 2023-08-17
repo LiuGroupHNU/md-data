@@ -6,12 +6,12 @@
 #include "DeepTensor.h"
 #include "neighbor_list.h"
 
-// catch deepmd::deepmd_exception and store it in dp->exception
+// catch mdpu::mdpu_exception and store it in dp->exception
 // return nothing
 #define DP_REQUIRES_OK(dp, xx)              \
   try {                                     \
     xx;                                     \
-  } catch (deepmd::deepmd_exception & ex) { \
+  } catch (mdpu::mdpu_exception & ex) { \
     dp->exception = std::string(ex.what()); \
     return;                                 \
   }
@@ -19,7 +19,7 @@
 #define DP_NEW_OK(dpcls, xx)                     \
   try {                                          \
     xx;                                          \
-  } catch (deepmd::deepmd_exception & ex) {      \
+  } catch (mdpu::mdpu_exception & ex) {      \
     dpcls* _new_dp = new dpcls;                  \
     _new_dp->exception = std::string(ex.what()); \
     return _new_dp;                              \
@@ -27,17 +27,17 @@
 
 struct DP_Nlist {
   DP_Nlist();
-  DP_Nlist(deepmd::InputNlist& nl);
+  DP_Nlist(mdpu::InputNlist& nl);
 
-  deepmd::InputNlist nl;
+  mdpu::InputNlist nl;
   std::string exception;
 };
 
 struct DP_DeepPot {
   DP_DeepPot();
-  DP_DeepPot(deepmd::DeepPot& dp);
+  DP_DeepPot(mdpu::DeepPot& dp);
 
-  deepmd::DeepPot dp;
+  mdpu::DeepPot dp;
   std::string exception;
   int dfparam;
   int daparam;
@@ -45,9 +45,9 @@ struct DP_DeepPot {
 
 struct DP_DeepPotModelDevi {
   DP_DeepPotModelDevi();
-  DP_DeepPotModelDevi(deepmd::DeepPotModelDevi& dp);
+  DP_DeepPotModelDevi(mdpu::DeepPotModelDevi& dp);
 
-  deepmd::DeepPotModelDevi dp;
+  mdpu::DeepPotModelDevi dp;
   std::string exception;
   int dfparam;
   int daparam;
@@ -55,16 +55,16 @@ struct DP_DeepPotModelDevi {
 
 struct DP_DeepTensor {
   DP_DeepTensor();
-  DP_DeepTensor(deepmd::DeepTensor& dt);
+  DP_DeepTensor(mdpu::DeepTensor& dt);
 
-  deepmd::DeepTensor dt;
+  mdpu::DeepTensor dt;
   std::string exception;
 };
 
 struct DP_DipoleChargeModifier {
   DP_DipoleChargeModifier();
-  DP_DipoleChargeModifier(deepmd::DipoleChargeModifier& dcm);
+  DP_DipoleChargeModifier(mdpu::DipoleChargeModifier& dcm);
 
-  deepmd::DipoleChargeModifier dcm;
+  mdpu::DipoleChargeModifier dcm;
   std::string exception;
 };

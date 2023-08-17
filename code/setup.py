@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
-"""Setup script for DeePMD-kit package."""
+"""Setup script for mdpu-kit package."""
 
 import os
 import sys
@@ -85,25 +85,25 @@ class bdist_wheel_abi3(bdist_wheel):
 # See also https://scikit-build.readthedocs.io/en/latest/usage.html#setuptools-options
 setup(
     packages=[
-        "deepmd",
-        "deepmd/descriptor",
-        "deepmd/fit",
-        "deepmd/infer",
-        "deepmd/loss",
-        "deepmd/utils",
-        "deepmd/loggers",
-        "deepmd/cluster",
-        "deepmd/entrypoints",
-        "deepmd/op",
-        "deepmd/model",
-        "deepmd/train",
-        "deepmd/mdpu",
-        "deepmd/mdpu/data",
-        "deepmd/mdpu/descriptor",
-        "deepmd/mdpu/entrypoints",
-        "deepmd/mdpu/fit",
-        "deepmd/mdpu/utils",
-        "deepmd_cli",
+        "mdpukit",
+        "mdpukit/descriptor",
+        "mdpukit/fit",
+        "mdpukit/infer",
+        "mdpukit/loss",
+        "mdpukit/utils",
+        "mdpukit/loggers",
+        "mdpukit/cluster",
+        "mdpukit/entrypoints",
+        "mdpukit/op",
+        "mdpukit/model",
+        "mdpukit/train",
+        "mdpukit/mdpu",
+        "mdpukit/mdpu/data",
+        "mdpukit/mdpu/descriptor",
+        "mdpukit/mdpu/entrypoints",
+        "mdpukit/mdpu/fit",
+        "mdpukit/mdpu/utils",
+        "mdpukit_cli",
     ],
     cmake_args=[
         f"-DTENSORFLOW_ROOT:PATH={tf_install_dir}",
@@ -157,8 +157,8 @@ setup(
         ],
     },
     entry_points={
-        "console_scripts": ["dp = deepmd_cli.main:main", *extra_scripts],
-        "lammps.plugins": ["deepmd = deepmd.lmp:get_op_dir"],
+        "console_scripts": ["dp = mdpukit_cli.main:main", *extra_scripts],
+        "lammps.plugins": ["mdpukit = mdpukit.lmp:get_op_dir"],
     },
     cmdclass={
         "bdist_wheel": bdist_wheel_abi3,

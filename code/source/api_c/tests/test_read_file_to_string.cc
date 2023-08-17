@@ -11,10 +11,10 @@
 #include <string>
 #include <vector>
 
-#include "deepmd.hpp"
+#include "mdpu.hpp"
 TEST(TestReadFileToString, readfiletostring) {
   std::string file_content;
-  deepmd::hpp::read_file_to_string("../../tests/infer/deeppot.txt",
+  mdpu::hpp::read_file_to_string("../../tests/infer/deeppot.txt",
                                    file_content);
 
   std::string file_name_2 = "../../tests/infer/deeppot.txt";
@@ -29,8 +29,8 @@ TEST(TestReadFileToString, readfiletostringerr) {
   std::string file_content;
   EXPECT_THROW(
       {
-        deepmd::hpp::read_file_to_string(
+        mdpu::hpp::read_file_to_string(
             "12345_no_such_file_do_not_create_this_file", file_content);
       },
-      deepmd::hpp::deepmd_exception);
+      mdpu::hpp::mdpu_exception);
 }

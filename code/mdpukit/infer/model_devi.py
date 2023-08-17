@@ -6,7 +6,7 @@ from typing import (
 
 import numpy as np
 
-from deepmd.common import (
+from mdpukit.common import (
     expand_sys_str,
 )
 
@@ -14,7 +14,7 @@ from ..utils.batch_size import (
     AutoBatchSize,
 )
 from ..utils.data import (
-    DeepmdData,
+    MDPUData,
 )
 from .deep_pot import (
     DeepPot,
@@ -180,8 +180,8 @@ def calc_model_devi(
 
     Examples
     --------
-    >>> from deepmd.infer import calc_model_devi
-    >>> from deepmd.infer import DeepPot as DP
+    >>> from mdpukit.infer import calc_model_devi
+    >>> from mdpukit.infer import DeepPot as DP
     >>> import numpy as np
     >>> coord = np.array([[1,0,0], [0,0,1.5], [1,0,3]]).reshape([1, -1])
     >>> cell = np.diag(10 * np.ones(3)).reshape([1, -1])
@@ -262,7 +262,7 @@ def make_model_devi(
 
     for system in all_sys:
         # create data-system
-        dp_data = DeepmdData(system, set_prefix, shuffle_test=False, type_map=tmap)
+        dp_data = MDPUData(system, set_prefix, shuffle_test=False, type_map=tmap)
         if first_dp.get_dim_fparam() > 0:
             dp_data.add(
                 "fparam",

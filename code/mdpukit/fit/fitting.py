@@ -6,13 +6,13 @@ from typing import (
     Callable,
 )
 
-from deepmd.env import (
+from mdpukit.env import (
     tf,
 )
-from deepmd.loss.loss import (
+from mdpukit.loss.loss import (
     Loss,
 )
-from deepmd.utils import (
+from mdpukit.utils import (
     Plugin,
     PluginVariant,
 )

@@ -1,10 +1,10 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 #
 from .data import (
-    DeepmdData,
+    MDPUData,
 )
 from .data_system import (
-    DeepmdDataSystem,
+    MDPUDataSystem,
 )
 from .learning_rate import (
     LearningRateExp,
@@ -18,8 +18,8 @@ from .plugin import (
 )
 
 __all__ = [
-    "DeepmdData",
-    "DeepmdDataSystem",
+    "MDPUData",
+    "MDPUDataSystem",
     "LearningRateExp",
     "PairTab",
     "Plugin",

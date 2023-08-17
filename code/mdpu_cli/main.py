@@ -19,7 +19,7 @@ def load_child_module(name):
     return imp.load_module(name, f, path[0], info)
 
 
-__version__ = load_child_module("deepmd._version").__version__
+__version__ = load_child_module("mdpukit._version").__version__
 
 
 def get_ll(log_level: str) -> int:
@@ -50,16 +50,15 @@ class RawTextArgumentDefaultsHelpFormatter(
 
 
 def main_parser() -> argparse.ArgumentParser:
-    """DeePMD-Kit commandline options argument parser.
+    """mdpu-Kit commandline options argument parser.
 
     Returns
     -------
     argparse.ArgumentParser
-        main parser of DeePMD-kit
+        main parser of mdpu-kit
     """
     parser = argparse.ArgumentParser(
-        description="DeePMD-kit: A deep learning package for many-body potential energy"
-        " representation and molecular dynamics",
+        description="mdpu-kit: A deep learning package for Molecular Dynamics Processing Unit",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     subparsers = parser.add_subparsers(title="Valid subcommands", dest="command")
@@ -276,7 +275,7 @@ def main_parser() -> argparse.ArgumentParser:
     # The table is composed of fifth-order polynomial coefficients and is assembled
     # from two sub-tables. The first table takes the step(parameter) as it's uniform
     # step, while the second table takes 10 * step as it\s uniform step
-    #  The range of the first table is automatically detected by deepmd-kit, while the
+    #  The range of the first table is automatically detected by mdpu-kit, while the
     # second table ranges from the first table's upper boundary(upper) to the
     # extrapolate(parameter) * upper.
     parser_compress = subparsers.add_parser(
@@ -457,7 +456,7 @@ def main_parser() -> argparse.ArgumentParser:
 
     # --version
     parser.add_argument(
-        "--version", action="version", version="DeePMD-kit v%s" % __version__
+        "--version", action="version", version="mdpu-kit v%s" % __version__
     )
 
     # * train mdpu script ******************************************************************
@@ -518,7 +517,7 @@ def parse_args(args: Optional[List[str]] = None) -> argparse.Namespace:
 
 
 def main():
-    """DeePMD-kit new entry point.
+    """mdpu-kit new entry point.
 
     Raises
     ------
@@ -526,6 +525,6 @@ def main():
         if no command was input
     """
     args = parse_args()
-    from deepmd.entrypoints.main import main as deepmd_main
+    from mdpukit.entrypoints.main import main as mdpukit_main
 
-    deepmd_main(args)
+    mdpukit_main(args)

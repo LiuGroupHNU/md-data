@@ -15,18 +15,18 @@ from scipy.special import (
     comb,
 )
 
-import deepmd
-from deepmd.common import (
+import mdpukit
+from mdpukit.common import (
     ACTIVATION_FN_DICT,
 )
-from deepmd.descriptor import (
+from mdpukit.descriptor import (
     Descriptor,
 )
-from deepmd.env import (
+from mdpukit.env import (
     op_module,
     tf,
 )
-from deepmd.utils.graph import (
+from mdpukit.utils.graph import (
     get_embedding_net_nodes_from_graph_def,
     get_tensor_by_name_from_graph,
 )
@@ -39,7 +39,7 @@ class DPTabulate:
 
     Compress a model, which including tabulating the embedding-net.
     The table is composed of fifth-order polynomial coefficients and is assembled from two sub-tables. The first table takes the stride(parameter) as it's uniform stride, while the second table takes 10 * stride as it's uniform stride
-    The range of the first table is automatically detected by deepmd-kit, while the second table ranges from the first table's upper boundary(upper) to the extrapolate(parameter) * upper.
+    The range of the first table is automatically detected by mdpukit-kit, while the second table ranges from the first table's upper boundary(upper) to the extrapolate(parameter) * upper.
 
     Parameters
     ----------
@@ -104,15 +104,15 @@ class DPTabulate:
         self.sub_graph, self.sub_graph_def = self._load_sub_graph()
         self.sub_sess = tf.Session(graph=self.sub_graph)
 
-        if isinstance(self.descrpt, deepmd.descriptor.DescrptSeR):
+        if isinstance(self.descrpt, mdpukit.descriptor.DescrptSeR):
             self.sel_a = self.descrpt.sel_r
             self.rcut = self.descrpt.rcut
             self.rcut_smth = self.descrpt.rcut_smth
-        elif isinstance(self.descrpt, deepmd.descriptor.DescrptSeA):
+        elif isinstance(self.descrpt, mdpukit.descriptor.DescrptSeA):
             self.sel_a = self.descrpt.sel_a
             self.rcut = self.descrpt.rcut_r
             self.rcut_smth = self.descrpt.rcut_r_smth
-        elif isinstance(self.descrpt, deepmd.descriptor.DescrptSeT):
+        elif isinstance(self.descrpt, mdpukit.descriptor.DescrptSeT):
             self.sel_a = self.descrpt.sel_a
             self.rcut = self.descrpt.rcut_r
             self.rcut_smth = self.descrpt.rcut_r_smth
@@ -176,7 +176,7 @@ class DPTabulate:
         """
         # tabulate range [lower, upper] with stride0 'stride0'
         lower, upper = self._get_env_mat_range(min_nbor_dist)
-        if isinstance(self.descrpt, deepmd.descriptor.DescrptSeAtten):
+        if isinstance(self.descrpt, mdpukit.descriptor.DescrptSeAtten):
             uu = np.max(upper)
             ll = np.min(lower)
             xx = np.arange(ll, uu, stride0, dtype=self.data_type)
@@ -191,7 +191,7 @@ class DPTabulate:
             self._build_lower(
                 "filter_net", xx, 0, uu, ll, stride0, stride1, extrapolate, nspline
             )
-        elif isinstance(self.descrpt, deepmd.descriptor.DescrptSeA):
+        elif isinstance(self.descrpt, mdpukit.descriptor.DescrptSeA):
             for ii in range(self.table_size):
                 if (self.type_one_side and not self._all_excluded(ii)) or (
                     not self.type_one_side
@@ -228,7 +228,7 @@ class DPTabulate:
                     self._build_lower(
                         net, xx, ii, uu, ll, stride0, stride1, extrapolate, nspline
                     )
-        elif isinstance(self.descrpt, deepmd.descriptor.DescrptSeT):
+        elif isinstance(self.descrpt, mdpukit.descriptor.DescrptSeT):
             xx_all = []
             for ii in range(self.ntypes):
                 xx = np.arange(
@@ -270,7 +270,7 @@ class DPTabulate:
                         nspline[ii],
                     )
                     idx += 1
-        elif isinstance(self.descrpt, deepmd.descriptor.DescrptSeR):
+        elif isinstance(self.descrpt, mdpukit.descriptor.DescrptSeR):
             for ii in range(self.table_size):
                 if (self.type_one_side and not self._all_excluded(ii)) or (
                     not self.type_one_side
@@ -322,10 +322,10 @@ class DPTabulate:
         )
 
         # tt.shape: [nspline, self.last_layer_size]
-        if isinstance(self.descrpt, deepmd.descriptor.DescrptSeA):
+        if isinstance(self.descrpt, mdpukit.descriptor.DescrptSeA):
             tt = np.full((nspline, self.last_layer_size), stride1)
             tt[: int((upper - lower) / stride0), :] = stride0
-        elif isinstance(self.descrpt, deepmd.descriptor.DescrptSeT):
+        elif isinstance(self.descrpt, mdpukit.descriptor.DescrptSeT):
             tt = np.full((nspline, self.last_layer_size), stride1)
             tt[
                 int((lower - extrapolate * lower) / stride1)
@@ -335,7 +335,7 @@ class DPTabulate:
                 ),
                 :,
             ] = stride0
-        elif isinstance(self.descrpt, deepmd.descriptor.DescrptSeR):
+        elif isinstance(self.descrpt, mdpukit.descriptor.DescrptSeR):
             tt = np.full((nspline, self.last_layer_size), stride1)
             tt[: int((upper - lower) / stride0), :] = stride0
         else:
@@ -419,12 +419,12 @@ class DPTabulate:
         bias = {}
         for layer in range(1, self.layer_size + 1):
             bias["layer_" + str(layer)] = []
-            if isinstance(self.descrpt, deepmd.descriptor.DescrptSeAtten):
+            if isinstance(self.descrpt, mdpukit.descriptor.DescrptSeAtten):
                 node = self.embedding_net_nodes[
                     f"filter_type_all{self.suffix}/bias_{layer}"
                 ]
                 bias["layer_" + str(layer)].append(tf.make_ndarray(node))
-            elif isinstance(self.descrpt, deepmd.descriptor.DescrptSeA):
+            elif isinstance(self.descrpt, mdpukit.descriptor.DescrptSeA):
                 if self.type_one_side:
                     for ii in range(0, self.ntypes):
                         if not self._all_excluded(ii):
@@ -446,14 +446,14 @@ class DPTabulate:
                             bias["layer_" + str(layer)].append(tf.make_ndarray(node))
                         else:
                             bias["layer_" + str(layer)].append(np.array([]))
-            elif isinstance(self.descrpt, deepmd.descriptor.DescrptSeT):
+            elif isinstance(self.descrpt, mdpukit.descriptor.DescrptSeT):
                 for ii in range(self.ntypes):
                     for jj in range(ii, self.ntypes):
                         node = self.embedding_net_nodes[
                             f"filter_type_all{self.suffix}/bias_{layer}_{ii}_{jj}"
                         ]
                         bias["layer_" + str(layer)].append(tf.make_ndarray(node))
-            elif isinstance(self.descrpt, deepmd.descriptor.DescrptSeR):
+            elif isinstance(self.descrpt, mdpukit.descriptor.DescrptSeR):
                 if self.type_one_side:
                     for ii in range(0, self.ntypes):
                         if not self._all_excluded(ii):
@@ -483,12 +483,12 @@ class DPTabulate:
         matrix = {}
         for layer in range(1, self.layer_size + 1):
             matrix["layer_" + str(layer)] = []
-            if isinstance(self.descrpt, deepmd.descriptor.DescrptSeAtten):
+            if isinstance(self.descrpt, mdpukit.descriptor.DescrptSeAtten):
                 node = self.embedding_net_nodes[
                     f"filter_type_all{self.suffix}/matrix_{layer}"
                 ]
                 matrix["layer_" + str(layer)].append(tf.make_ndarray(node))
-            elif isinstance(self.descrpt, deepmd.descriptor.DescrptSeA):
+            elif isinstance(self.descrpt, mdpukit.descriptor.DescrptSeA):
                 if self.type_one_side:
                     for ii in range(0, self.ntypes):
                         if not self._all_excluded(ii):
@@ -510,14 +510,14 @@ class DPTabulate:
                             matrix["layer_" + str(layer)].append(tf.make_ndarray(node))
                         else:
                             matrix["layer_" + str(layer)].append(np.array([]))
-            elif isinstance(self.descrpt, deepmd.descriptor.DescrptSeT):
+            elif isinstance(self.descrpt, mdpukit.descriptor.DescrptSeT):
                 for ii in range(self.ntypes):
                     for jj in range(ii, self.ntypes):
                         node = self.embedding_net_nodes[
                             f"filter_type_all{self.suffix}/matrix_{layer}_{ii}_{jj}"
                         ]
                         matrix["layer_" + str(layer)].append(tf.make_ndarray(node))
-            elif isinstance(self.descrpt, deepmd.descriptor.DescrptSeR):
+            elif isinstance(self.descrpt, mdpukit.descriptor.DescrptSeR):
                 if self.type_one_side:
                     for ii in range(0, self.ntypes):
                         if not self._all_excluded(ii):
@@ -658,14 +658,14 @@ class DPTabulate:
     # Change the embedding net range to sw / min_nbor_dist
     def _get_env_mat_range(self, min_nbor_dist):
         sw = self._spline5_switch(min_nbor_dist, self.rcut_smth, self.rcut)
-        if isinstance(self.descrpt, deepmd.descriptor.DescrptSeA):
+        if isinstance(self.descrpt, mdpukit.descriptor.DescrptSeA):
             lower = -self.davg[:, 0] / self.dstd[:, 0]
             upper = ((1 / min_nbor_dist) * sw - self.davg[:, 0]) / self.dstd[:, 0]
-        elif isinstance(self.descrpt, deepmd.descriptor.DescrptSeT):
+        elif isinstance(self.descrpt, mdpukit.descriptor.DescrptSeT):
             var = np.square(sw / (min_nbor_dist * self.dstd[:, 1:4]))
             lower = np.min(-var, axis=1)
             upper = np.max(var, axis=1)
-        elif isinstance(self.descrpt, deepmd.descriptor.DescrptSeR):
+        elif isinstance(self.descrpt, mdpukit.descriptor.DescrptSeR):
             lower = -self.davg[:, 0] / self.dstd[:, 0]
             upper = ((1 / min_nbor_dist) * sw - self.davg[:, 0]) / self.dstd[:, 0]
         else:
@@ -687,9 +687,9 @@ class DPTabulate:
 
     def _get_layer_size(self):
         layer_size = 0
-        if isinstance(self.descrpt, deepmd.descriptor.DescrptSeAtten):
+        if isinstance(self.descrpt, mdpukit.descriptor.DescrptSeAtten):
             layer_size = len(self.embedding_net_nodes) // 2
-        elif isinstance(self.descrpt, deepmd.descriptor.DescrptSeA):
+        elif isinstance(self.descrpt, mdpukit.descriptor.DescrptSeA):
             layer_size = len(self.embedding_net_nodes) // (
                 (self.ntypes * self.ntypes - len(self.exclude_types)) * 2
             )
@@ -697,11 +697,11 @@ class DPTabulate:
                 layer_size = len(self.embedding_net_nodes) // (
                     (self.ntypes - self._n_all_excluded) * 2
                 )
-        elif isinstance(self.descrpt, deepmd.descriptor.DescrptSeT):
+        elif isinstance(self.descrpt, mdpukit.descriptor.DescrptSeT):
             layer_size = len(self.embedding_net_nodes) // int(
                 comb(self.ntypes + 1, 2) * 2
             )
-        elif isinstance(self.descrpt, deepmd.descriptor.DescrptSeR):
+        elif isinstance(self.descrpt, mdpukit.descriptor.DescrptSeR):
             layer_size = len(self.embedding_net_nodes) // (
                 (self.ntypes * self.ntypes - len(self.exclude_types)) * 2
             )
@@ -737,15 +737,15 @@ class DPTabulate:
 
     def _get_table_size(self):
         table_size = 0
-        if isinstance(self.descrpt, deepmd.descriptor.DescrptSeAtten):
+        if isinstance(self.descrpt, mdpukit.descriptor.DescrptSeAtten):
             table_size = 1
-        elif isinstance(self.descrpt, deepmd.descriptor.DescrptSeA):
+        elif isinstance(self.descrpt, mdpukit.descriptor.DescrptSeA):
             table_size = self.ntypes * self.ntypes
             if self.type_one_side:
                 table_size = self.ntypes
-        elif isinstance(self.descrpt, deepmd.descriptor.DescrptSeT):
+        elif isinstance(self.descrpt, mdpukit.descriptor.DescrptSeT):
             table_size = int(comb(self.ntypes + 1, 2))
-        elif isinstance(self.descrpt, deepmd.descriptor.DescrptSeR):
+        elif isinstance(self.descrpt, mdpukit.descriptor.DescrptSeR):
             table_size = self.ntypes * self.ntypes
             if self.type_one_side:
                 table_size = self.ntypes

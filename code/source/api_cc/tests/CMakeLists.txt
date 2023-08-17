@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.9)
-project(deepmd_api_test)
+project(mdpu_api_test)
 
 file(GLOB TEST_SRC test_*.cc)
 
 add_executable(runUnitTests_cc ${TEST_SRC})
-target_link_libraries(runUnitTests_cc GTest::gtest_main ${LIB_DEEPMD_CC} rt
+target_link_libraries(runUnitTests_cc GTest::gtest_main ${LIB_MDPU_CC} rt
                       coverage_config)
 target_precompile_headers(runUnitTests_cc PRIVATE test_utils.h)
 add_test(runUnitTest_cc runUnitTests_cc)

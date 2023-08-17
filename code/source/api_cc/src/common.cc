@@ -38,15 +38,15 @@ static std::vector<std::string> split(const std::string& input_,
   return res;
 }
 
-bool deepmd::model_compatable(std::string& model_version) {
+bool mdpu::model_compatable(std::string& model_version) {
   std::vector<std::string> words_mv = split(model_version, ".");
   std::vector<std::string> words_gmv = split(global_model_version, ".");
   if (words_mv.size() != 2) {
-    throw deepmd::deepmd_exception("invalid graph model version string " +
+    throw mdpu::mdpu_exception("invalid graph model version string " +
                                    model_version);
   }
   if (words_gmv.size() != 2) {
-    throw deepmd::deepmd_exception("invalid supported model version string " +
+    throw mdpu::mdpu_exception("invalid supported model version string " +
                                    global_model_version);
   }
   int model_version_major = atoi(words_mv[0].c_str());
@@ -62,7 +62,7 @@ bool deepmd::model_compatable(std::string& model_version) {
 }
 
 template <typename VALUETYPE>
-void deepmd::select_by_type(std::vector<int>& fwd_map,
+void mdpu::select_by_type(std::vector<int>& fwd_map,
                             std::vector<int>& bkw_map,
                             int& nghost_real,
                             const std::vector<VALUETYPE>& dcoord_,
@@ -98,7 +98,7 @@ void deepmd::select_by_type(std::vector<int>& fwd_map,
   assert((nloc_real + nghost_real) == bkw_map.size());
 }
 
-template void deepmd::select_by_type<double>(std::vector<int>& fwd_map,
+template void mdpu::select_by_type<double>(std::vector<int>& fwd_map,
                                              std::vector<int>& bkw_map,
                                              int& nghost_real,
                                              const std::vector<double>& dcoord_,
@@ -106,7 +106,7 @@ template void deepmd::select_by_type<double>(std::vector<int>& fwd_map,
                                              const int& nghost,
                                              const std::vector<int>& sel_type_);
 
-template void deepmd::select_by_type<float>(std::vector<int>& fwd_map,
+template void mdpu::select_by_type<float>(std::vector<int>& fwd_map,
                                             std::vector<int>& bkw_map,
                                             int& nghost_real,
                                             const std::vector<float>& dcoord_,
@@ -115,7 +115,7 @@ template void deepmd::select_by_type<float>(std::vector<int>& fwd_map,
                                             const std::vector<int>& sel_type_);
 
 template <typename VALUETYPE>
-void deepmd::select_real_atoms(std::vector<int>& fwd_map,
+void mdpu::select_real_atoms(std::vector<int>& fwd_map,
                                std::vector<int>& bkw_map,
                                int& nghost_real,
                                const std::vector<VALUETYPE>& dcoord_,
@@ -126,11 +126,11 @@ void deepmd::select_real_atoms(std::vector<int>& fwd_map,
   for (int ii = 0; ii < ntypes; ++ii) {
     sel_type.push_back(ii);
   }
-  deepmd::select_by_type(fwd_map, bkw_map, nghost_real, dcoord_, datype_,
+  mdpu::select_by_type(fwd_map, bkw_map, nghost_real, dcoord_, datype_,
                          nghost, sel_type);
 }
 
-template void deepmd::select_real_atoms<double>(
+template void mdpu::select_real_atoms<double>(
     std::vector<int>& fwd_map,
     std::vector<int>& bkw_map,
     int& nghost_real,
@@ -139,7 +139,7 @@ template void deepmd::select_real_atoms<double>(
     const int& nghost,
     const int& ntypes);
 
-template void deepmd::select_real_atoms<float>(
+template void mdpu::select_real_atoms<float>(
     std::vector<int>& fwd_map,
     std::vector<int>& bkw_map,
     int& nghost_real,
@@ -149,7 +149,7 @@ template void deepmd::select_real_atoms<float>(
     const int& ntypes);
 
 template <typename VALUETYPE>
-void deepmd::select_real_atoms_coord(std::vector<VALUETYPE>& dcoord,
+void mdpu::select_real_atoms_coord(std::vector<VALUETYPE>& dcoord,
                                      std::vector<int>& datype,
                                      std::vector<VALUETYPE>& aparam,
                                      int& nghost_real,
@@ -183,7 +183,7 @@ void deepmd::select_real_atoms_coord(std::vector<VALUETYPE>& dcoord,
   }
 }
 
-template void deepmd::select_real_atoms_coord<double>(
+template void mdpu::select_real_atoms_coord<double>(
     std::vector<double>& dcoord,
     std::vector<int>& datype,
     std::vector<double>& aparam,
@@ -201,7 +201,7 @@ template void deepmd::select_real_atoms_coord<double>(
     const int& daparam,
     const int& nall);
 
-template void deepmd::select_real_atoms_coord<float>(
+template void mdpu::select_real_atoms_coord<float>(
     std::vector<float>& dcoord,
     std::vector<int>& datype,
     std::vector<float>& aparam,
@@ -219,7 +219,7 @@ template void deepmd::select_real_atoms_coord<float>(
     const int& daparam,
     const int& nall);
 
-void deepmd::NeighborListData::copy_from_nlist(const InputNlist& inlist) {
+void mdpu::NeighborListData::copy_from_nlist(const InputNlist& inlist) {
   int inum = inlist.inum;
   ilist.resize(inum);
   jlist.resize(inum);
@@ -231,12 +231,12 @@ void deepmd::NeighborListData::copy_from_nlist(const InputNlist& inlist) {
   }
 }
 
-void deepmd::NeighborListData::shuffle(const AtomMap& map) {
+void mdpu::NeighborListData::shuffle(const AtomMap& map) {
   const std::vector<int>& fwd_map = map.get_fwd_map();
   shuffle(fwd_map);
 }
 
-void deepmd::NeighborListData::shuffle(const std::vector<int>& fwd_map) {
+void mdpu::NeighborListData::shuffle(const std::vector<int>& fwd_map) {
   int nloc = fwd_map.size();
   for (unsigned ii = 0; ii < ilist.size(); ++ii) {
     if (ilist[ii] < nloc) {
@@ -252,7 +252,7 @@ void deepmd::NeighborListData::shuffle(const std::vector<int>& fwd_map) {
   }
 }
 
-void deepmd::NeighborListData::shuffle_exclude_empty(
+void mdpu::NeighborListData::shuffle_exclude_empty(
     const std::vector<int>& fwd_map) {
   shuffle(fwd_map);
   std::vector<int> new_ilist;
@@ -281,7 +281,7 @@ void deepmd::NeighborListData::shuffle_exclude_empty(
   jlist = new_jlist;
 }
 
-void deepmd::NeighborListData::make_inlist(InputNlist& inlist) {
+void mdpu::NeighborListData::make_inlist(InputNlist& inlist) {
   int nloc = ilist.size();
   numneigh.resize(nloc);
   firstneigh.resize(nloc);
@@ -295,22 +295,22 @@ void deepmd::NeighborListData::make_inlist(InputNlist& inlist) {
   inlist.firstneigh = &firstneigh[0];
 }
 
-void deepmd::check_status(const tensorflow::Status& status) {
+void mdpu::check_status(const tensorflow::Status& status) {
   if (!status.ok()) {
     std::cout << status.ToString() << std::endl;
-    throw deepmd::tf_exception(status.ToString());
+    throw mdpu::tf_exception(status.ToString());
   }
 }
 
 void throw_env_not_set_warning(std::string env_name) {
-  std::cerr << "DeePMD-kit WARNING: Environmental variable " << env_name
+  std::cerr << "mdpu-kit WARNING: Environmental variable " << env_name
             << " is not set. "
             << "Tune " << env_name << " for the best performance. "
-            << "See https://deepmd.rtfd.io/parallelism/ for more information."
+            << "See https://mdpu.rtfd.io/parallelism/ for more information."
             << std::endl;
 }
 
-void deepmd::get_env_nthreads(int& num_intra_nthreads,
+void mdpu::get_env_nthreads(int& num_intra_nthreads,
                               int& num_inter_nthreads) {
   num_intra_nthreads = 0;
   num_inter_nthreads = 0;
@@ -339,23 +339,23 @@ void deepmd::get_env_nthreads(int& num_intra_nthreads,
   }
 }
 
-void deepmd::load_op_library() {
+void mdpu::load_op_library() {
   tensorflow::Env* env = tensorflow::Env::Default();
 #if defined(_WIN32)
-  std::string dso_path = "deepmd_op.dll";
+  std::string dso_path = "mdpu_op.dll";
   void* dso_handle = LoadLibrary(dso_path.c_str());
 #else
-  std::string dso_path = "libdeepmd_op.so";
+  std::string dso_path = "libmdpu_op.so";
   void* dso_handle = dlopen(dso_path.c_str(), RTLD_NOW | RTLD_LOCAL);
 #endif
   if (!dso_handle) {
-    throw deepmd::deepmd_exception(
+    throw mdpu::mdpu_exception(
         dso_path +
         " is not found! You can add the library directory to LD_LIBRARY_PATH");
   }
 }
 
-std::string deepmd::name_prefix(const std::string& scope) {
+std::string mdpu::name_prefix(const std::string& scope) {
   std::string prefix = "";
   if (scope != "") {
     prefix = scope + "/";
@@ -364,7 +364,7 @@ std::string deepmd::name_prefix(const std::string& scope) {
 }
 
 template <typename MODELTYPE, typename VALUETYPE>
-int deepmd::session_input_tensors(
+int mdpu::session_input_tensors(
     std::vector<std::pair<std::string, Tensor>>& input_tensors,
     const std::vector<VALUETYPE>& dcoord_,
     const int& ntypes,
@@ -373,7 +373,7 @@ int deepmd::session_input_tensors(
     const double& cell_size,
     const std::vector<VALUETYPE>& fparam_,
     const std::vector<VALUETYPE>& aparam__,
-    const deepmd::AtomMap& atommap,
+    const mdpu::AtomMap& atommap,
     const std::string scope) {
   int nframes = dcoord_.size() / 3 / datype_.size();
   int nall = datype_.size();
@@ -418,7 +418,7 @@ int deepmd::session_input_tensors(
   } else if (std::is_same<MODELTYPE, float>::value) {
     model_type = tensorflow::DT_FLOAT;
   } else {
-    throw deepmd::deepmd_exception("unsupported data type");
+    throw mdpu::mdpu_exception("unsupported data type");
   }
   Tensor coord_tensor(model_type, coord_shape);
   Tensor box_tensor(model_type, box_shape);
@@ -499,7 +499,7 @@ int deepmd::session_input_tensors(
 }
 
 template <typename MODELTYPE, typename VALUETYPE>
-int deepmd::session_input_tensors(
+int mdpu::session_input_tensors(
     std::vector<std::pair<std::string, Tensor>>& input_tensors,
     const std::vector<VALUETYPE>& dcoord_,
     const int& ntypes,
@@ -508,7 +508,7 @@ int deepmd::session_input_tensors(
     InputNlist& dlist,
     const std::vector<VALUETYPE>& fparam_,
     const std::vector<VALUETYPE>& aparam__,
-    const deepmd::AtomMap& atommap,
+    const mdpu::AtomMap& atommap,
     const int nghost,
     const int ago,
     const std::string scope) {
@@ -551,7 +551,7 @@ int deepmd::session_input_tensors(
   } else if (std::is_same<MODELTYPE, float>::value) {
     model_type = tensorflow::DT_FLOAT;
   } else {
-    throw deepmd::deepmd_exception("unsupported data type");
+    throw mdpu::mdpu_exception("unsupported data type");
   }
   Tensor coord_tensor(model_type, coord_shape);
   Tensor box_tensor(model_type, box_shape);
@@ -634,7 +634,7 @@ int deepmd::session_input_tensors(
 }
 
 template <typename MODELTYPE, typename VALUETYPE>
-int deepmd::session_input_tensors_mixed_type(
+int mdpu::session_input_tensors_mixed_type(
     std::vector<std::pair<std::string, Tensor>>& input_tensors,
     const int& nframes,
     const std::vector<VALUETYPE>& dcoord_,
@@ -644,7 +644,7 @@ int deepmd::session_input_tensors_mixed_type(
     const double& cell_size,
     const std::vector<VALUETYPE>& fparam_,
     const std::vector<VALUETYPE>& aparam__,
-    const deepmd::AtomMap& atommap,
+    const mdpu::AtomMap& atommap,
     const std::string scope) {
   int nall = datype_.size() / nframes;
   int nloc = nall;
@@ -684,7 +684,7 @@ int deepmd::session_input_tensors_mixed_type(
   } else if (std::is_same<MODELTYPE, float>::value) {
     model_type = tensorflow::DT_FLOAT;
   } else {
-    throw deepmd::deepmd_exception("unsupported data type");
+    throw mdpu::mdpu_exception("unsupported data type");
   }
   Tensor coord_tensor(model_type, coord_shape);
   Tensor box_tensor(model_type, box_shape);
@@ -771,7 +771,7 @@ int deepmd::session_input_tensors_mixed_type(
 }
 
 template <typename VT>
-VT deepmd::session_get_scalar(Session* session,
+VT mdpu::session_get_scalar(Session* session,
                               const std::string name_,
                               const std::string scope) {
   std::string name = name_;
@@ -779,7 +779,7 @@ VT deepmd::session_get_scalar(Session* session,
     name = scope + "/" + name;
   }
   std::vector<Tensor> output_tensors;
-  deepmd::check_status(
+  mdpu::check_status(
       session->Run(std::vector<std::pair<std::string, Tensor>>({}),
                    {name.c_str()}, {}, &output_tensors));
   Tensor output_rc = output_tensors[0];
@@ -788,7 +788,7 @@ VT deepmd::session_get_scalar(Session* session,
 }
 
 template <typename VT>
-void deepmd::session_get_vector(std::vector<VT>& o_vec,
+void mdpu::session_get_vector(std::vector<VT>& o_vec,
                                 Session* session,
                                 const std::string name_,
                                 const std::string scope) {
@@ -797,7 +797,7 @@ void deepmd::session_get_vector(std::vector<VT>& o_vec,
     name = scope + "/" + name;
   }
   std::vector<Tensor> output_tensors;
-  deepmd::check_status(
+  mdpu::check_status(
       session->Run(std::vector<std::pair<std::string, Tensor>>({}),
                    {name.c_str()}, {}, &output_tensors));
   Tensor output_rc = output_tensors[0];
@@ -810,7 +810,7 @@ void deepmd::session_get_vector(std::vector<VT>& o_vec,
   }
 }
 
-int deepmd::session_get_dtype(tensorflow::Session* session,
+int mdpu::session_get_dtype(tensorflow::Session* session,
                               const std::string name_,
                               const std::string scope) {
   std::string name = name_;
@@ -818,7 +818,7 @@ int deepmd::session_get_dtype(tensorflow::Session* session,
     name = scope + "/" + name;
   }
   std::vector<Tensor> output_tensors;
-  deepmd::check_status(
+  mdpu::check_status(
       session->Run(std::vector<std::pair<std::string, Tensor>>({}),
                    {name.c_str()}, {}, &output_tensors));
   Tensor output_rc = output_tensors[0];
@@ -827,7 +827,7 @@ int deepmd::session_get_dtype(tensorflow::Session* session,
 }
 
 template <typename VT>
-void deepmd::select_map(std::vector<VT>& out,
+void mdpu::select_map(std::vector<VT>& out,
                         const std::vector<VT>& in,
                         const std::vector<int>& idx_map,
                         const int& stride,
@@ -856,7 +856,7 @@ void deepmd::select_map(std::vector<VT>& out,
 }
 
 template <typename VT>
-void deepmd::select_map(typename std::vector<VT>::iterator out,
+void mdpu::select_map(typename std::vector<VT>::iterator out,
                         const typename std::vector<VT>::const_iterator in,
                         const std::vector<int>& idx_map,
                         const int& stride,
@@ -878,7 +878,7 @@ void deepmd::select_map(typename std::vector<VT>::iterator out,
 
 // sel_map(_,_,fwd_map,_) == sel_map_inv(_,_,bkw_map,_)
 template <typename VT>
-void deepmd::select_map_inv(std::vector<VT>& out,
+void mdpu::select_map_inv(std::vector<VT>& out,
                             const std::vector<VT>& in,
                             const std::vector<int>& idx_map,
                             const int& stride) {
@@ -901,7 +901,7 @@ void deepmd::select_map_inv(std::vector<VT>& out,
 }
 
 template <typename VT>
-void deepmd::select_map_inv(typename std::vector<VT>::iterator out,
+void mdpu::select_map_inv(typename std::vector<VT>::iterator out,
                             const typename std::vector<VT>::const_iterator in,
                             const std::vector<int>& idx_map,
                             const int& stride) {
@@ -915,16 +915,16 @@ void deepmd::select_map_inv(typename std::vector<VT>::iterator out,
   }
 }
 
-template int deepmd::session_get_scalar<int>(Session*,
+template int mdpu::session_get_scalar<int>(Session*,
                                              const std::string,
                                              const std::string);
 
-template void deepmd::session_get_vector<int>(std::vector<int>&,
+template void mdpu::session_get_vector<int>(std::vector<int>&,
                                               Session*,
                                               const std::string,
                                               const std::string);
 
-template void deepmd::select_map<int>(std::vector<int>& out,
+template void mdpu::select_map<int>(std::vector<int>& out,
                                       const std::vector<int>& in,
                                       const std::vector<int>& idx_map,
                                       const int& stride,
@@ -932,7 +932,7 @@ template void deepmd::select_map<int>(std::vector<int>& out,
                                       const int& nall1,
                                       const int& nall2);
 
-template void deepmd::select_map<int>(
+template void mdpu::select_map<int>(
     typename std::vector<int>::iterator out,
     const typename std::vector<int>::const_iterator in,
     const std::vector<int>& idx_map,
@@ -941,27 +941,27 @@ template void deepmd::select_map<int>(
     const int& nall1,
     const int& nall2);
 
-template void deepmd::select_map_inv<int>(std::vector<int>& out,
+template void mdpu::select_map_inv<int>(std::vector<int>& out,
                                           const std::vector<int>& in,
                                           const std::vector<int>& idx_map,
                                           const int& stride);
 
-template void deepmd::select_map_inv<int>(
+template void mdpu::select_map_inv<int>(
     typename std::vector<int>::iterator out,
     const typename std::vector<int>::const_iterator in,
     const std::vector<int>& idx_map,
     const int& stride);
 
-template float deepmd::session_get_scalar<float>(Session*,
+template float mdpu::session_get_scalar<float>(Session*,
                                                  const std::string,
                                                  const std::string);
 
-template void deepmd::session_get_vector<float>(std::vector<float>&,
+template void mdpu::session_get_vector<float>(std::vector<float>&,
                                                 Session*,
                                                 const std::string,
                                                 const std::string);
 
-template void deepmd::select_map<float>(std::vector<float>& out,
+template void mdpu::select_map<float>(std::vector<float>& out,
                                         const std::vector<float>& in,
                                         const std::vector<int>& idx_map,
                                         const int& stride,
@@ -969,7 +969,7 @@ template void deepmd::select_map<float>(std::vector<float>& out,
                                         const int& nall1,
                                         const int& nall2);
 
-template void deepmd::select_map<float>(
+template void mdpu::select_map<float>(
     typename std::vector<float>::iterator out,
     const typename std::vector<float>::const_iterator in,
     const std::vector<int>& idx_map,
@@ -978,27 +978,27 @@ template void deepmd::select_map<float>(
     const int& nall1,
     const int& nall2);
 
-template void deepmd::select_map_inv<float>(std::vector<float>& out,
+template void mdpu::select_map_inv<float>(std::vector<float>& out,
                                             const std::vector<float>& in,
                                             const std::vector<int>& idx_map,
                                             const int& stride);
 
-template void deepmd::select_map_inv<float>(
+template void mdpu::select_map_inv<float>(
     typename std::vector<float>::iterator out,
     const typename std::vector<float>::const_iterator in,
     const std::vector<int>& idx_map,
     const int& stride);
 
-template double deepmd::session_get_scalar<double>(Session*,
+template double mdpu::session_get_scalar<double>(Session*,
                                                    const std::string,
                                                    const std::string);
 
-template void deepmd::session_get_vector<double>(std::vector<double>&,
+template void mdpu::session_get_vector<double>(std::vector<double>&,
                                                  Session*,
                                                  const std::string,
                                                  const std::string);
 
-template void deepmd::select_map<double>(std::vector<double>& out,
+template void mdpu::select_map<double>(std::vector<double>& out,
                                          const std::vector<double>& in,
                                          const std::vector<int>& idx_map,
                                          const int& stride,
@@ -1006,7 +1006,7 @@ template void deepmd::select_map<double>(std::vector<double>& out,
                                          const int& nall1,
                                          const int& nall2);
 
-template void deepmd::select_map<double>(
+template void mdpu::select_map<double>(
     typename std::vector<double>::iterator out,
     const typename std::vector<double>::const_iterator in,
     const std::vector<int>& idx_map,
@@ -1015,62 +1015,62 @@ template void deepmd::select_map<double>(
     const int& nall1,
     const int& nall2);
 
-template void deepmd::select_map_inv<double>(std::vector<double>& out,
+template void mdpu::select_map_inv<double>(std::vector<double>& out,
                                              const std::vector<double>& in,
                                              const std::vector<int>& idx_map,
                                              const int& stride);
 
-template void deepmd::select_map_inv<double>(
+template void mdpu::select_map_inv<double>(
     typename std::vector<double>::iterator out,
     const typename std::vector<double>::const_iterator in,
     const std::vector<int>& idx_map,
     const int& stride);
 
-template deepmd::STRINGTYPE deepmd::session_get_scalar<deepmd::STRINGTYPE>(
+template mdpu::STRINGTYPE mdpu::session_get_scalar<mdpu::STRINGTYPE>(
     Session*, const std::string, const std::string);
 
-template void deepmd::session_get_vector<deepmd::STRINGTYPE>(
-    std::vector<deepmd::STRINGTYPE>&,
+template void mdpu::session_get_vector<mdpu::STRINGTYPE>(
+    std::vector<mdpu::STRINGTYPE>&,
     Session*,
     const std::string,
     const std::string);
 
-template void deepmd::select_map<deepmd::STRINGTYPE>(
-    std::vector<deepmd::STRINGTYPE>& out,
-    const std::vector<deepmd::STRINGTYPE>& in,
+template void mdpu::select_map<mdpu::STRINGTYPE>(
+    std::vector<mdpu::STRINGTYPE>& out,
+    const std::vector<mdpu::STRINGTYPE>& in,
     const std::vector<int>& idx_map,
     const int& stride,
     const int& nframes,
     const int& nall1,
     const int& nall2);
 
-template void deepmd::select_map<deepmd::STRINGTYPE>(
-    typename std::vector<deepmd::STRINGTYPE>::iterator out,
-    const typename std::vector<deepmd::STRINGTYPE>::const_iterator in,
+template void mdpu::select_map<mdpu::STRINGTYPE>(
+    typename std::vector<mdpu::STRINGTYPE>::iterator out,
+    const typename std::vector<mdpu::STRINGTYPE>::const_iterator in,
     const std::vector<int>& idx_map,
     const int& stride,
     const int& nframes,
     const int& nall1,
     const int& nall2);
 
-template void deepmd::select_map_inv<deepmd::STRINGTYPE>(
-    std::vector<deepmd::STRINGTYPE>& out,
-    const std::vector<deepmd::STRINGTYPE>& in,
+template void mdpu::select_map_inv<mdpu::STRINGTYPE>(
+    std::vector<mdpu::STRINGTYPE>& out,
+    const std::vector<mdpu::STRINGTYPE>& in,
     const std::vector<int>& idx_map,
     const int& stride);
 
-template void deepmd::select_map_inv<deepmd::STRINGTYPE>(
-    typename std::vector<deepmd::STRINGTYPE>::iterator out,
-    const typename std::vector<deepmd::STRINGTYPE>::const_iterator in,
+template void mdpu::select_map_inv<mdpu::STRINGTYPE>(
+    typename std::vector<mdpu::STRINGTYPE>::iterator out,
+    const typename std::vector<mdpu::STRINGTYPE>::const_iterator in,
     const std::vector<int>& idx_map,
     const int& stride);
 
-void deepmd::read_file_to_string(std::string model, std::string& file_content) {
-  deepmd::check_status(tensorflow::ReadFileToString(tensorflow::Env::Default(),
+void mdpu::read_file_to_string(std::string model, std::string& file_content) {
+  mdpu::check_status(tensorflow::ReadFileToString(tensorflow::Env::Default(),
                                                     model, &file_content));
 }
 
-void deepmd::convert_pbtxt_to_pb(std::string fn_pb_txt, std::string fn_pb) {
+void mdpu::convert_pbtxt_to_pb(std::string fn_pb_txt, std::string fn_pb) {
   int fd = open(fn_pb_txt.c_str(), O_RDONLY);
   tensorflow::protobuf::io::ZeroCopyInputStream* input =
       new tensorflow::protobuf::io::FileInputStream(fd);
@@ -1082,7 +1082,7 @@ void deepmd::convert_pbtxt_to_pb(std::string fn_pb_txt, std::string fn_pb) {
   graph_def.SerializeToOstream(&output);
 }
 
-template int deepmd::session_input_tensors<double, double>(
+template int mdpu::session_input_tensors<double, double>(
     std::vector<std::pair<std::string, tensorflow::Tensor>>& input_tensors,
     const std::vector<double>& dcoord_,
     const int& ntypes,
@@ -1091,9 +1091,9 @@ template int deepmd::session_input_tensors<double, double>(
     const double& cell_size,
     const std::vector<double>& fparam_,
     const std::vector<double>& aparam_,
-    const deepmd::AtomMap& atommap,
+    const mdpu::AtomMap& atommap,
     const std::string scope);
-template int deepmd::session_input_tensors<float, double>(
+template int mdpu::session_input_tensors<float, double>(
     std::vector<std::pair<std::string, tensorflow::Tensor>>& input_tensors,
     const std::vector<double>& dcoord_,
     const int& ntypes,
@@ -1102,10 +1102,10 @@ template int deepmd::session_input_tensors<float, double>(
     const double& cell_size,
     const std::vector<double>& fparam_,
     const std::vector<double>& aparam_,
-    const deepmd::AtomMap& atommap,
+    const mdpu::AtomMap& atommap,
     const std::string scope);
 
-template int deepmd::session_input_tensors<double, float>(
+template int mdpu::session_input_tensors<double, float>(
     std::vector<std::pair<std::string, tensorflow::Tensor>>& input_tensors,
     const std::vector<float>& dcoord_,
     const int& ntypes,
@@ -1114,9 +1114,9 @@ template int deepmd::session_input_tensors<double, float>(
     const double& cell_size,
     const std::vector<float>& fparam_,
     const std::vector<float>& aparam_,
-    const deepmd::AtomMap& atommap,
+    const mdpu::AtomMap& atommap,
     const std::string scope);
-template int deepmd::session_input_tensors<float, float>(
+template int mdpu::session_input_tensors<float, float>(
     std::vector<std::pair<std::string, tensorflow::Tensor>>& input_tensors,
     const std::vector<float>& dcoord_,
     const int& ntypes,
@@ -1125,10 +1125,10 @@ template int deepmd::session_input_tensors<float, float>(
     const double& cell_size,
     const std::vector<float>& fparam_,
     const std::vector<float>& aparam_,
-    const deepmd::AtomMap& atommap,
+    const mdpu::AtomMap& atommap,
     const std::string scope);
 
-template int deepmd::session_input_tensors<double, double>(
+template int mdpu::session_input_tensors<double, double>(
     std::vector<std::pair<std::string, tensorflow::Tensor>>& input_tensors,
     const std::vector<double>& dcoord_,
     const int& ntypes,
@@ -1137,11 +1137,11 @@ template int deepmd::session_input_tensors<double, double>(
     InputNlist& dlist,
     const std::vector<double>& fparam_,
     const std::vector<double>& aparam_,
-    const deepmd::AtomMap& atommap,
+    const mdpu::AtomMap& atommap,
     const int nghost,
     const int ago,
     const std::string scope);
-template int deepmd::session_input_tensors<float, double>(
+template int mdpu::session_input_tensors<float, double>(
     std::vector<std::pair<std::string, tensorflow::Tensor>>& input_tensors,
     const std::vector<double>& dcoord_,
     const int& ntypes,
@@ -1150,12 +1150,12 @@ template int deepmd::session_input_tensors<float, double>(
     InputNlist& dlist,
     const std::vector<double>& fparam_,
     const std::vector<double>& aparam_,
-    const deepmd::AtomMap& atommap,
+    const mdpu::AtomMap& atommap,
     const int nghost,
     const int ago,
     const std::string scope);
 
-template int deepmd::session_input_tensors<double, float>(
+template int mdpu::session_input_tensors<double, float>(
     std::vector<std::pair<std::string, tensorflow::Tensor>>& input_tensors,
     const std::vector<float>& dcoord_,
     const int& ntypes,
@@ -1164,11 +1164,11 @@ template int deepmd::session_input_tensors<double, float>(
     InputNlist& dlist,
     const std::vector<float>& fparam_,
     const std::vector<float>& aparam_,
-    const deepmd::AtomMap& atommap,
+    const mdpu::AtomMap& atommap,
     const int nghost,
     const int ago,
     const std::string scope);
-template int deepmd::session_input_tensors<float, float>(
+template int mdpu::session_input_tensors<float, float>(
     std::vector<std::pair<std::string, tensorflow::Tensor>>& input_tensors,
     const std::vector<float>& dcoord_,
     const int& ntypes,
@@ -1177,12 +1177,12 @@ template int deepmd::session_input_tensors<float, float>(
     InputNlist& dlist,
     const std::vector<float>& fparam_,
     const std::vector<float>& aparam_,
-    const deepmd::AtomMap& atommap,
+    const mdpu::AtomMap& atommap,
     const int nghost,
     const int ago,
     const std::string scope);
 
-template int deepmd::session_input_tensors_mixed_type<double, double>(
+template int mdpu::session_input_tensors_mixed_type<double, double>(
     std::vector<std::pair<std::string, tensorflow::Tensor>>& input_tensors,
     const int& nframes,
     const std::vector<double>& dcoord_,
@@ -1192,9 +1192,9 @@ template int deepmd::session_input_tensors_mixed_type<double, double>(
     const double& cell_size,
     const std::vector<double>& fparam_,
     const std::vector<double>& aparam_,
-    const deepmd::AtomMap& atommap,
+    const mdpu::AtomMap& atommap,
     const std::string scope);
-template int deepmd::session_input_tensors_mixed_type<float, double>(
+template int mdpu::session_input_tensors_mixed_type<float, double>(
     std::vector<std::pair<std::string, tensorflow::Tensor>>& input_tensors,
     const int& nframes,
     const std::vector<double>& dcoord_,
@@ -1204,10 +1204,10 @@ template int deepmd::session_input_tensors_mixed_type<float, double>(
     const double& cell_size,
     const std::vector<double>& fparam_,
     const std::vector<double>& aparam_,
-    const deepmd::AtomMap& atommap,
+    const mdpu::AtomMap& atommap,
     const std::string scope);
 
-template int deepmd::session_input_tensors_mixed_type<double, float>(
+template int mdpu::session_input_tensors_mixed_type<double, float>(
     std::vector<std::pair<std::string, tensorflow::Tensor>>& input_tensors,
     const int& nframes,
     const std::vector<float>& dcoord_,
@@ -1217,9 +1217,9 @@ template int deepmd::session_input_tensors_mixed_type<double, float>(
     const double& cell_size,
     const std::vector<float>& fparam_,
     const std::vector<float>& aparam_,
-    const deepmd::AtomMap& atommap,
+    const mdpu::AtomMap& atommap,
     const std::string scope);
-template int deepmd::session_input_tensors_mixed_type<float, float>(
+template int mdpu::session_input_tensors_mixed_type<float, float>(
     std::vector<std::pair<std::string, tensorflow::Tensor>>& input_tensors,
     const int& nframes,
     const std::vector<float>& dcoord_,
@@ -1229,12 +1229,12 @@ template int deepmd::session_input_tensors_mixed_type<float, float>(
     const double& cell_size,
     const std::vector<float>& fparam_,
     const std::vector<float>& aparam_,
-    const deepmd::AtomMap& atommap,
+    const mdpu::AtomMap& atommap,
     const std::string scope);
 
-void deepmd::print_summary(const std::string& pre) {
+void mdpu::print_summary(const std::string& pre) {
   int num_intra_nthreads, num_inter_nthreads;
-  deepmd::get_env_nthreads(num_intra_nthreads, num_inter_nthreads);
+  mdpu::get_env_nthreads(num_intra_nthreads, num_inter_nthreads);
   std::cout << pre << "installed to:       " + global_install_prefix << "\n";
   std::cout << pre << "source:             " + global_git_summ << "\n";
   std::cout << pre << "source branch:       " + global_git_branch << "\n";

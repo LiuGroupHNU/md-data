@@ -226,7 +226,7 @@ static void _prepare_coord_nlist_cpu(OpKernelContext* context,
                                      int const** type,
                                      std::vector<int>& type_cpy,
                                      std::vector<int>& idx_mapping,
-                                     deepmd::InputNlist& inlist,
+                                     mdpu::InputNlist& inlist,
                                      std::vector<int>& ilist,
                                      std::vector<int>& numneigh,
                                      std::vector<int*>& firstneigh,
@@ -297,7 +297,7 @@ static void _prepare_coord_nlist_gpu(OpKernelContext* context,
                                      int const** type,
                                      int*& type_cpy,
                                      int*& idx_mapping,
-                                     deepmd::InputNlist& inlist,
+                                     mdpu::InputNlist& inlist,
                                      int*& ilist,
                                      int*& numneigh,
                                      int**& firstneigh,
@@ -372,7 +372,7 @@ static void _prepare_coord_nlist_gpu_rocm(OpKernelContext* context,
                                           int const** type,
                                           int*& type_cpy,
                                           int*& idx_mapping,
-                                          deepmd::InputNlist& inlist,
+                                          mdpu::InputNlist& inlist,
                                           int*& ilist,
                                           int*& numneigh,
                                           int**& firstneigh,
@@ -405,8 +405,8 @@ class ProdEnvMatAOp : public OpKernel {
     OP_REQUIRES_OK(context, context->GetAttr("sel_r", &sel_r));
     // OP_REQUIRES_OK(context, context->GetAttr("nloc", &nloc_f));
     // OP_REQUIRES_OK(context, context->GetAttr("nall", &nall_f));
-    deepmd::cum_sum(sec_a, sel_a);
-    deepmd::cum_sum(sec_r, sel_r);
+    mdpu::cum_sum(sec_a, sel_a);
+    mdpu::cum_sum(sec_r, sel_r);
     ndescrpt_a = sec_a.back() * 4;
     ndescrpt_r = sec_r.back() * 1;
     ndescrpt = ndescrpt_a + ndescrpt_r;
@@ -421,7 +421,7 @@ class ProdEnvMatAOp : public OpKernel {
   }
 
   void Compute(OpKernelContext* context) override {
-    deepmd::safe_compute(
+    mdpu::safe_compute(
         context, [this](OpKernelContext* context) { this->_Compute(context); });
   }
 
@@ -509,10 +509,10 @@ class ProdEnvMatAOp : public OpKernel {
       nei_mode = -1;
     } else if (mesh_tensor.shape().dim_size(0) == 7 ||
                mesh_tensor.shape().dim_size(0) == 1) {
-      throw deepmd::deepmd_exception(
+      throw mdpu::mdpu_exception(
           "Mixed types are not supported by this OP.");
     } else {
-      throw deepmd::deepmd_exception("invalid mesh tensor");
+      throw mdpu::mdpu_exception("invalid mesh tensor");
     }
 
     // Create output tensors
@@ -571,7 +571,7 @@ class ProdEnvMatAOp : public OpKernel {
         int* idx_mapping = NULL;
         int *ilist = NULL, *numneigh = NULL;
         int** firstneigh = NULL;
-        deepmd::malloc_device_memory(firstneigh, nloc);
+        mdpu::malloc_device_memory(firstneigh, nloc);
         int* jlist = NULL;
         FPTYPE* coord_cpy;
         int* type_cpy;
@@ -602,21 +602,21 @@ class ProdEnvMatAOp : public OpKernel {
         array_longlong = uint64_temp.flat<unsigned long long>().data();
 
         // launch the gpu(nv) compute function
-        deepmd::prod_env_mat_a_gpu_cuda(em, em_deriv, rij, nlist, coord, type,
+        mdpu::prod_env_mat_a_gpu_cuda(em, em_deriv, rij, nlist, coord, type,
                                         gpu_inlist, array_int, array_longlong,
                                         max_nbor_size, avg, std, nloc,
                                         frame_nall, rcut_r, rcut_r_smth, sec_a);
         if (b_nlist_map) {
           _map_nlist_gpu(nlist, idx_mapping, nloc, nnei);
         }
-        deepmd::delete_device_memory(firstneigh);
+        mdpu::delete_device_memory(firstneigh);
 #endif  // GOOGLE_CUDA
 
 #if TENSORFLOW_USE_ROCM
         int* idx_mapping = NULL;
         int *ilist = NULL, *numneigh = NULL;
         int** firstneigh = NULL;
-        deepmd::malloc_device_memory(firstneigh, nloc);
+        mdpu::malloc_device_memory(firstneigh, nloc);
         int* jlist = NULL;
         FPTYPE* coord_cpy;
         int* type_cpy;
@@ -647,17 +647,17 @@ class ProdEnvMatAOp : public OpKernel {
         array_longlong = uint64_temp.flat<unsigned long long>().data();
 
         // launch the gpu(nv) compute function
-        deepmd::prod_env_mat_a_gpu_rocm(em, em_deriv, rij, nlist, coord, type,
+        mdpu::prod_env_mat_a_gpu_rocm(em, em_deriv, rij, nlist, coord, type,
                                         gpu_inlist, array_int, array_longlong,
                                         max_nbor_size, avg, std, nloc,
                                         frame_nall, rcut_r, rcut_r_smth, sec_a);
         if (b_nlist_map) {
           _map_nlist_gpu_rocm(nlist, idx_mapping, nloc, nnei);
         }
-        deepmd::delete_device_memory(firstneigh);
+        mdpu::delete_device_memory(firstneigh);
 #endif  // TENSORFLOW_USE_ROCM
       } else if (device == "CPU") {
-        deepmd::InputNlist inlist;
+        mdpu::InputNlist inlist;
         // some buffers, be freed after the evaluation of this frame
         std::vector<int> idx_mapping;
         std::vector<int> ilist(nloc), numneigh(nloc);
@@ -673,7 +673,7 @@ class ProdEnvMatAOp : public OpKernel {
             max_nbor_size, box, mesh_tensor.flat<int>().data(), nloc, nei_mode,
             rcut_r, max_cpy_trial, max_nnei_trial);
         // launch the cpu compute function
-        deepmd::prod_env_mat_a_cpu(em, em_deriv, rij, nlist, coord, type,
+        mdpu::prod_env_mat_a_cpu(em, em_deriv, rij, nlist, coord, type,
                                    inlist, max_nbor_size, avg, std, nloc,
                                    frame_nall, rcut_r, rcut_r_smth, sec_a);
         // do nlist mapping if coords were copied
@@ -700,7 +700,7 @@ class ProdEnvMatAOp : public OpKernel {
   std::string device;
   int* array_int = NULL;
   unsigned long long* array_longlong = NULL;
-  deepmd::InputNlist gpu_inlist;
+  mdpu::InputNlist gpu_inlist;
   int* nbor_list_dev = NULL;
 };
 
@@ -711,9 +711,9 @@ class ProdEnvMatROp : public OpKernel {
     OP_REQUIRES_OK(context, context->GetAttr("rcut", &rcut));
     OP_REQUIRES_OK(context, context->GetAttr("rcut_smth", &rcut_smth));
     OP_REQUIRES_OK(context, context->GetAttr("sel", &sel));
-    deepmd::cum_sum(sec, sel);
+    mdpu::cum_sum(sec, sel);
     sel_null.resize(3, 0);
-    deepmd::cum_sum(sec_null, sel_null);
+    mdpu::cum_sum(sec_null, sel_null);
     ndescrpt = sec.back() * 1;
     nnei = sec.back();
     max_nbor_size = 1024;
@@ -724,7 +724,7 @@ class ProdEnvMatROp : public OpKernel {
   }
 
   void Compute(OpKernelContext* context) override {
-    deepmd::safe_compute(
+    mdpu::safe_compute(
         context, [this](OpKernelContext* context) { this->_Compute(context); });
   }
 
@@ -801,10 +801,10 @@ class ProdEnvMatROp : public OpKernel {
       nei_mode = -1;
     } else if (mesh_tensor.shape().dim_size(0) == 7 ||
                mesh_tensor.shape().dim_size(0) == 1) {
-      throw deepmd::deepmd_exception(
+      throw mdpu::mdpu_exception(
           "Mixed types are not supported by this OP.");
     } else {
-      throw deepmd::deepmd_exception("invalid mesh tensor");
+      throw mdpu::mdpu_exception("invalid mesh tensor");
     }
 
     // Create an output tensor
@@ -863,7 +863,7 @@ class ProdEnvMatROp : public OpKernel {
         int* idx_mapping = NULL;
         int *ilist = NULL, *numneigh = NULL;
         int** firstneigh = NULL;
-        deepmd::malloc_device_memory(firstneigh, nloc);
+        mdpu::malloc_device_memory(firstneigh, nloc);
         int* jlist = NULL;
         FPTYPE* coord_cpy;
         int* type_cpy;
@@ -894,21 +894,21 @@ class ProdEnvMatROp : public OpKernel {
         array_longlong = uint64_temp.flat<unsigned long long>().data();
 
         // launch the gpu(nv) compute function
-        deepmd::prod_env_mat_r_gpu_cuda(em, em_deriv, rij, nlist, coord, type,
+        mdpu::prod_env_mat_r_gpu_cuda(em, em_deriv, rij, nlist, coord, type,
                                         gpu_inlist, array_int, array_longlong,
                                         max_nbor_size, avg, std, nloc,
                                         frame_nall, rcut, rcut_smth, sec);
         if (b_nlist_map) {
           _map_nlist_gpu(nlist, idx_mapping, nloc, nnei);
         }
-        deepmd::delete_device_memory(firstneigh);
+        mdpu::delete_device_memory(firstneigh);
 #endif  // GOOGLE_CUDA
 
 #if TENSORFLOW_USE_ROCM
         int* idx_mapping = NULL;
         int *ilist = NULL, *numneigh = NULL;
         int** firstneigh = NULL;
-        deepmd::malloc_device_memory(firstneigh, nloc);
+        mdpu::malloc_device_memory(firstneigh, nloc);
         int* jlist = NULL;
         FPTYPE* coord_cpy;
         int* type_cpy;
@@ -939,17 +939,17 @@ class ProdEnvMatROp : public OpKernel {
         array_longlong = uint64_temp.flat<unsigned long long>().data();
 
         // launch the gpu(nv) compute function
-        deepmd::prod_env_mat_r_gpu_rocm(em, em_deriv, rij, nlist, coord, type,
+        mdpu::prod_env_mat_r_gpu_rocm(em, em_deriv, rij, nlist, coord, type,
                                         gpu_inlist, array_int, array_longlong,
                                         max_nbor_size, avg, std, nloc,
                                         frame_nall, rcut, rcut_smth, sec);
         if (b_nlist_map) {
           _map_nlist_gpu_rocm(nlist, idx_mapping, nloc, nnei);
         }
-        deepmd::delete_device_memory(firstneigh);
+        mdpu::delete_device_memory(firstneigh);
 #endif  // TENSORFLOW_USE_ROCM
       } else if (device == "CPU") {
-        deepmd::InputNlist inlist;
+        mdpu::InputNlist inlist;
         // some buffers, be freed after the evaluation of this frame
         std::vector<int> idx_mapping;
         std::vector<int> ilist(nloc), numneigh(nloc);
@@ -965,7 +965,7 @@ class ProdEnvMatROp : public OpKernel {
             max_nbor_size, box, mesh_tensor.flat<int>().data(), nloc, nei_mode,
             rcut, max_cpy_trial, max_nnei_trial);
         // launch the cpu compute function
-        deepmd::prod_env_mat_r_cpu(em, em_deriv, rij, nlist, coord, type,
+        mdpu::prod_env_mat_r_cpu(em, em_deriv, rij, nlist, coord, type,
                                    inlist, max_nbor_size, avg, std, nloc,
                                    frame_nall, rcut, rcut_smth, sec);
         if (b_nlist_map) {
@@ -990,7 +990,7 @@ class ProdEnvMatROp : public OpKernel {
   std::string device;
   int* array_int = NULL;
   unsigned long long* array_longlong = NULL;
-  deepmd::InputNlist gpu_inlist;
+  mdpu::InputNlist gpu_inlist;
   int* nbor_list_dev = NULL;
 };
 
@@ -1006,8 +1006,8 @@ class ProdEnvMatAMixOp : public OpKernel {
     OP_REQUIRES_OK(context, context->GetAttr("sel_r", &sel_r));
     // OP_REQUIRES_OK(context, context->GetAttr("nloc", &nloc_f));
     // OP_REQUIRES_OK(context, context->GetAttr("nall", &nall_f));
-    deepmd::cum_sum(sec_a, sel_a);
-    deepmd::cum_sum(sec_r, sel_r);
+    mdpu::cum_sum(sec_a, sel_a);
+    mdpu::cum_sum(sec_r, sel_r);
     ndescrpt_a = sec_a.back() * 4;
     ndescrpt_r = sec_r.back() * 1;
     ndescrpt = ndescrpt_a + ndescrpt_r;
@@ -1022,7 +1022,7 @@ class ProdEnvMatAMixOp : public OpKernel {
   }
 
   void Compute(OpKernelContext* context) override {
-    deepmd::safe_compute(
+    mdpu::safe_compute(
         context, [this](OpKernelContext* context) { this->_Compute(context); });
   }
 
@@ -1110,7 +1110,7 @@ class ProdEnvMatAMixOp : public OpKernel {
       assert(nloc == nall);
       nei_mode = -1;
     } else {
-      throw deepmd::deepmd_exception("invalid mesh tensor");
+      throw mdpu::mdpu_exception("invalid mesh tensor");
     }
 
     // Create output tensors
@@ -1179,10 +1179,10 @@ class ProdEnvMatAMixOp : public OpKernel {
 
     if (device == "GPU") {
 #if GOOGLE_CUDA
-      deepmd::filter_ftype_gpu_cuda(p_f_type, p_type, nsamples * nall);
+      mdpu::filter_ftype_gpu_cuda(p_f_type, p_type, nsamples * nall);
 #endif
 #if TENSORFLOW_USE_ROCM
-      deepmd::filter_ftype_gpu_rocm(p_f_type, p_type, nsamples * nall);
+      mdpu::filter_ftype_gpu_rocm(p_f_type, p_type, nsamples * nall);
 #endif
     } else if (device == "CPU") {
       for (int ii = 0; ii < nsamples * nall; ii++) {
@@ -1208,7 +1208,7 @@ class ProdEnvMatAMixOp : public OpKernel {
         int* idx_mapping = NULL;
         int *ilist = NULL, *numneigh = NULL;
         int** firstneigh = NULL;
-        deepmd::malloc_device_memory(firstneigh, nloc);
+        mdpu::malloc_device_memory(firstneigh, nloc);
         int* jlist = NULL;
         FPTYPE* coord_cpy;
         int* type_cpy;
@@ -1239,20 +1239,20 @@ class ProdEnvMatAMixOp : public OpKernel {
         array_longlong = uint64_temp.flat<unsigned long long>().data();
 
         // launch the gpu(nv) compute function
-        deepmd::prod_env_mat_a_gpu_cuda(
+        mdpu::prod_env_mat_a_gpu_cuda(
             em, em_deriv, rij, nlist, coord, type, gpu_inlist, array_int,
             array_longlong, max_nbor_size, avg, std, nloc, frame_nall, rcut_r,
             rcut_r_smth, sec_a, f_type);
         _map_nei_info_gpu(nlist, ntype, nmask, type, idx_mapping, nloc, nnei,
                           ntypes, b_nlist_map);
-        deepmd::delete_device_memory(firstneigh);
+        mdpu::delete_device_memory(firstneigh);
 #endif  // GOOGLE_CUDA
 
 #if TENSORFLOW_USE_ROCM
         int* idx_mapping = NULL;
         int *ilist = NULL, *numneigh = NULL;
         int** firstneigh = NULL;
-        deepmd::malloc_device_memory(firstneigh, nloc);
+        mdpu::malloc_device_memory(firstneigh, nloc);
         int* jlist = NULL;
         FPTYPE* coord_cpy;
         int* type_cpy;
@@ -1283,16 +1283,16 @@ class ProdEnvMatAMixOp : public OpKernel {
         array_longlong = uint64_temp.flat<unsigned long long>().data();
 
         // launch the gpu(nv) compute function
-        deepmd::prod_env_mat_a_gpu_rocm(
+        mdpu::prod_env_mat_a_gpu_rocm(
             em, em_deriv, rij, nlist, coord, type, gpu_inlist, array_int,
             array_longlong, max_nbor_size, avg, std, nloc, frame_nall, rcut_r,
             rcut_r_smth, sec_a, f_type);
         _map_nei_info_gpu_rocm(nlist, ntype, nmask, type, idx_mapping, nloc,
                                nnei, ntypes, b_nlist_map);
-        deepmd::delete_device_memory(firstneigh);
+        mdpu::delete_device_memory(firstneigh);
 #endif  // TENSORFLOW_USE_ROCM
       } else if (device == "CPU") {
-        deepmd::InputNlist inlist;
+        mdpu::InputNlist inlist;
         // some buffers, be freed after the evaluation of this frame
         std::vector<int> idx_mapping;
         std::vector<int> ilist(nloc), numneigh(nloc);
@@ -1308,7 +1308,7 @@ class ProdEnvMatAMixOp : public OpKernel {
             max_nbor_size, box, mesh_tensor.flat<int>().data(), nloc, nei_mode,
             rcut_r, max_cpy_trial, max_nnei_trial);
         // launch the cpu compute function
-        deepmd::prod_env_mat_a_cpu(
+        mdpu::prod_env_mat_a_cpu(
             em, em_deriv, rij, nlist, coord, type, inlist, max_nbor_size, avg,
             std, nloc, frame_nall, rcut_r, rcut_r_smth, sec_a, f_type);
         // do nlist mapping if coords were copied
@@ -1334,7 +1334,7 @@ class ProdEnvMatAMixOp : public OpKernel {
   std::string device;
   int* array_int = NULL;
   unsigned long long* array_longlong = NULL;
-  deepmd::InputNlist gpu_inlist;
+  mdpu::InputNlist gpu_inlist;
   int* nbor_list_dev = NULL;
 };
 
@@ -1352,7 +1352,7 @@ static int _norm_copy_coord_cpu(std::vector<FPTYPE>& coord_cpy,
                                 const float& rcut_r) {
   std::vector<FPTYPE> tmp_coord(nall * 3);
   std::copy(coord, coord + nall * 3, tmp_coord.begin());
-  deepmd::Region<FPTYPE> region;
+  mdpu::Region<FPTYPE> region;
   init_region_cpu(region, box);
   normalize_coord_cpu(&tmp_coord[0], nall, region);
   int tt;
@@ -1390,7 +1390,7 @@ static int _build_nlist_cpu(std::vector<int>& ilist,
       jlist[ii].resize(mem_nnei);
       firstneigh[ii] = &jlist[ii][0];
     }
-    deepmd::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
+    mdpu::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
     int ret = build_nlist_cpu(inlist, &max_nnei, coord, nloc, new_nall,
                               mem_nnei, rcut_r);
     if (ret == 0) {
@@ -1425,7 +1425,7 @@ static void _map_nei_info_cpu(int* nlist,
                               const int& nnei,
                               const int& ntypes,
                               const bool& b_nlist_map) {
-  deepmd::use_nei_info_cpu(nlist, ntype, nmask, type, idx_mapping, nloc, nnei,
+  mdpu::use_nei_info_cpu(nlist, ntype, nmask, type, idx_mapping, nloc, nnei,
                            ntypes, b_nlist_map);
 }
 
@@ -1436,7 +1436,7 @@ static void _prepare_coord_nlist_cpu(OpKernelContext* context,
                                      int const** type,
                                      std::vector<int>& type_cpy,
                                      std::vector<int>& idx_mapping,
-                                     deepmd::InputNlist& inlist,
+                                     mdpu::InputNlist& inlist,
                                      std::vector<int>& ilist,
                                      std::vector<int>& numneigh,
                                      std::vector<int*>& firstneigh,
@@ -1507,13 +1507,13 @@ static int _norm_copy_coord_gpu(OpKernelContext* context,
   DPErrcheck(cudaMemcpy(tmp_coord, coord, sizeof(FPTYPE) * nall * 3,
                         cudaMemcpyDeviceToDevice));
 
-  deepmd::Region<FPTYPE> region;
+  mdpu::Region<FPTYPE> region;
   init_region_cpu(region, box);
   FPTYPE box_info[18];
   std::copy(region.boxt, region.boxt + 9, box_info);
   std::copy(region.rec_boxt, region.rec_boxt + 9, box_info + 9);
   int cell_info[23];
-  deepmd::compute_cell_info(cell_info, rcut_r, region);
+  mdpu::compute_cell_info(cell_info, rcut_r, region);
   const int loc_cellnum = cell_info[21];
   const int total_cellnum = cell_info[22];
   // Tensor double_temp;
@@ -1530,14 +1530,14 @@ static int _norm_copy_coord_gpu(OpKernelContext* context,
   FPTYPE* box_info_dev = (*(tensor_list + 1)).flat<FPTYPE>().data();
   int* cell_info_dev = (*(tensor_list + 2)).flat<int>().data();
   int* int_data_dev = cell_info_dev + 23;
-  deepmd::memcpy_host_to_device(box_info_dev, box_info, 18);
-  deepmd::memcpy_host_to_device(cell_info_dev, cell_info, 23);
-  deepmd::Region<FPTYPE> region_dev;
+  mdpu::memcpy_host_to_device(box_info_dev, box_info, 18);
+  mdpu::memcpy_host_to_device(cell_info_dev, cell_info, 23);
+  mdpu::Region<FPTYPE> region_dev;
   FPTYPE* new_boxt = region_dev.boxt;
   FPTYPE* new_rec_boxt = region_dev.rec_boxt;
   region_dev.boxt = box_info_dev;
   region_dev.rec_boxt = box_info_dev + 9;
-  deepmd::normalize_coord_gpu(tmp_coord, nall, region_dev);
+  mdpu::normalize_coord_gpu(tmp_coord, nall, region_dev);
   int tt;
   for (tt = 0; tt < max_cpy_trial; ++tt) {
     // Tensor cpy_temp;
@@ -1552,7 +1552,7 @@ static int _norm_copy_coord_gpu(OpKernelContext* context,
     coord_cpy = (*(tensor_list + 3)).flat<FPTYPE>().data();
     type_cpy = (*(tensor_list + 4)).flat<int>().data();
     idx_mapping = type_cpy + mem_cpy;
-    int ret = deepmd::copy_coord_gpu(
+    int ret = mdpu::copy_coord_gpu(
         coord_cpy, type_cpy, idx_mapping, &nall, int_data_dev, tmp_coord, type,
         nloc, mem_cpy, loc_cellnum, total_cellnum, cell_info_dev, region_dev);
     if (ret == 0) {
@@ -1600,9 +1600,9 @@ static int _build_nlist_gpu(OpKernelContext* context,
     for (int_64 ii = 0; ii < nloc; ++ii) {
       firstneigh_host[ii] = jlist + ii * mem_nnei;
     }
-    deepmd::memcpy_host_to_device(firstneigh, firstneigh_host);
-    deepmd::InputNlist inlist(nloc, ilist, numneigh, firstneigh);
-    int ret = deepmd::build_nlist_gpu(inlist, &max_nnei, ind_data, coord, nloc,
+    mdpu::memcpy_host_to_device(firstneigh, firstneigh_host);
+    mdpu::InputNlist inlist(nloc, ilist, numneigh, firstneigh);
+    int ret = mdpu::build_nlist_gpu(inlist, &max_nnei, ind_data, coord, nloc,
                                       new_nall, mem_nnei, rcut_r);
     if (ret == 0) {
       break;
@@ -1617,7 +1617,7 @@ static void _map_nlist_gpu(int* nlist,
                            const int* idx_mapping,
                            const int& nloc,
                            const int& nnei) {
-  deepmd::use_nlist_map(nlist, idx_mapping, nloc, nnei);
+  mdpu::use_nlist_map(nlist, idx_mapping, nloc, nnei);
 }
 
 static void _map_nei_info_gpu(int* nlist,
@@ -1629,7 +1629,7 @@ static void _map_nei_info_gpu(int* nlist,
                               const int& nnei,
                               const int& ntypes,
                               const bool& b_nlist_map) {
-  deepmd::use_nei_info_gpu(nlist, ntype, nmask, type, idx_mapping, nloc, nnei,
+  mdpu::use_nei_info_gpu(nlist, ntype, nmask, type, idx_mapping, nloc, nnei,
                            ntypes, b_nlist_map);
 }
 
@@ -1641,7 +1641,7 @@ static void _prepare_coord_nlist_gpu(OpKernelContext* context,
                                      int const** type,
                                      int*& type_cpy,
                                      int*& idx_mapping,
-                                     deepmd::InputNlist& inlist,
+                                     mdpu::InputNlist& inlist,
                                      int*& ilist,
                                      int*& numneigh,
                                      int**& firstneigh,
@@ -1691,9 +1691,9 @@ static void _prepare_coord_nlist_gpu(OpKernelContext* context,
     inlist.firstneigh = firstneigh;
   } else {
     // update nbor list
-    deepmd::InputNlist inlist_temp;
+    mdpu::InputNlist inlist_temp;
     inlist_temp.inum = nloc;
-    deepmd::env_mat_nbor_update(inlist_temp, inlist, max_nbor_size,
+    mdpu::env_mat_nbor_update(inlist_temp, inlist, max_nbor_size,
                                 nbor_list_dev, mesh_tensor_data,
                                 mesh_tensor_size);
     OP_REQUIRES(context, (max_numneigh(inlist_temp) <= max_nbor_size),
@@ -1701,7 +1701,7 @@ static void _prepare_coord_nlist_gpu(OpKernelContext* context,
                     "Assert failed, max neighbor size of atom(lammps) " +
                     std::to_string(max_numneigh(inlist_temp)) +
                     " is larger than " + std::to_string(max_nbor_size) +
-                    ", which currently is not supported by deepmd-kit."));
+                    ", which currently is not supported by mdpu-kit."));
   }
 }
 #endif  // GOOGLE_CUDA
@@ -1730,13 +1730,13 @@ static int _norm_copy_coord_gpu_rocm(OpKernelContext* context,
   DPErrcheck(hipMemcpy(tmp_coord, coord, sizeof(FPTYPE) * nall * 3,
                        hipMemcpyDeviceToDevice));
 
-  deepmd::Region<FPTYPE> region;
+  mdpu::Region<FPTYPE> region;
   init_region_cpu(region, box);
   FPTYPE box_info[18];
   std::copy(region.boxt, region.boxt + 9, box_info);
   std::copy(region.rec_boxt, region.rec_boxt + 9, box_info + 9);
   int cell_info[23];
-  deepmd::compute_cell_info(cell_info, rcut_r, region);
+  mdpu::compute_cell_info(cell_info, rcut_r, region);
   const int loc_cellnum = cell_info[21];
   const int total_cellnum = cell_info[22];
   // Tensor double_temp;
@@ -1753,14 +1753,14 @@ static int _norm_copy_coord_gpu_rocm(OpKernelContext* context,
   FPTYPE* box_info_dev = (*(tensor_list + 1)).flat<FPTYPE>().data();
   int* cell_info_dev = (*(tensor_list + 2)).flat<int>().data();
   int* int_data_dev = cell_info_dev + 23;
-  deepmd::memcpy_host_to_device(box_info_dev, box_info, 18);
-  deepmd::memcpy_host_to_device(cell_info_dev, cell_info, 23);
-  deepmd::Region<FPTYPE> region_dev;
+  mdpu::memcpy_host_to_device(box_info_dev, box_info, 18);
+  mdpu::memcpy_host_to_device(cell_info_dev, cell_info, 23);
+  mdpu::Region<FPTYPE> region_dev;
   FPTYPE* new_boxt = region_dev.boxt;
   FPTYPE* new_rec_boxt = region_dev.rec_boxt;
   region_dev.boxt = box_info_dev;
   region_dev.rec_boxt = box_info_dev + 9;
-  deepmd::normalize_coord_gpu_rocm(tmp_coord, nall, region_dev);
+  mdpu::normalize_coord_gpu_rocm(tmp_coord, nall, region_dev);
   int tt;
   for (tt = 0; tt < max_cpy_trial; ++tt) {
     // Tensor cpy_temp;
@@ -1775,7 +1775,7 @@ static int _norm_copy_coord_gpu_rocm(OpKernelContext* context,
     coord_cpy = (*(tensor_list + 3)).flat<FPTYPE>().data();
     type_cpy = (*(tensor_list + 4)).flat<int>().data();
     idx_mapping = type_cpy + mem_cpy;
-    int ret = deepmd::copy_coord_gpu_rocm(
+    int ret = mdpu::copy_coord_gpu_rocm(
         coord_cpy, type_cpy, idx_mapping, &nall, int_data_dev, tmp_coord, type,
         nloc, mem_cpy, loc_cellnum, total_cellnum, cell_info_dev, region_dev);
     if (ret == 0) {
@@ -1823,9 +1823,9 @@ static int _build_nlist_gpu_rocm(OpKernelContext* context,
     for (int_64 ii = 0; ii < nloc; ++ii) {
       firstneigh_host[ii] = jlist + ii * mem_nnei;
     }
-    deepmd::memcpy_host_to_device(firstneigh, firstneigh_host);
-    deepmd::InputNlist inlist(nloc, ilist, numneigh, firstneigh);
-    int ret = deepmd::build_nlist_gpu_rocm(inlist, &max_nnei, ind_data, coord,
+    mdpu::memcpy_host_to_device(firstneigh, firstneigh_host);
+    mdpu::InputNlist inlist(nloc, ilist, numneigh, firstneigh);
+    int ret = mdpu::build_nlist_gpu_rocm(inlist, &max_nnei, ind_data, coord,
                                            nloc, new_nall, mem_nnei, rcut_r);
     if (ret == 0) {
       break;
@@ -1840,7 +1840,7 @@ static void _map_nlist_gpu_rocm(int* nlist,
                                 const int* idx_mapping,
                                 const int& nloc,
                                 const int& nnei) {
-  deepmd::use_nlist_map(nlist, idx_mapping, nloc, nnei);
+  mdpu::use_nlist_map(nlist, idx_mapping, nloc, nnei);
 }
 
 static void _map_nei_info_gpu_rocm(int* nlist,
@@ -1852,7 +1852,7 @@ static void _map_nei_info_gpu_rocm(int* nlist,
                                    const int& nnei,
                                    const int& ntypes,
                                    const bool& b_nlist_map) {
-  deepmd::use_nei_info_gpu_rocm(nlist, ntype, nmask, type, idx_mapping, nloc,
+  mdpu::use_nei_info_gpu_rocm(nlist, ntype, nmask, type, idx_mapping, nloc,
                                 nnei, ntypes, b_nlist_map);
 }
 
@@ -1864,7 +1864,7 @@ static void _prepare_coord_nlist_gpu_rocm(OpKernelContext* context,
                                           int const** type,
                                           int*& type_cpy,
                                           int*& idx_mapping,
-                                          deepmd::InputNlist& inlist,
+                                          mdpu::InputNlist& inlist,
                                           int*& ilist,
                                           int*& numneigh,
                                           int**& firstneigh,
@@ -1914,9 +1914,9 @@ static void _prepare_coord_nlist_gpu_rocm(OpKernelContext* context,
     inlist.firstneigh = firstneigh;
   } else {
     // update nbor list
-    deepmd::InputNlist inlist_temp;
+    mdpu::InputNlist inlist_temp;
     inlist_temp.inum = nloc;
-    deepmd::env_mat_nbor_update(inlist_temp, inlist, max_nbor_size,
+    mdpu::env_mat_nbor_update(inlist_temp, inlist, max_nbor_size,
                                 nbor_list_dev, mesh_tensor_data,
                                 mesh_tensor_size);
     OP_REQUIRES(context, (max_numneigh(inlist_temp) <= max_nbor_size),
@@ -1924,7 +1924,7 @@ static void _prepare_coord_nlist_gpu_rocm(OpKernelContext* context,
                     "Assert failed, max neighbor size of atom(lammps) " +
                     std::to_string(max_numneigh(inlist_temp)) +
                     " is larger than " + std::to_string(max_nbor_size) +
-                    ", which currently is not supported by deepmd-kit."));
+                    ", which currently is not supported by mdpu-kit."));
   }
 }
 #endif  // TENSORFLOW_USE_ROCM

@@ -24,7 +24,7 @@ class PairwiseIdxOp : public OpKernel {
   explicit PairwiseIdxOp(OpKernelConstruction* context) : OpKernel(context) {}
 
   void Compute(OpKernelContext* context) override {
-    deepmd::safe_compute(
+    mdpu::safe_compute(
         context, [this](OpKernelContext* context) { this->_Compute(context); });
   }
 
@@ -60,8 +60,8 @@ class PairwiseIdxOp : public OpKernel {
       std::vector<int> forward_qm_map, backward_qm_map, forward_qmmm_map,
           backward_qmmm_map;
       int nloc_qm_ii, nloc_qmmm_ii, nall_qm_ii, nall_qmmm_ii;
-      deepmd::group_atoms_cpu(fragments, v_idxs);
-      deepmd::dprc_pairwise_map_cpu(forward_qm_map, backward_qm_map,
+      mdpu::group_atoms_cpu(fragments, v_idxs);
+      mdpu::dprc_pairwise_map_cpu(forward_qm_map, backward_qm_map,
                                     forward_qmmm_map, backward_qmmm_map,
                                     nloc_qm_ii, nloc_qmmm_ii, nall_qm_ii,
                                     nall_qmmm_ii, fragments, nloc, nall);

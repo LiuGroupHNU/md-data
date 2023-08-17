@@ -31,7 +31,7 @@ TYPED_TEST(TestInferEwald, cpu_numfv) {
   std::vector<VALUETYPE>& box = this->box;
   class MyModel : public EnergyModelTest<VALUETYPE> {
     const std::vector<VALUETYPE>& charge;
-    deepmd::EwaldParameters<VALUETYPE> eparam;
+    mdpu::EwaldParameters<VALUETYPE> eparam;
 
    public:
     MyModel(const std::vector<VALUETYPE>& charge_) : charge(charge_) {
@@ -42,7 +42,7 @@ TYPED_TEST(TestInferEwald, cpu_numfv) {
                          std::vector<VALUETYPE>& virial,
                          const std::vector<VALUETYPE>& coord,
                          const std::vector<VALUETYPE>& box) {
-      deepmd::Region<VALUETYPE> region;
+      mdpu::Region<VALUETYPE> region;
       init_region_cpu(region, &box[0]);
       VALUETYPE ener_;
       ewald_recp(ener_, force, virial, coord, charge, region, eparam);

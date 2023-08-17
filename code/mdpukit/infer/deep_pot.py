@@ -11,16 +11,16 @@ from typing import (
 
 import numpy as np
 
-from deepmd.common import (
+from mdpukit.common import (
     make_default_mesh,
 )
-from deepmd.infer.deep_eval import (
+from mdpukit.infer.deep_eval import (
     DeepEval,
 )
-from deepmd.utils.batch_size import (
+from mdpukit.utils.batch_size import (
     AutoBatchSize,
 )
-from deepmd.utils.sess import (
+from mdpukit.utils.sess import (
     run_sess,
 )
 
@@ -49,7 +49,7 @@ class DeepPot(DeepEval):
 
     Examples
     --------
-    >>> from deepmd.infer import DeepPot
+    >>> from mdpukit.infer import DeepPot
     >>> import numpy as np
     >>> dp = DeepPot('graph.pb')
     >>> coord = np.array([[1,0,0], [0,0,1.5], [1,0,3]]).reshape([1, -1])

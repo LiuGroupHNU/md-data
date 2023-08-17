@@ -35,7 +35,7 @@ class ProdVirialSeAGradOp : public OpKernel {
   }
 
   void Compute(OpKernelContext* context) override {
-    deepmd::safe_compute(
+    mdpu::safe_compute(
         context, [this](OpKernelContext* context) { this->_Compute(context); });
   }
 
@@ -143,16 +143,16 @@ class ProdVirialSeAGradOp : public OpKernel {
       const int* nlist = p_nlist + kk * nloc * nnei;
       if (device == "GPU") {
 #if GOOGLE_CUDA
-        deepmd::prod_virial_grad_a_gpu_cuda(grad_net, grad, in_deriv, rij,
+        mdpu::prod_virial_grad_a_gpu_cuda(grad_net, grad, in_deriv, rij,
                                             nlist, nloc, nnei);
 #endif  // GOOGLE_CUDA
 
 #if TENSORFLOW_USE_ROCM
-        deepmd::prod_virial_grad_a_gpu_rocm(grad_net, grad, in_deriv, rij,
+        mdpu::prod_virial_grad_a_gpu_rocm(grad_net, grad, in_deriv, rij,
                                             nlist, nloc, nnei);
 #endif  // TENSORFLOW_USE_ROCM
       } else if (device == "CPU") {
-        deepmd::prod_virial_grad_a_cpu(grad_net, grad, in_deriv, rij, nlist,
+        mdpu::prod_virial_grad_a_cpu(grad_net, grad, in_deriv, rij, nlist,
                                        nloc, nnei);
       }
     }
@@ -170,7 +170,7 @@ class ProdVirialSeRGradOp : public OpKernel {
       : OpKernel(context) {}
 
   void Compute(OpKernelContext* context) override {
-    deepmd::safe_compute(
+    mdpu::safe_compute(
         context, [this](OpKernelContext* context) { this->_Compute(context); });
   }
 
@@ -276,16 +276,16 @@ class ProdVirialSeRGradOp : public OpKernel {
       const int* nlist = p_nlist + kk * nloc * nnei;
       if (device == "GPU") {
 #if GOOGLE_CUDA
-        deepmd::prod_virial_grad_r_gpu_cuda(grad_net, grad, in_deriv, rij,
+        mdpu::prod_virial_grad_r_gpu_cuda(grad_net, grad, in_deriv, rij,
                                             nlist, nloc, nnei);
 #endif  // GOOGLE_CUDA
 
 #if TENSORFLOW_USE_ROCM
-        deepmd::prod_virial_grad_r_gpu_rocm(grad_net, grad, in_deriv, rij,
+        mdpu::prod_virial_grad_r_gpu_rocm(grad_net, grad, in_deriv, rij,
                                             nlist, nloc, nnei);
 #endif  // TENSORFLOW_USE_ROCM
       } else if (device == "CPU") {
-        deepmd::prod_virial_grad_r_cpu(grad_net, grad, in_deriv, rij, nlist,
+        mdpu::prod_virial_grad_r_cpu(grad_net, grad, in_deriv, rij, nlist,
                                        nloc, nnei);
       }
     }

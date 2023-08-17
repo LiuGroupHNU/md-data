@@ -4,13 +4,13 @@ from typing import (
     List,
 )
 
-from deepmd.common import (
+from mdpukit.common import (
     expand_sys_str,
 )
-from deepmd.utils.data_system import (
-    DeepmdDataSystem,
+from mdpukit.utils.data_system import (
+    MDPUDataSystem,
 )
-from deepmd.utils.neighbor_stat import (
+from mdpukit.utils.neighbor_stat import (
     NeighborStat,
 )
 
@@ -49,7 +49,7 @@ def neighbor_stat(
     all_sys = expand_sys_str(system)
     if not len(all_sys):
         raise RuntimeError("Did not find valid system")
-    data = DeepmdDataSystem(
+    data = MDPUDataSystem(
         systems=all_sys,
         batch_size=1,
         test_size=1,

@@ -6,7 +6,7 @@
 #include <fstream>
 #include <vector>
 
-#include "deepmd.hpp"
+#include "mdpu.hpp"
 #include "test_utils.h"
 
 template <class VALUETYPE>
@@ -63,11 +63,11 @@ class TestInferDeepPotAHPP : public ::testing::Test {
   double expected_tot_e;
   std::vector<VALUETYPE> expected_tot_v;
 
-  deepmd::hpp::DeepPot dp;
+  mdpu::hpp::DeepPot dp;
 
   void SetUp() override {
     std::string file_name = "../../tests/infer/deeppot.pbtxt";
-    deepmd::hpp::convert_pbtxt_to_pb("../../tests/infer/deeppot.pbtxt",
+    mdpu::hpp::convert_pbtxt_to_pb("../../tests/infer/deeppot.pbtxt",
                                      "deeppot.pb");
 
     dp.init("deeppot.pb");
@@ -104,7 +104,7 @@ TYPED_TEST(TestInferDeepPotAHPP, cpu_build_nlist) {
   unsigned int& natoms = this->natoms;
   double& expected_tot_e = this->expected_tot_e;
   std::vector<VALUETYPE>& expected_tot_v = this->expected_tot_v;
-  deepmd::hpp::DeepPot& dp = this->dp;
+  mdpu::hpp::DeepPot& dp = this->dp;
   double ener;
   std::vector<VALUETYPE> force, virial;
 
@@ -133,13 +133,13 @@ TYPED_TEST(TestInferDeepPotAHPP, cpu_build_nlist_numfv) {
   unsigned int& natoms = this->natoms;
   double& expected_tot_e = this->expected_tot_e;
   std::vector<VALUETYPE>& expected_tot_v = this->expected_tot_v;
-  deepmd::hpp::DeepPot& dp = this->dp;
+  mdpu::hpp::DeepPot& dp = this->dp;
   class MyModel : public EnergyModelTest<VALUETYPE> {
-    deepmd::hpp::DeepPot& mydp;
+    mdpu::hpp::DeepPot& mydp;
     const std::vector<int> atype;
 
    public:
-    MyModel(deepmd::hpp::DeepPot& dp_, const std::vector<int>& atype_)
+    MyModel(mdpu::hpp::DeepPot& dp_, const std::vector<int>& atype_)
         : mydp(dp_), atype(atype_){};
     virtual void compute(double& ener,
                          std::vector<VALUETYPE>& force,
@@ -184,7 +184,7 @@ TYPED_TEST(TestInferDeepPotAHPP, cpu_build_nlist_atomic) {
   unsigned int& natoms = this->natoms;
   double& expected_tot_e = this->expected_tot_e;
   std::vector<VALUETYPE>& expected_tot_v = this->expected_tot_v;
-  deepmd::hpp::DeepPot& dp = this->dp;
+  mdpu::hpp::DeepPot& dp = this->dp;
   double ener;
   std::vector<VALUETYPE> force, virial, atom_ener, atom_vir;
   dp.compute(ener, force, virial, atom_ener, atom_vir, coord, atype, box);
@@ -220,7 +220,7 @@ TYPED_TEST(TestInferDeepPotAHPP, cpu_lmp_nlist) {
   unsigned int& natoms = this->natoms;
   double& expected_tot_e = this->expected_tot_e;
   std::vector<VALUETYPE>& expected_tot_v = this->expected_tot_v;
-  deepmd::hpp::DeepPot& dp = this->dp;
+  mdpu::hpp::DeepPot& dp = this->dp;
   float rc = dp.cutoff();
   int nloc = coord.size() / 3;
   std::vector<VALUETYPE> coord_cpy;
@@ -231,8 +231,8 @@ TYPED_TEST(TestInferDeepPotAHPP, cpu_lmp_nlist) {
   int nall = coord_cpy.size() / 3;
   std::vector<int> ilist(nloc), numneigh(nloc);
   std::vector<int*> firstneigh(nloc);
-  deepmd::hpp::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
-  deepmd::hpp::convert_nlist(inlist, nlist_data);
+  mdpu::hpp::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
+  mdpu::hpp::convert_nlist(inlist, nlist_data);
   double ener;
   std::vector<VALUETYPE> force_, virial;
   dp.compute(ener, force_, virial, coord_cpy, atype_cpy, box, nall - nloc,
@@ -281,7 +281,7 @@ TYPED_TEST(TestInferDeepPotAHPP, cpu_lmp_nlist_atomic) {
   unsigned int& natoms = this->natoms;
   double& expected_tot_e = this->expected_tot_e;
   std::vector<VALUETYPE>& expected_tot_v = this->expected_tot_v;
-  deepmd::hpp::DeepPot& dp = this->dp;
+  mdpu::hpp::DeepPot& dp = this->dp;
   float rc = dp.cutoff();
   int nloc = coord.size() / 3;
   std::vector<VALUETYPE> coord_cpy;
@@ -292,8 +292,8 @@ TYPED_TEST(TestInferDeepPotAHPP, cpu_lmp_nlist_atomic) {
   int nall = coord_cpy.size() / 3;
   std::vector<int> ilist(nloc), numneigh(nloc);
   std::vector<int*> firstneigh(nloc);
-  deepmd::hpp::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
-  deepmd::hpp::convert_nlist(inlist, nlist_data);
+  mdpu::hpp::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
+  mdpu::hpp::convert_nlist(inlist, nlist_data);
 
   double ener;
   std::vector<VALUETYPE> force_, atom_ener_, atom_vir_, virial;
@@ -365,7 +365,7 @@ TYPED_TEST(TestInferDeepPotAHPP, cpu_lmp_nlist_2rc) {
   unsigned int& natoms = this->natoms;
   double& expected_tot_e = this->expected_tot_e;
   std::vector<VALUETYPE>& expected_tot_v = this->expected_tot_v;
-  deepmd::hpp::DeepPot& dp = this->dp;
+  mdpu::hpp::DeepPot& dp = this->dp;
   float rc = dp.cutoff();
   int nloc = coord.size() / 3;
   std::vector<VALUETYPE> coord_cpy;
@@ -376,8 +376,8 @@ TYPED_TEST(TestInferDeepPotAHPP, cpu_lmp_nlist_2rc) {
   int nall = coord_cpy.size() / 3;
   std::vector<int> ilist(nloc), numneigh(nloc);
   std::vector<int*> firstneigh(nloc);
-  deepmd::hpp::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
-  deepmd::hpp::convert_nlist(inlist, nlist_data);
+  mdpu::hpp::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
+  mdpu::hpp::convert_nlist(inlist, nlist_data);
 
   double ener;
   std::vector<VALUETYPE> force_(nall * 3, 0.0), virial(9, 0.0);
@@ -427,7 +427,7 @@ TYPED_TEST(TestInferDeepPotAHPP, cpu_lmp_nlist_type_sel) {
   unsigned int& natoms = this->natoms;
   double& expected_tot_e = this->expected_tot_e;
   std::vector<VALUETYPE>& expected_tot_v = this->expected_tot_v;
-  deepmd::hpp::DeepPot& dp = this->dp;
+  mdpu::hpp::DeepPot& dp = this->dp;
   float rc = dp.cutoff();
 
   // add vir atoms
@@ -454,8 +454,8 @@ TYPED_TEST(TestInferDeepPotAHPP, cpu_lmp_nlist_type_sel) {
   int nall = coord_cpy.size() / 3;
   std::vector<int> ilist(nloc), numneigh(nloc);
   std::vector<int*> firstneigh(nloc);
-  deepmd::hpp::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
-  deepmd::hpp::convert_nlist(inlist, nlist_data);
+  mdpu::hpp::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
+  mdpu::hpp::convert_nlist(inlist, nlist_data);
 
   // dp compute
   double ener;
@@ -479,7 +479,7 @@ TYPED_TEST(TestInferDeepPotAHPP, cpu_lmp_nlist_type_sel) {
 }
 
 TYPED_TEST(TestInferDeepPotAHPP, print_summary) {
-  deepmd::hpp::DeepPot& dp = this->dp;
+  mdpu::hpp::DeepPot& dp = this->dp;
   dp.print_summary("");
 }
 
@@ -537,11 +537,11 @@ class TestInferDeepPotANoPbcHPP : public ::testing::Test {
   double expected_tot_e;
   std::vector<VALUETYPE> expected_tot_v;
 
-  deepmd::hpp::DeepPot dp;
+  mdpu::hpp::DeepPot dp;
 
   void SetUp() override {
     std::string file_name = "../../tests/infer/deeppot.pbtxt";
-    deepmd::hpp::convert_pbtxt_to_pb(file_name, "deeppot.pb");
+    mdpu::hpp::convert_pbtxt_to_pb(file_name, "deeppot.pb");
 
     dp.init("deeppot.pb");
 
@@ -577,7 +577,7 @@ TYPED_TEST(TestInferDeepPotANoPbcHPP, cpu_build_nlist) {
   unsigned int& natoms = this->natoms;
   double& expected_tot_e = this->expected_tot_e;
   std::vector<VALUETYPE>& expected_tot_v = this->expected_tot_v;
-  deepmd::hpp::DeepPot& dp = this->dp;
+  mdpu::hpp::DeepPot& dp = this->dp;
   double ener;
   std::vector<VALUETYPE> force, virial;
   dp.compute(ener, force, virial, coord, atype, box);

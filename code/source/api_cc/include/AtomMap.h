@@ -3,7 +3,7 @@
 
 #include <vector>
 
-namespace deepmd {
+namespace mdpu {
 class AtomMap {
  public:
   AtomMap();
@@ -30,4 +30,4 @@ class AtomMap {
   std::vector<int> fwd_idx_map;
   std::vector<int> atype;
 };
-}  // namespace deepmd
+}  // namespace mdpu

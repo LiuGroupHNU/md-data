@@ -36,7 +36,7 @@ class PairTabOp : public OpKernel {
   }
 
   void Compute(OpKernelContext* context) override {
-    deepmd::safe_compute(
+    mdpu::safe_compute(
         context, [this](OpKernelContext* context) { this->_Compute(context); });
   }
 
@@ -157,7 +157,7 @@ class PairTabOp : public OpKernel {
     // loop over samples
 #pragma omp parallel for
     for (int kk = 0; kk < nframes; ++kk) {
-      deepmd::pair_tab_cpu<FPTYPE>(&energy(kk, 0), &force(kk, 0),
+      mdpu::pair_tab_cpu<FPTYPE>(&energy(kk, 0), &force(kk, 0),
                                    &virial(kk, 0), p_table_info, p_table_data,
                                    &rij(kk, 0), &scale(kk, 0), &type(kk, 0),
                                    &nlist(kk, 0), &natoms(0), t_sel_a, t_sel_r);

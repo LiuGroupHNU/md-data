@@ -7,7 +7,7 @@
 #include "device.h"
 
 using namespace tensorflow;
-using namespace deepmd;
+using namespace mdpu;
 
 // start multiple frames
 
@@ -125,7 +125,7 @@ static void run_model(
     std::vector<VALUETYPE>& datom_virial_,
     Session* session,
     const std::vector<std::pair<std::string, Tensor>>& input_tensors,
-    const deepmd::AtomMap& atommap,
+    const mdpu::AtomMap& atommap,
     const int& nframes,
     const int& nghost = 0) {
   unsigned nloc = atommap.get_type().size();
@@ -224,7 +224,7 @@ template void run_model<double, double>(
     std::vector<double>& datom_virial_,
     Session* session,
     const std::vector<std::pair<std::string, Tensor>>& input_tensors,
-    const deepmd::AtomMap& atommap,
+    const mdpu::AtomMap& atommap,
     const int& nframes,
     const int& nghost);
 
@@ -236,7 +236,7 @@ template void run_model<double, float>(
     std::vector<float>& datom_virial_,
     Session* session,
     const std::vector<std::pair<std::string, Tensor>>& input_tensors,
-    const deepmd::AtomMap& atommap,
+    const mdpu::AtomMap& atommap,
     const int& nframes,
     const int& nghost);
 
@@ -248,7 +248,7 @@ template void run_model<float, double>(
     std::vector<double>& datom_virial_,
     Session* session,
     const std::vector<std::pair<std::string, Tensor>>& input_tensors,
-    const deepmd::AtomMap& atommap,
+    const mdpu::AtomMap& atommap,
     const int& nframes,
     const int& nghost);
 
@@ -260,7 +260,7 @@ template void run_model<float, float>(
     std::vector<float>& datom_virial_,
     Session* session,
     const std::vector<std::pair<std::string, Tensor>>& input_tensors,
-    const deepmd::AtomMap& atommap,
+    const mdpu::AtomMap& atommap,
     const int& nframes,
     const int& nghost);
 
@@ -335,7 +335,7 @@ static void run_model(
     std::vector<VALUETYPE>& datom_virial_,
     Session* session,
     const std::vector<std::pair<std::string, Tensor>>& input_tensors,
-    const deepmd::AtomMap& atommap,
+    const mdpu::AtomMap& atommap,
     const int& nframes = 1,
     const int& nghost = 0) {
   assert(nframes == 1);
@@ -355,7 +355,7 @@ template void run_model<double, double>(
     std::vector<double>& datom_virial_,
     Session* session,
     const std::vector<std::pair<std::string, Tensor>>& input_tensors,
-    const deepmd::AtomMap& atommap,
+    const mdpu::AtomMap& atommap,
     const int& nframes,
     const int& nghost);
 
@@ -367,7 +367,7 @@ template void run_model<double, float>(
     std::vector<float>& datom_virial_,
     Session* session,
     const std::vector<std::pair<std::string, Tensor>>& input_tensors,
-    const deepmd::AtomMap& atommap,
+    const mdpu::AtomMap& atommap,
     const int& nframes,
     const int& nghost);
 
@@ -379,7 +379,7 @@ template void run_model<float, double>(
     std::vector<double>& datom_virial_,
     Session* session,
     const std::vector<std::pair<std::string, Tensor>>& input_tensors,
-    const deepmd::AtomMap& atommap,
+    const mdpu::AtomMap& atommap,
     const int& nframes,
     const int& nghost);
 
@@ -391,7 +391,7 @@ template void run_model<float, float>(
     std::vector<float>& datom_virial_,
     Session* session,
     const std::vector<std::pair<std::string, Tensor>>& input_tensors,
-    const deepmd::AtomMap& atommap,
+    const mdpu::AtomMap& atommap,
     const int& nframes,
     const int& nghost);
 
@@ -413,7 +413,7 @@ void DeepPot::init(const std::string& model,
                    const int& gpu_rank,
                    const std::string& file_content) {
   if (inited) {
-    std::cerr << "WARNING: deepmd-kit should not be initialized twice, do "
+    std::cerr << "WARNING: mdpu-kit should not be initialized twice, do "
                  "nothing at the second call of initializer"
               << std::endl;
     return;
@@ -422,7 +422,7 @@ void DeepPot::init(const std::string& model,
   get_env_nthreads(num_intra_nthreads, num_inter_nthreads);
   options.config.set_inter_op_parallelism_threads(num_inter_nthreads);
   options.config.set_intra_op_parallelism_threads(num_intra_nthreads);
-  deepmd::load_op_library();
+  mdpu::load_op_library();
 
   if (file_content.size() == 0) {
     check_status(ReadBinaryProto(Env::Default(), model, graph_def));
@@ -447,16 +447,16 @@ void DeepPot::init(const std::string& model,
   check_status(session->Create(*graph_def));
   try {
     model_version = get_scalar<STRINGTYPE>("model_attr/model_version");
-  } catch (deepmd::tf_exception& e) {
+  } catch (mdpu::tf_exception& e) {
     // no model version defined in old models
     model_version = "0.0";
   }
   if (!model_compatable(model_version)) {
-    throw deepmd::deepmd_exception(
+    throw mdpu::mdpu_exception(
         "incompatable model: version " + model_version +
         " in graph, but version " + global_model_version +
         " supported "
-        "See https://deepmd.rtfd.io/compatability/ for details.");
+        "See https://mdpu.rtfd.io/compatability/ for details.");
   }
   dtype = session_get_dtype(session, "descrpt_attr/rcut");
   if (dtype == tensorflow::DT_DOUBLE) {
@@ -468,7 +468,7 @@ void DeepPot::init(const std::string& model,
   ntypes = get_scalar<int>("descrpt_attr/ntypes");
   try {
     ntypes_spin = get_scalar<int>("spin_attr/ntypes_spin");
-  } catch (deepmd::deepmd_exception) {
+  } catch (mdpu::mdpu_exception) {
     ntypes_spin = 0;
   }
   dfparam = get_scalar<int>("fitting_attr/dfparam");
@@ -486,7 +486,7 @@ void DeepPot::init(const std::string& model,
 }
 
 void DeepPot::print_summary(const std::string& pre) const {
-  deepmd::print_summary(pre);
+  mdpu::print_summary(pre);
 }
 
 template <class VT>
@@ -501,14 +501,14 @@ void DeepPot::validate_fparam_aparam(
     const std::vector<VALUETYPE>& fparam,
     const std::vector<VALUETYPE>& aparam) const {
   if (fparam.size() != dfparam && fparam.size() != nframes * dfparam) {
-    throw deepmd::deepmd_exception(
+    throw mdpu::mdpu_exception(
         "the dim of frame parameter provided is not consistent with what the "
         "model uses");
   }
 
   if (aparam.size() != daparam * nloc &&
       aparam.size() != nframes * daparam * nloc) {
-    throw deepmd::deepmd_exception(
+    throw mdpu::mdpu_exception(
         "the dim of atom parameter provided is not consistent with what the "
         "model uses");
   }
@@ -567,7 +567,7 @@ void DeepPot::compute(ENERGYVTYPE& dener,
   int nall = datype_.size();
   int nframes = dcoord_.size() / nall / 3;
   int nloc = nall;
-  atommap = deepmd::AtomMap(datype_.begin(), datype_.begin() + nloc);
+  atommap = mdpu::AtomMap(datype_.begin(), datype_.begin() + nloc);
   assert(nloc == atommap.get_type().size());
   std::vector<VALUETYPE> fparam;
   std::vector<VALUETYPE> aparam;
@@ -746,7 +746,7 @@ void DeepPot::compute_inner(ENERGYVTYPE& dener,
 
   // agp == 0 means that the LAMMPS nbor list has been updated
   if (ago == 0) {
-    atommap = deepmd::AtomMap(datype_.begin(), datype_.begin() + nloc);
+    atommap = mdpu::AtomMap(datype_.begin(), datype_.begin() + nloc);
     assert(nloc == atommap.get_type().size());
     nlist_data.shuffle(atommap);
     nlist_data.make_inlist(nlist);
@@ -828,7 +828,7 @@ void DeepPot::compute(ENERGYVTYPE& dener,
                       const std::vector<VALUETYPE>& fparam_,
                       const std::vector<VALUETYPE>& aparam_) {
   int nframes = dcoord_.size() / 3 / datype_.size();
-  atommap = deepmd::AtomMap(datype_.begin(), datype_.end());
+  atommap = mdpu::AtomMap(datype_.begin(), datype_.end());
   int nloc = datype_.size();
   std::vector<VALUETYPE> fparam;
   std::vector<VALUETYPE> aparam;
@@ -933,7 +933,7 @@ void DeepPot::compute(ENERGYVTYPE& dener,
                           nghost, ntypes, nframes, daparam, nall);
 
   if (ago == 0) {
-    atommap = deepmd::AtomMap(datype.begin(), datype.begin() + nloc_real);
+    atommap = mdpu::AtomMap(datype.begin(), datype.begin() + nloc_real);
     assert(nloc_real == atommap.get_type().size());
 
     nlist_data.copy_from_nlist(lmp_list);
@@ -1043,7 +1043,7 @@ void DeepPot::compute_mixed_type(ENERGYVTYPE& dener,
                                  const std::vector<VALUETYPE>& aparam_) {
   int nloc = datype_.size() / nframes;
   // here atommap only used to get nloc
-  atommap = deepmd::AtomMap(datype_.begin(), datype_.begin() + nloc);
+  atommap = mdpu::AtomMap(datype_.begin(), datype_.begin() + nloc);
   std::vector<VALUETYPE> fparam;
   std::vector<VALUETYPE> aparam;
   validate_fparam_aparam(nframes, nloc, fparam_, aparam_);
@@ -1127,7 +1127,7 @@ void DeepPot::compute_mixed_type(ENERGYVTYPE& dener,
                                  const std::vector<VALUETYPE>& aparam_) {
   int nloc = datype_.size() / nframes;
   // here atommap only used to get nloc
-  atommap = deepmd::AtomMap(datype_.begin(), datype_.begin() + nloc);
+  atommap = mdpu::AtomMap(datype_.begin(), datype_.begin() + nloc);
   std::vector<VALUETYPE> fparam;
   std::vector<VALUETYPE> aparam;
   validate_fparam_aparam(nframes, nloc, fparam_, aparam_);
@@ -1228,7 +1228,7 @@ void DeepPotModelDevi::init(const std::vector<std::string>& models,
                             const int& gpu_rank,
                             const std::vector<std::string>& file_contents) {
   if (inited) {
-    std::cerr << "WARNING: deepmd-kit should not be initialized twice, do "
+    std::cerr << "WARNING: mdpu-kit should not be initialized twice, do "
                  "nothing at the second call of initializer"
               << std::endl;
     return;
@@ -1275,16 +1275,16 @@ void DeepPotModelDevi::init(const std::vector<std::string>& models,
   }
   try {
     model_version = get_scalar<STRINGTYPE>("model_attr/model_version");
-  } catch (deepmd::tf_exception& e) {
+  } catch (mdpu::tf_exception& e) {
     // no model version defined in old models
     model_version = "0.0";
   }
   if (!model_compatable(model_version)) {
-    throw deepmd::deepmd_exception(
+    throw mdpu::mdpu_exception(
         "incompatable model: version " + model_version +
         " in graph, but version " + global_model_version +
         " supported. "
-        "See https://deepmd.rtfd.io/compatability/ for details.");
+        "See https://mdpu.rtfd.io/compatability/ for details.");
   }
   dtype = session_get_dtype(sessions[0], "descrpt_attr/rcut");
   if (dtype == tensorflow::DT_DOUBLE) {
@@ -1296,7 +1296,7 @@ void DeepPotModelDevi::init(const std::vector<std::string>& models,
   ntypes = get_scalar<int>("descrpt_attr/ntypes");
   try {
     ntypes_spin = get_scalar<int>("spin_attr/ntypes_spin");
-  } catch (deepmd::deepmd_exception) {
+  } catch (mdpu::mdpu_exception) {
     ntypes_spin = 0;
   }
   dfparam = get_scalar<int>("fitting_attr/dfparam");
@@ -1336,12 +1336,12 @@ void DeepPotModelDevi::validate_fparam_aparam(
     const std::vector<VALUETYPE>& fparam,
     const std::vector<VALUETYPE>& aparam) const {
   if (fparam.size() != dfparam) {
-    throw deepmd::deepmd_exception(
+    throw mdpu::mdpu_exception(
         "the dim of frame parameter provided is not consistent with what the "
         "model uses");
   }
   if (aparam.size() != daparam * nloc) {
-    throw deepmd::deepmd_exception(
+    throw mdpu::mdpu_exception(
         "the dim of atom parameter provided is not consistent with what the "
         "model uses");
   }

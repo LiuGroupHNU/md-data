@@ -3,7 +3,7 @@ from typing import (
     List,
 )
 
-from deepmd.env import (
+from mdpukit.env import (
     GLOBAL_TF_FLOAT_PRECISION,
     tf,
 )

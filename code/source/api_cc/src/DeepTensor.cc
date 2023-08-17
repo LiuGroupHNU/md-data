@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 #include "DeepTensor.h"
 
-using namespace deepmd;
+using namespace mdpu;
 using namespace tensorflow;
 
 DeepTensor::DeepTensor() : inited(false), graph_def(new GraphDef()) {}
@@ -19,7 +19,7 @@ void DeepTensor::init(const std::string &model,
                       const int &gpu_rank,
                       const std::string &name_scope_) {
   if (inited) {
-    std::cerr << "WARNING: deepmd-kit should not be initialized twice, do "
+    std::cerr << "WARNING: mdpu-kit should not be initialized twice, do "
                  "nothing at the second call of initializer"
               << std::endl;
     return;
@@ -29,22 +29,22 @@ void DeepTensor::init(const std::string &model,
   get_env_nthreads(num_intra_nthreads, num_inter_nthreads);
   options.config.set_inter_op_parallelism_threads(num_inter_nthreads);
   options.config.set_intra_op_parallelism_threads(num_intra_nthreads);
-  deepmd::load_op_library();
-  deepmd::check_status(NewSession(options, &session));
-  deepmd::check_status(ReadBinaryProto(Env::Default(), model, graph_def));
-  deepmd::check_status(session->Create(*graph_def));
+  mdpu::load_op_library();
+  mdpu::check_status(NewSession(options, &session));
+  mdpu::check_status(ReadBinaryProto(Env::Default(), model, graph_def));
+  mdpu::check_status(session->Create(*graph_def));
   try {
     model_version = get_scalar<STRINGTYPE>("model_attr/model_version");
-  } catch (deepmd::tf_exception &e) {
+  } catch (mdpu::tf_exception &e) {
     // no model version defined in old models
     model_version = "0.0";
   }
   if (!model_compatable(model_version)) {
-    throw deepmd::deepmd_exception(
+    throw mdpu::mdpu_exception(
         "incompatable model: version " + model_version +
         " in graph, but version " + global_model_version +
         " supported "
-        "See https://deepmd.rtfd.io/compatability/ for details.");
+        "See https://mdpu.rtfd.io/compatability/ for details.");
   }
   dtype = session_get_dtype(session, "descrpt_attr/rcut");
   if (dtype == tensorflow::DT_DOUBLE) {
@@ -61,7 +61,7 @@ void DeepTensor::init(const std::string &model,
 }
 
 void DeepTensor::print_summary(const std::string &pre) const {
-  deepmd::print_summary(pre);
+  mdpu::print_summary(pre);
 }
 
 template <class VT>
@@ -92,7 +92,7 @@ void DeepTensor::run_model(
   }
 
   std::vector<Tensor> output_tensors;
-  deepmd::check_status(
+  mdpu::check_status(
       session->Run(input_tensors, {name_prefix(name_scope) + "o_" + model_type},
                    {}, &output_tensors));
 
@@ -172,7 +172,7 @@ void DeepTensor::run_model(
   }
 
   std::vector<Tensor> output_tensors;
-  deepmd::check_status(
+  mdpu::check_status(
       session->Run(input_tensors,
                    {name_prefix(name_scope) + "o_global_" + model_type,
                     name_prefix(name_scope) + "o_force",

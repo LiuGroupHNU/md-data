@@ -8,10 +8,10 @@ from typing import (
     Tuple,
 )
 
-from deepmd.env import (
+from mdpukit.env import (
     tf,
 )
-from deepmd.utils.sess import (
+from mdpukit.utils.sess import (
     run_sess,
 )
 
@@ -30,8 +30,8 @@ class ParallelOp:
 
     Examples
     --------
-    >>> from deepmd.env import tf
-    >>> from deepmd.utils.parallel_op import ParallelOp
+    >>> from mdpukit.env import tf
+    >>> from mdpukit.utils.parallel_op import ParallelOp
     >>> def builder():
     ...     x = tf.placeholder(tf.int32, [1])
     ...     return {"x": x}, (x + 1)

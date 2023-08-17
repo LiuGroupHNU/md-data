@@ -4,15 +4,15 @@
  */
 
 #ifdef USE_NATIVE_CXX_API
-#include "deepmd/DeepPot.h"
-using deepmd::convert_nlist;
-using deepmd::DeepPot;
-using deepmd::InputNlist;
+#include "mdpu/DeepPot.h"
+using mdpu::convert_nlist;
+using mdpu::DeepPot;
+using mdpu::InputNlist;
 #else
-#include "deepmd/deepmd.hpp"
-using deepmd::hpp::convert_nlist;
-using deepmd::hpp::DeepPot;
-using deepmd::hpp::InputNlist;
+#include "mdpu/mdpu.hpp"
+using mdpu::hpp::convert_nlist;
+using mdpu::hpp::DeepPot;
+using mdpu::hpp::InputNlist;
 #endif
 
 int main() {

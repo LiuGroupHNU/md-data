@@ -53,31 +53,31 @@ file(
 file(GLOB OP_PY *.py)
 file(GLOB OP_REMAPPER_SRC optimizer/parallel.cc)
 
-add_library(${LIB_DEEPMD_OP} MODULE ${OP_SRC} ${OP_REMAPPER_SRC})
-# link: libdeepmd libtensorflow_cc libtensorflow_framework
-target_link_libraries(${LIB_DEEPMD_OP} PRIVATE TensorFlow::tensorflow_framework)
-target_link_libraries(${LIB_DEEPMD_OP} PRIVATE ${LIB_DEEPMD})
+add_library(${LIB_MDPU_OP} MODULE ${OP_SRC} ${OP_REMAPPER_SRC})
+# link: libmdpu libtensorflow_cc libtensorflow_framework
+target_link_libraries(${LIB_MDPU_OP} PRIVATE TensorFlow::tensorflow_framework)
+target_link_libraries(${LIB_MDPU_OP} PRIVATE ${LIB_MDPU})
 if(Protobuf_LIBRARY)
-  target_link_libraries(${LIB_DEEPMD_OP} PRIVATE ${Protobuf_LIBRARY})
+  target_link_libraries(${LIB_MDPU_OP} PRIVATE ${Protobuf_LIBRARY})
 endif()
 if(APPLE)
   set_target_properties(
-    ${LIB_DEEPMD_OP} PROPERTIES INSTALL_RPATH
+    ${LIB_MDPU_OP} PROPERTIES INSTALL_RPATH
                                 "@loader_path;${TensorFlow_LIBRARY_PATH}")
 else()
   set_target_properties(
-    ${LIB_DEEPMD_OP} PROPERTIES INSTALL_RPATH
+    ${LIB_MDPU_OP} PROPERTIES INSTALL_RPATH
                                 "$ORIGIN;${TensorFlow_LIBRARY_PATH}")
 endif()
 if(CMAKE_TESTING_ENABLED)
-  target_link_libraries(${LIB_DEEPMD_OP} PRIVATE coverage_config)
+  target_link_libraries(${LIB_MDPU_OP} PRIVATE coverage_config)
 endif()
-target_precompile_headers(${LIB_DEEPMD_OP} PRIVATE custom_op.h)
+target_precompile_headers(${LIB_MDPU_OP} PRIVATE custom_op.h)
 
 if(BUILD_PY_IF)
   add_library(op_grads MODULE ${OP_GRADS_SRC})
-  # link: libdeepmd libtensorflow_framework
-  target_link_libraries(op_grads PRIVATE ${LIB_DEEPMD})
+  # link: libmdpu libtensorflow_framework
+  target_link_libraries(op_grads PRIVATE ${LIB_MDPU})
   target_link_libraries(op_grads PRIVATE TensorFlow::tensorflow_framework)
   if(APPLE)
     set_target_properties(op_grads PROPERTIES INSTALL_RPATH @loader_path)
@@ -91,9 +91,9 @@ if(BUILD_PY_IF)
 endif(BUILD_PY_IF)
 
 if(BUILD_PY_IF)
-  install(TARGETS ${LIB_DEEPMD_OP} DESTINATION deepmd/op/)
-  install(TARGETS op_grads DESTINATION deepmd/op/)
-  install(FILES ${OP_PY} DESTINATION deepmd/op/)
+  install(TARGETS ${LIB_MDPU_OP} DESTINATION mdpukit/op/)
+  install(TARGETS op_grads DESTINATION mdpukit/op/)
+  install(FILES ${OP_PY} DESTINATION mdpukit/op/)
 else(BUILD_PY_IF)
-  install(TARGETS ${LIB_DEEPMD_OP} DESTINATION lib/)
+  install(TARGETS ${LIB_MDPU_OP} DESTINATION lib/)
 endif(BUILD_PY_IF)

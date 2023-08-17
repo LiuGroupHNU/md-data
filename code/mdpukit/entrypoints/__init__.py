@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
-"""Submodule that contains all the DeePMD-Kit entry point scripts."""
+"""Submodule that contains all the mdpu-Kit entry point scripts."""
 
 from ..infer.model_devi import (
     make_model_devi,

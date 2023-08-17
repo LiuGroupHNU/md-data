@@ -1,11 +1,11 @@
 # new in 3.16: GET_RUNTIME_DEPENDENCIES, target_precompile_headers
 cmake_minimum_required(VERSION 3.16)
-project(DeePMD)
+project(mdpu)
 
 option(BUILD_TESTING "Build test and enable converage" OFF)
-set(DEEPMD_C_ROOT
+set(MDPU_C_ROOT
     ""
-    CACHE PATH "Path to imported DeePMD-kit C library")
+    CACHE PATH "Path to imported mdpu-kit C library")
 
 if(BUILD_TESTING)
   enable_testing()
@@ -124,7 +124,7 @@ else()
   message(STATUS "Will not build AMD GPU support")
 endif(USE_ROCM_TOOLKIT)
 
-set(DEEPMD_SOURCE_DIR ${PROJECT_SOURCE_DIR}/..)
+set(MDPU_SOURCE_DIR ${PROJECT_SOURCE_DIR}/..)
 
 # setup tensorflow libraries by python
 if(USE_TF_PYTHON_LIBS)
@@ -140,7 +140,7 @@ if(USE_TF_PYTHON_LIBS)
 endif(USE_TF_PYTHON_LIBS)
 
 # find tensorflow, I need tf abi info
-if(NOT DEEPMD_C_ROOT)
+if(NOT MDPU_C_ROOT)
   find_package(tensorflow REQUIRED)
 endif()
 
@@ -174,21 +174,21 @@ if(ENABLE_NATIVE_OPTIMIZATION)
 endif()
 
 # define names of libs
-set(LIB_DEEPMD "deepmd")
-set(LIB_DEEPMD_OP "deepmd_op")
+set(LIB_MDPU "mdpu")
+set(LIB_MDPU_OP "_op")
 if(BUILD_CPP_IF)
-  set(LIB_DEEPMD_CC "deepmd_cc")
-  set(LIB_DEEPMD_C "deepmd_c")
+  set(LIB_MDPU_CC "_cc")
+  set(LIB_MDPU_C "_c")
   if(USE_CUDA_TOOLKIT)
-    set(LIB_DEEPMD_OP_DEVICE "deepmd_op_cuda")
+    set(LIB_MDPU_OP_DEVICE "_op_cuda")
   elseif(USE_ROCM_TOOLKIT)
-    set(LIB_DEEPMD_OP_DEVICE "deepmd_op_rocm")
+    set(LIB_MDPU_OP_DEVICE "_op_rocm")
   else()
-    set(LIB_DEEPMD_OP_DEVICE "deepmd_op")
+    set(LIB_MDPU_OP_DEVICE "_op")
   endif()
   if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 4.8)
-    set(LIB_DEEPMD_NATIVE "deepmd_native_md")
-    set(LIB_DEEPMD_GROMACS "deepmd_gromacs")
+    set(LIB_MDPU_NATIVE "_native_md")
+    set(LIB_MDPU_GROMACS "_gromacs")
   else()
     message(
       STATUS
@@ -199,39 +199,39 @@ endif(BUILD_CPP_IF)
 
 option(DP_USING_C_API "Build third-party interface with C API" ON)
 
-if(DEEPMD_C_ROOT)
+if(MDPU_C_ROOT)
   # find c library
   find_path(
-    DEEPMD_INCLUDE_C_DIR deepmd/deepmd.hpp deepmd/c_api.h
-    HINTS ${DEEPMD_C_ROOT}
+    MDPU_INCLUDE_C_DIR mdpu/mdpu.hpp mdpu/c_api.h
+    HINTS ${MDPU_C_ROOT}
     PATH_SUFFIXES "include")
   find_library(
-    deepmd_c
-    NAMES deepmd_c
-    HINTS ${DEEPMD_C_ROOT}
+    mdpu_c
+    NAMES mdpu_c
+    HINTS ${MDPU_C_ROOT}
     PATH_SUFFIXES "lib")
   include(FindPackageHandleStandardArgs)
-  find_package_handle_standard_args(DEEPMD_C DEFAULT_MSG deepmd_c
-                                    DEEPMD_INCLUDE_C_DIR)
-  if(NOT DEEPMD_C_FOUND)
+  find_package_handle_standard_args(MDPU_C DEFAULT_MSG mdpu_c
+                                    MDPU_INCLUDE_C_DIR)
+  if(NOT MDPU_C_FOUND)
     message(
       FATAL_ERROR
-        "DeePMD-kit C library not found. Download from https://github.com/deepmodeling/deepmd-kit/releases"
+        "mdpu-kit C library not found."
     )
   endif()
 
-  add_library(${LIB_DEEPMD_C} SHARED IMPORTED GLOBAL)
+  add_library(${LIB_MDPU_C} SHARED IMPORTED GLOBAL)
   set_target_properties(
-    ${LIB_DEEPMD_C}
+    ${LIB_MDPU_C}
     PROPERTIES IMPORTED_LINK_INTERFACE_LANGUAGES "C"
-               IMPORTED_LOCATION "${deepmd_c}"
-               INTERFACE_INCLUDE_DIRECTORIES "${DEEPMD_INCLUDE_C_DIR}/deepmd")
-  # use variable for TF path to set deepmd_c path
-  set(TensorFlow_LIBRARY_PATH "${DEEPMD_C_ROOT}/lib")
-  set(TENSORFLOW_INCLUDE_DIRS "${DEEPMD_C_ROOT}/include")
+               IMPORTED_LOCATION "${_c}"
+               INTERFACE_INCLUDE_DIRECTORIES "${MDPU_INCLUDE_C_DIR}/mdpu")
+  # use variable for TF path to set _c path
+  set(TensorFlow_LIBRARY_PATH "${MDPU_C_ROOT}/lib")
+  set(TENSORFLOW_INCLUDE_DIRS "${MDPU_C_ROOT}/include")
 endif()
 
-if(NOT DEEPMD_C_ROOT)
+if(NOT MDPU_C_ROOT)
   add_subdirectory(op/)
   add_subdirectory(lib/)
 endif()
@@ -240,7 +240,7 @@ if(BUILD_PY_IF)
   # add_subdirectory (tests/)
 endif(BUILD_PY_IF)
 if(BUILD_CPP_IF)
-  if(NOT DEEPMD_C_ROOT)
+  if(NOT MDPU_C_ROOT)
     add_subdirectory(api_cc/)
     add_subdirectory(api_c/)
   endif()
@@ -276,7 +276,7 @@ add_custom_target(lammps COMMAND ${CMAKE_COMMAND} -P
 # add configure file
 if(BUILD_CPP_IF
    AND NOT BUILD_PY_IF
-   AND NOT DEEPMD_C_ROOT)
+   AND NOT MDPU_C_ROOT)
   include(CMakePackageConfigHelpers)
   set(targets_export_name
       ${CMAKE_PROJECT_NAME}Targets
@@ -304,4 +304,4 @@ if(BUILD_CPP_IF
 endif(
   BUILD_CPP_IF
   AND NOT BUILD_PY_IF
-  AND NOT DEEPMD_C_ROOT)
+  AND NOT MDPU_C_ROOT)

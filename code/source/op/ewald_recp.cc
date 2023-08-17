@@ -29,7 +29,7 @@ class EwaldRecpOp : public OpKernel {
   }
 
   void Compute(OpKernelContext* context) override {
-    deepmd::safe_compute(
+    mdpu::safe_compute(
         context, [this](OpKernelContext* context) { this->_Compute(context); });
   }
 
@@ -98,7 +98,7 @@ class EwaldRecpOp : public OpKernel {
       int coord_iter = kk * nloc * 3;
       int charge_iter = kk * nloc;
       // set region
-      deepmd::Region<FPTYPE> region;
+      mdpu::Region<FPTYPE> region;
       init_region_cpu(region, &box(box_iter));
 
       // set & normalize coord
@@ -142,7 +142,7 @@ class EwaldRecpOp : public OpKernel {
   }
 
  private:
-  deepmd::EwaldParameters<FPTYPE> ep;
+  mdpu::EwaldParameters<FPTYPE> ep;
 };
 
 #define REGISTER_CPU(T)                                            \

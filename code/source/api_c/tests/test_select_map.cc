@@ -9,7 +9,7 @@
 #include <fstream>
 #include <vector>
 
-#include "deepmd.hpp"
+#include "mdpu.hpp"
 class TestSelectMap : public ::testing::Test {
  protected:
   std::vector<int> atype = {0, 1, 1, 0, 1, 1};
@@ -42,7 +42,7 @@ class TestSelectMap : public ::testing::Test {
 };
 
 TEST_F(TestSelectMap, selectmap_type0) {
-  deepmd::hpp::select_map(this->atype_out_0, this->atype, this->fwd_map_0, 1);
+  mdpu::hpp::select_map(this->atype_out_0, this->atype, this->fwd_map_0, 1);
   EXPECT_EQ(2, this->atype_out_0.size());
   for (int ii = 0; ii < 2; ++ii) {
     EXPECT_EQ(this->expected_atype_out_0[ii], this->atype_out_0[ii]);
@@ -50,7 +50,7 @@ TEST_F(TestSelectMap, selectmap_type0) {
 }
 
 TEST_F(TestSelectMap, selectmap_type1) {
-  deepmd::hpp::select_map(this->atype_out_1, this->atype, this->fwd_map_1, 1);
+  mdpu::hpp::select_map(this->atype_out_1, this->atype, this->fwd_map_1, 1);
   EXPECT_EQ(4, this->atype_out_1.size());
   for (int ii = 0; ii < 4; ++ii) {
     EXPECT_EQ(this->expected_atype_out_1[ii], this->atype_out_1[ii]);

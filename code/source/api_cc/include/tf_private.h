@@ -12,10 +12,10 @@
 #include "tensorflow/core/public/session.h"
 #include "tensorflow/core/public/version.h"
 
-namespace deepmd {
+namespace mdpu {
 #if TF_MAJOR_VERSION >= 2 && TF_MINOR_VERSION >= 2
 typedef tensorflow::tstring STRINGTYPE;
 #else
 typedef std::string STRINGTYPE;
 #endif
-}  // namespace deepmd
+}  // namespace mdpu

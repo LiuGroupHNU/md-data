@@ -9,7 +9,7 @@
 #include <fstream>
 #include <vector>
 
-#include "deepmd.hpp"
+#include "mdpu.hpp"
 #include "test_utils.h"
 
 template <class VALUETYPE>
@@ -26,11 +26,11 @@ class TestInferMixedType : public ::testing::Test {
   int natoms;
   int nframes = 2;
 
-  deepmd::hpp::DeepPot dp;
+  mdpu::hpp::DeepPot dp;
 
   void SetUp() override {
     std::string file_name = "../../tests/infer/virtual_type.pbtxt";
-    deepmd::hpp::convert_pbtxt_to_pb("../../tests/infer/virtual_type.pbtxt",
+    mdpu::hpp::convert_pbtxt_to_pb("../../tests/infer/virtual_type.pbtxt",
                                      "virtual_type.pb");
 
     dp.init("virtual_type.pb");
@@ -50,7 +50,7 @@ TYPED_TEST(TestInferMixedType, cpu_build_nlist) {
   std::vector<VALUETYPE>& box = this->box;
   int& natoms = this->natoms;
   int& nframes = this->nframes;
-  deepmd::hpp::DeepPot& dp = this->dp;
+  mdpu::hpp::DeepPot& dp = this->dp;
   std::vector<double> ener;
   std::vector<VALUETYPE> force, virial;
   dp.compute_mixed_type(ener, force, virial, nframes, coord, atype, box);
@@ -79,7 +79,7 @@ TYPED_TEST(TestInferMixedType, cpu_build_nlist_atomic) {
   std::vector<VALUETYPE>& box = this->box;
   int& natoms = this->natoms;
   int& nframes = this->nframes;
-  deepmd::hpp::DeepPot& dp = this->dp;
+  mdpu::hpp::DeepPot& dp = this->dp;
   std::vector<double> ener;
   std::vector<VALUETYPE> force, virial, atom_ener, atom_vir;
   dp.compute_mixed_type(ener, force, virial, atom_ener, atom_vir, nframes,

@@ -21,13 +21,13 @@ from tensorflow.python.client import (
 )
 
 # load grad of force module
-import deepmd.op  # noqa: F401
-from deepmd.common import (
+import mdpukit.op  # noqa: F401
+from mdpukit.common import (
     data_requirement,
     get_precision,
     j_must_have,
 )
-from deepmd.env import (
+from mdpukit.env import (
     GLOBAL_ENER_FLOAT_PRECISION,
     GLOBAL_TF_FLOAT_PRECISION,
     TF_VERSION,
@@ -35,35 +35,35 @@ from deepmd.env import (
     tf,
     tfv2,
 )
-from deepmd.fit.ener import (
+from mdpukit.fit.ener import (
     EnerFitting,
 )
-from deepmd.model.model import (
+from mdpukit.model.model import (
     Model,
 )
-from deepmd.utils import random as dp_random
-from deepmd.utils.data_system import (
-    DeepmdDataSystem,
+from mdpukit.utils import random as dp_random
+from mdpukit.utils.data_system import (
+    MDPUDataSystem,
 )
-from deepmd.utils.errors import (
+from mdpukit.utils.errors import (
     GraphTooLargeError,
     GraphWithoutTensorError,
 )
-from deepmd.utils.graph import (
+from mdpukit.utils.graph import (
     get_tensor_by_name_from_graph,
     load_graph_def,
 )
-from deepmd.utils.learning_rate import (
+from mdpukit.utils.learning_rate import (
     LearningRateExp,
 )
-from deepmd.utils.sess import (
+from mdpukit.utils.sess import (
     run_sess,
 )
 
 log = logging.getLogger(__name__)
 
 # mdpu
-from deepmd.mdpu.utils.config import (
+from mdpukit.mdpu.utils.config import (
     mdpu_cfg,
 )
 
@@ -93,7 +93,7 @@ class DPTrainer:
         self.mdpu_param = jdata.get("mdpu", {})
         mdpu_cfg.init_from_jdata(self.mdpu_param)
         if mdpu_cfg.enable:
-            mdpu_cfg.init_from_deepmd_input(model_param)
+            mdpu_cfg.init_from_mdpukit_input(model_param)
             mdpu_cfg.disp_message()
             mdpu_cfg.save()
 
@@ -696,7 +696,7 @@ class DPTrainer:
             if self.timing_in_training:
                 tic = time.time()
             train_feed_dict = self.get_feed_dict(train_batch, is_training=True)
-            # use tensorboard to visualize the training of deepmd-kit
+            # use tensorboard to visualize the training of mdpukit-kit
             # it will takes some extra execution time to generate the tensorboard data
             if self.tensorboard and (cur_batch % self.tensorboard_freq == 0):
                 summary, _, next_train_batch_list = run_sess(
@@ -1083,7 +1083,7 @@ class DPTrainer:
 
         Parameters
         ----------
-        data : DeepmdDataSystem
+        data : MDPUDataSystem
             The training data.
         origin_type_map : list
             The original type_map in dataset, they are targets to change the energy bias.
@@ -1141,14 +1141,14 @@ class DPTrainer:
 
 
 class DatasetLoader:
-    """Generate an OP that loads the training data from the given DeepmdDataSystem.
+    """Generate an OP that loads the training data from the given MDPUDataSystem.
 
     It can be used to load the training data in the training process, so there is
     no waiting time between training steps.
 
     Parameters
     ----------
-    train_data : DeepmdDataSystem
+    train_data : MDPUDataSystem
         The training data.
 
     Examples
@@ -1160,7 +1160,7 @@ class DatasetLoader:
     >>> data_dict = loader.get_data_dict(data_list)
     """
 
-    def __init__(self, train_data: DeepmdDataSystem):
+    def __init__(self, train_data: MDPUDataSystem):
         self.train_data = train_data
         # get the keys of the data
         batch_data = self.train_data.get_batch()

@@ -6,7 +6,7 @@ from google.protobuf import (
     text_format,
 )
 
-from deepmd.env import (
+from mdpukit.env import (
     tf,
 )
 

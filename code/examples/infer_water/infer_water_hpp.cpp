@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 /* header only C++ library
  */
-#include "deepmd/deepmd.hpp"
+#include "mdpu/mdpu.hpp"
 
 int main() {
-  deepmd::hpp::DeepPot dp("graph.pb");
+  mdpu::hpp::DeepPot dp("graph.pb");
   std::vector<double> coord = {1., 0., 0., 0., 0., 1.5, 1., 0., 3.};
   std::vector<double> cell = {10., 0., 0., 0., 10., 0., 0., 0., 10.};
   std::vector<int> atype = {1, 0, 1};

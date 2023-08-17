@@ -5,12 +5,12 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/include/version.h.in version.h @ONLY)
 file(GLOB LIB_SRC src/*.cc src/*.cpp)
 file(GLOB INC_SRC include/*.h ${CMAKE_CURRENT_BINARY_DIR}/version.h)
 
-set(libname "${LIB_DEEPMD_CC}")
+set(libname "${LIB_MDPU_CC}")
 
 add_library(${libname} SHARED ${LIB_SRC})
 
-# link: libdeepmd libdeepmd_op libtensorflow_cc libtensorflow_framework
-target_link_libraries(${libname} PUBLIC ${LIB_DEEPMD})
+# link: libmdpu libmdpu_op libtensorflow_cc libtensorflow_framework
+target_link_libraries(${libname} PUBLIC ${LIB_MDPU})
 target_link_libraries(${libname} PRIVATE TensorFlow::tensorflow_cc
                                          TensorFlow::tensorflow_framework)
 target_include_directories(
@@ -33,16 +33,16 @@ endif()
 target_compile_features(${libname} PUBLIC cxx_std_11)
 
 if(BUILD_PY_IF)
-  install(TARGETS ${libname} DESTINATION deepmd/op/)
+  install(TARGETS ${libname} DESTINATION mdpu/op/)
 else(BUILD_PY_IF)
   install(
     TARGETS ${libname}
     EXPORT ${CMAKE_PROJECT_NAME}Targets
     DESTINATION lib/)
 
-  install(FILES ${INC_SRC} DESTINATION include/deepmd)
+  install(FILES ${INC_SRC} DESTINATION include/mdpu)
 
-  # make a link to libdeepmd_cc_low.so for compatibility
+  # make a link to libmdpu_cc_low.so for compatibility
   install(
     CODE "execute_process( \
 COMMAND ${CMAKE_COMMAND} -E create_symlink \

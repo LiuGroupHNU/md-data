@@ -35,7 +35,7 @@ jdata_config_128 (default)
     difference with configure fitting size as 128
 jdata_configs
     all configure of jdata_config{nfit_node}
-jdata_deepmd_input
+jdata_mdpukit_input
     default input script for mdpu training
 MDPU_WELCOME
     mdpu title when logging

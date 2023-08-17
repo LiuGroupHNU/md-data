@@ -23,7 +23,7 @@ from wcmatch.glob import (
 
 
 class DPPath(ABC):
-    """The path class to data system (DeepmdData).
+    """The path class to data system (MDPUData).
 
     Parameters
     ----------
@@ -124,7 +124,7 @@ class DPPath(ABC):
 
 
 class DPOSPath(DPPath):
-    """The OS path class to data system (DeepmdData) for real directories.
+    """The OS path class to data system (MDPUData) for real directories.
 
     Parameters
     ----------
@@ -214,7 +214,7 @@ class DPOSPath(DPPath):
 
 
 class DPH5Path(DPPath):
-    """The path class to data system (DeepmdData) for HDF5 files.
+    """The path class to data system (MDPUData) for HDF5 files.
 
     Notes
     -----

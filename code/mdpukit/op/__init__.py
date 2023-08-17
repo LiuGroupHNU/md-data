@@ -8,7 +8,7 @@ from pathlib import (
 )
 
 NOT_LOADABLE = ("__init__.py",)
-PACKAGE_BASE = "deepmd.op"
+PACKAGE_BASE = "mdpukit.op"
 
 log = logging.getLogger(__name__)
 

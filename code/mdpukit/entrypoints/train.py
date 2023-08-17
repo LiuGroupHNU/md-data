@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
-"""DeePMD training entrypoint script.
+"""mdpu training entrypoint script.
 
 Can handle local or distributed training.
 """
@@ -13,46 +13,46 @@ from typing import (
     Optional,
 )
 
-from deepmd.common import (
+from mdpukit.common import (
     data_requirement,
     expand_sys_str,
     j_loader,
     j_must_have,
 )
-from deepmd.env import (
+from mdpukit.env import (
     GLOBAL_ENER_FLOAT_PRECISION,
     reset_default_tf_session_config,
     tf,
 )
-from deepmd.train.run_options import (
+from mdpukit.train.run_options import (
     BUILD,
     CITATION,
     WELCOME,
     RunOptions,
 )
-from deepmd.train.trainer import (
+from mdpukit.train.trainer import (
     DPTrainer,
 )
-from deepmd.utils import random as dp_random
-from deepmd.utils.argcheck import (
+from mdpukit.utils import random as dp_random
+from mdpukit.utils.argcheck import (
     normalize,
 )
-from deepmd.utils.compat import (
-    update_deepmd_input,
+from mdpukit.utils.compat import (
+    update_mdpukit_input,
 )
-from deepmd.utils.data_system import (
-    DeepmdDataSystem,
+from mdpukit.utils.data_system import (
+    MDPUDataSystem,
 )
-from deepmd.utils.finetune import (
+from mdpukit.utils.finetune import (
     replace_model_params_with_pretrained_model,
 )
-from deepmd.utils.multi_init import (
+from mdpukit.utils.multi_init import (
     replace_model_params_with_frz_multi_model,
 )
-from deepmd.utils.neighbor_stat import (
+from mdpukit.utils.neighbor_stat import (
     NeighborStat,
 )
-from deepmd.utils.path import (
+from mdpukit.utils.path import (
     DPPath,
 )
 
@@ -76,7 +76,7 @@ def train(
     finetune: Optional[str] = None,
     **kwargs,
 ):
-    """Run DeePMD model training.
+    """Run mdpu model training.
 
     Parameters
     ----------
@@ -135,7 +135,7 @@ def train(
     if "fitting_net_dict" in jdata["model"] and run_opt.init_frz_model is not None:
         jdata = replace_model_params_with_frz_multi_model(jdata, run_opt.init_frz_model)
 
-    jdata = update_deepmd_input(jdata, warning=True, dump="input_v2_compat.json")
+    jdata = update_mdpukit_input(jdata, warning=True, dump="input_v2_compat.json")
 
     jdata = normalize(jdata)
 
@@ -314,7 +314,7 @@ def get_data(jdata: Dict[str, Any], rcut, type_map, modifier, multi_task_mode=Fa
     auto_prob = jdata.get("auto_prob", "prob_sys_size")
     optional_type_map = not multi_task_mode
 
-    data = DeepmdDataSystem(
+    data = MDPUDataSystem(
         systems=systems,
         batch_size=batch_size,
         test_size=1,  # to satisfy the old api

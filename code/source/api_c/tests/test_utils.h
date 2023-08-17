@@ -120,13 +120,13 @@ class EnergyModelTest {
     double ener;
     std::vector<VALUETYPE> force, virial;
     compute(ener, force, virial, coord, box);
-    deepmd::Region<VALUETYPE> region;
+    mdpu::Region<VALUETYPE> region;
     init_region_cpu(region, &box[0]);
     for (int ii = 0; ii < 9; ++ii) {
       std::vector<VALUETYPE> box0(box), box1(box);
       box0[ii] += hh;
       box1[ii] -= hh;
-      deepmd::Region<VALUETYPE> region0, region1;
+      mdpu::Region<VALUETYPE> region0, region1;
       init_region_cpu(region0, &box0[0]);
       init_region_cpu(region1, &box1[0]);
       std::vector<VALUETYPE> coord0(coord), coord1(coord);

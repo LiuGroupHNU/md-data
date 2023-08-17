@@ -17,7 +17,7 @@ from packaging.version import (
     Version,
 )
 
-from deepmd.env import (
+from mdpukit.env import (
     TF_VERSION,
     tf,
 )
@@ -111,5 +111,5 @@ if find_libpython is not None:
 
 
 def get_op_dir() -> str:
-    """Get the directory of the deepmd-kit OP library."""
+    """Get the directory of the mdpukit-kit OP library."""
     return op_dir

@@ -6,7 +6,7 @@
 #include <fstream>
 #include <vector>
 
-#include "deepmd.hpp"
+#include "mdpu.hpp"
 #include "ewald.h"
 #include "region.h"
 #include "test_utils.h"
@@ -50,13 +50,13 @@ class TestDipoleCharge : public ::testing::Test {
   double expected_tot_e;
   std::vector<VALUETYPE> expected_tot_v;
 
-  deepmd::hpp::DeepTensor dp;
-  deepmd::hpp::DipoleChargeModifier dm;
+  mdpu::hpp::DeepTensor dp;
+  mdpu::hpp::DipoleChargeModifier dm;
 
   void SetUp() override {
     std::string file_name = "../../tests/infer/dipolecharge_e.pbtxt";
     std::string model = "dipolecharge_e.pb";
-    deepmd::hpp::convert_pbtxt_to_pb(file_name, model);
+    mdpu::hpp::convert_pbtxt_to_pb(file_name, model);
     dp.init(model, 0, "dipole_charge");
     dm.init(model, 0, "dipole_charge");
 
@@ -99,8 +99,8 @@ TYPED_TEST(TestDipoleCharge, cpu_lmp_nlist) {
   std::vector<int>& type_asso = this->type_asso;
   double& expected_tot_e = this->expected_tot_e;
   std::vector<VALUETYPE>& expected_tot_v = this->expected_tot_v;
-  deepmd::hpp::DeepTensor& dp = this->dp;
-  deepmd::hpp::DipoleChargeModifier& dm = this->dm;
+  mdpu::hpp::DeepTensor& dp = this->dp;
+  mdpu::hpp::DipoleChargeModifier& dm = this->dm;
   // build nlist
   // float rc = dp.cutoff();
   float rc = 4.0;
@@ -114,7 +114,7 @@ TYPED_TEST(TestDipoleCharge, cpu_lmp_nlist) {
   int nghost = nall - nloc;
   std::vector<int> ilist(nloc), numneigh(nloc);
   std::vector<int*> firstneigh(nloc);
-  deepmd::hpp::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
+  mdpu::hpp::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
   convert_nlist(inlist, nlist_data);
 
   // evaluate dipole
@@ -126,14 +126,14 @@ TYPED_TEST(TestDipoleCharge, cpu_lmp_nlist) {
   std::vector<int> sel_types = dp.sel_types();
   std::vector<int> sel_fwd, sel_bwd;
   int sel_nghost;
-  deepmd::hpp::select_by_type(sel_fwd, sel_bwd, sel_nghost, coord_cpy,
+  mdpu::hpp::select_by_type(sel_fwd, sel_bwd, sel_nghost, coord_cpy,
                               atype_cpy, nghost, sel_types);
   int sel_nall = sel_bwd.size();
   int sel_nloc = sel_nall - sel_nghost;
   std::vector<int> sel_atype(sel_bwd.size());
-  deepmd::hpp::select_map<int>(sel_atype, atype, sel_fwd, 1);
+  mdpu::hpp::select_map<int>(sel_atype, atype, sel_fwd, 1);
   // Yixiao: because the deeptensor already return the correct order, the
-  // following map is no longer needed deepmd::AtomMap<double>
+  // following map is no longer needed mdpu::AtomMap<double>
   // nnp_map(sel_atype.begin(), sel_atype.begin() + sel_nloc); const
   // std::vector<int> & sort_fwd_map(nnp_map.get_fwd_map());
 
@@ -178,9 +178,9 @@ TYPED_TEST(TestDipoleCharge, cpu_lmp_nlist) {
   // compute the recp part of the ele interaction
   VALUETYPE eener;
   std::vector<VALUETYPE> eforce, evirial;
-  deepmd::Region<VALUETYPE> region;
+  mdpu::Region<VALUETYPE> region;
   init_region_cpu(region, &box[0]);
-  deepmd::EwaldParameters<VALUETYPE> eparam;
+  mdpu::EwaldParameters<VALUETYPE> eparam;
   eparam.beta = 0.2;
   eparam.spacing = 4;
   ewald_recp(eener, eforce, evirial, coord, charge, region, eparam);
@@ -245,6 +245,6 @@ TYPED_TEST(TestDipoleCharge, cpu_lmp_nlist) {
 }
 
 TYPED_TEST(TestDipoleCharge, print_summary) {
-  deepmd::hpp::DipoleChargeModifier& dm = this->dm;
+  mdpu::hpp::DipoleChargeModifier& dm = this->dm;
   dm.print_summary("");
 }

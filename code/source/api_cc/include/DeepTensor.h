@@ -4,7 +4,7 @@
 #include "common.h"
 #include "neighbor_list.h"
 
-namespace deepmd {
+namespace mdpu {
 /**
  * @brief Deep Tensor.
  **/
@@ -270,4 +270,4 @@ class DeepTensor {
                      const int nghost,
                      const InputNlist& inlist);
 };
-}  // namespace deepmd
+}  // namespace mdpu

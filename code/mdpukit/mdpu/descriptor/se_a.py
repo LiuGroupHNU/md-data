@@ -3,7 +3,7 @@ import logging
 
 import numpy as np
 
-from deepmd.env import (
+from mdpukit.env import (
     GLOBAL_NP_FLOAT_PRECISION,
     GLOBAL_TF_FLOAT_PRECISION,
     op_module,
@@ -11,16 +11,16 @@ from deepmd.env import (
 )
 
 #
-from deepmd.mdpu.utils.config import (
+from mdpukit.mdpu.utils.config import (
     mdpu_cfg,
 )
-from deepmd.mdpu.utils.weight import (
+from mdpukit.mdpu.utils.weight import (
     get_normalize,
 )
-from deepmd.utils.graph import (
+from mdpukit.utils.graph import (
     get_tensor_by_name_from_graph,
 )
-from deepmd.utils.network import (
+from mdpukit.utils.network import (
     embedding_net,
 )
 

@@ -4,7 +4,7 @@
 #include "common.h"
 #include "neighbor_list.h"
 
-namespace deepmd {
+namespace mdpu {
 /**
  * @brief Deep Potential.
  **/
@@ -600,8 +600,8 @@ class DeepPotModelDevi {
   // copy neighbor list info from host
   bool init_nbor;
   std::vector<std::vector<int> > sec;
-  deepmd::AtomMap atommap;
+  mdpu::AtomMap atommap;
   NeighborListData nlist_data;
   InputNlist nlist;
 };
-}  // namespace deepmd
+}  // namespace mdpu

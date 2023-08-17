@@ -3,7 +3,7 @@
 
 #include "DeepPot.h"
 
-namespace deepmd {
+namespace mdpu {
 /**
  * @brief Dipole charge modifier.
  **/
@@ -115,4 +115,4 @@ class DipoleChargeModifier {
                  const AtomMap& atommap,
                  const int nghost);
 };
-}  // namespace deepmd
+}  // namespace mdpu

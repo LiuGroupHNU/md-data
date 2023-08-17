@@ -9,7 +9,7 @@
 #include <fstream>
 #include <vector>
 
-#include "deepmd.hpp"
+#include "mdpu.hpp"
 #include "test_utils.h"
 
 template <class VALUETYPE>
@@ -25,20 +25,20 @@ class TestInferDeepPotModeDeviFparamAparam : public ::testing::Test {
                                    0.25852028, 0.25852028, 0.25852028};
   int natoms;
 
-  deepmd::hpp::DeepPot dp0;
-  deepmd::hpp::DeepPot dp1;
-  deepmd::hpp::DeepPotModelDevi dp_md;
+  mdpu::hpp::DeepPot dp0;
+  mdpu::hpp::DeepPot dp1;
+  mdpu::hpp::DeepPotModelDevi dp_md;
 
   void SetUp() override {
     {
       std::string file_name = "../../tests/infer/fparam_aparam.pbtxt";
-      deepmd::hpp::convert_pbtxt_to_pb("../../tests/infer/fparam_aparam.pbtxt",
+      mdpu::hpp::convert_pbtxt_to_pb("../../tests/infer/fparam_aparam.pbtxt",
                                        "fparam_aparam.pb");
       dp0.init("fparam_aparam.pb");
     }
     {
       // std::string file_name = "../../tests/infer/fparam_aparam.pbtxt";
-      // deepmd::hpp::convert_pbtxt_to_pb("../../tests/infer/fparam_aparam.pbtxt",
+      // mdpu::hpp::convert_pbtxt_to_pb("../../tests/infer/fparam_aparam.pbtxt",
       //                             "fparam_aparam.pb");
       dp1.init("fparam_aparam.pb");
     }
@@ -62,9 +62,9 @@ TYPED_TEST(TestInferDeepPotModeDeviFparamAparam, attrs) {
   std::vector<VALUETYPE>& fparam = this->fparam;
   std::vector<VALUETYPE>& aparam = this->aparam;
   int& natoms = this->natoms;
-  deepmd::hpp::DeepPot& dp0 = this->dp0;
-  deepmd::hpp::DeepPot& dp1 = this->dp1;
-  deepmd::hpp::DeepPotModelDevi& dp_md = this->dp_md;
+  mdpu::hpp::DeepPot& dp0 = this->dp0;
+  mdpu::hpp::DeepPot& dp1 = this->dp1;
+  mdpu::hpp::DeepPotModelDevi& dp_md = this->dp_md;
   EXPECT_EQ(dp0.cutoff(), dp_md.cutoff());
   EXPECT_EQ(dp0.numb_types(), dp_md.numb_types());
   EXPECT_EQ(dp0.dim_fparam(), dp_md.dim_fparam());
@@ -83,9 +83,9 @@ TYPED_TEST(TestInferDeepPotModeDeviFparamAparam, cpu_lmp_list) {
   std::vector<VALUETYPE>& fparam = this->fparam;
   std::vector<VALUETYPE>& aparam = this->aparam;
   int& natoms = this->natoms;
-  deepmd::hpp::DeepPot& dp0 = this->dp0;
-  deepmd::hpp::DeepPot& dp1 = this->dp1;
-  deepmd::hpp::DeepPotModelDevi& dp_md = this->dp_md;
+  mdpu::hpp::DeepPot& dp0 = this->dp0;
+  mdpu::hpp::DeepPot& dp1 = this->dp1;
+  mdpu::hpp::DeepPotModelDevi& dp_md = this->dp_md;
   float rc = dp_md.cutoff();
   int nloc = coord.size() / 3;
   std::vector<VALUETYPE> coord_cpy;
@@ -96,7 +96,7 @@ TYPED_TEST(TestInferDeepPotModeDeviFparamAparam, cpu_lmp_list) {
   int nall = coord_cpy.size() / 3;
   std::vector<int> ilist(nloc), numneigh(nloc);
   std::vector<int*> firstneigh(nloc);
-  deepmd::hpp::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
+  mdpu::hpp::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
   convert_nlist(inlist, nlist_data);
 
   int nmodel = 2;
@@ -140,9 +140,9 @@ TYPED_TEST(TestInferDeepPotModeDeviFparamAparam, cpu_lmp_list_atomic) {
   std::vector<VALUETYPE>& fparam = this->fparam;
   std::vector<VALUETYPE>& aparam = this->aparam;
   int& natoms = this->natoms;
-  deepmd::hpp::DeepPot& dp0 = this->dp0;
-  deepmd::hpp::DeepPot& dp1 = this->dp1;
-  deepmd::hpp::DeepPotModelDevi& dp_md = this->dp_md;
+  mdpu::hpp::DeepPot& dp0 = this->dp0;
+  mdpu::hpp::DeepPot& dp1 = this->dp1;
+  mdpu::hpp::DeepPotModelDevi& dp_md = this->dp_md;
   float rc = dp_md.cutoff();
   int nloc = coord.size() / 3;
   std::vector<VALUETYPE> coord_cpy;
@@ -153,7 +153,7 @@ TYPED_TEST(TestInferDeepPotModeDeviFparamAparam, cpu_lmp_list_atomic) {
   int nall = coord_cpy.size() / 3;
   std::vector<int> ilist(nloc), numneigh(nloc);
   std::vector<int*> firstneigh(nloc);
-  deepmd::hpp::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
+  mdpu::hpp::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
   convert_nlist(inlist, nlist_data);
 
   int nmodel = 2;
@@ -210,9 +210,9 @@ TYPED_TEST(TestInferDeepPotModeDeviFparamAparam, cpu_lmp_list_std) {
   std::vector<VALUETYPE>& fparam = this->fparam;
   std::vector<VALUETYPE>& aparam = this->aparam;
   int& natoms = this->natoms;
-  deepmd::hpp::DeepPot& dp0 = this->dp0;
-  deepmd::hpp::DeepPot& dp1 = this->dp1;
-  deepmd::hpp::DeepPotModelDevi& dp_md = this->dp_md;
+  mdpu::hpp::DeepPot& dp0 = this->dp0;
+  mdpu::hpp::DeepPot& dp1 = this->dp1;
+  mdpu::hpp::DeepPotModelDevi& dp_md = this->dp_md;
   float rc = dp_md.cutoff();
   int nloc = coord.size() / 3;
   std::vector<VALUETYPE> coord_cpy;
@@ -223,7 +223,7 @@ TYPED_TEST(TestInferDeepPotModeDeviFparamAparam, cpu_lmp_list_std) {
   int nall = coord_cpy.size() / 3;
   std::vector<int> ilist(nloc), numneigh(nloc);
   std::vector<int*> firstneigh(nloc);
-  deepmd::hpp::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
+  mdpu::hpp::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
   convert_nlist(inlist, nlist_data);
 
   int nmodel = 2;

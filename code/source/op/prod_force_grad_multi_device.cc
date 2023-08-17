@@ -33,7 +33,7 @@ class ProdForceSeAGradOp : public OpKernel {
   }
 
   void Compute(OpKernelContext* context) override {
-    deepmd::safe_compute(
+    mdpu::safe_compute(
         context, [this](OpKernelContext* context) { this->_Compute(context); });
   }
 
@@ -122,16 +122,16 @@ class ProdForceSeAGradOp : public OpKernel {
 
     if (device == "GPU") {
 #if GOOGLE_CUDA
-      deepmd::prod_force_grad_a_gpu_cuda(p_grad_net, p_grad, p_in_deriv,
+      mdpu::prod_force_grad_a_gpu_cuda(p_grad_net, p_grad, p_in_deriv,
                                          p_nlist, nloc, nnei, nframes);
 #endif  // GOOGLE_CUDA
 
 #if TENSORFLOW_USE_ROCM
-      deepmd::prod_force_grad_a_gpu_rocm(p_grad_net, p_grad, p_in_deriv,
+      mdpu::prod_force_grad_a_gpu_rocm(p_grad_net, p_grad, p_in_deriv,
                                          p_nlist, nloc, nnei, nframes);
 #endif  // TENSORFLOW_USE_ROCM
     } else if (device == "CPU") {
-      deepmd::prod_force_grad_a_cpu(p_grad_net, p_grad, p_in_deriv, p_nlist,
+      mdpu::prod_force_grad_a_cpu(p_grad_net, p_grad, p_in_deriv, p_nlist,
                                     nloc, nnei, nframes);
     }
   }
@@ -148,7 +148,7 @@ class ProdForceSeRGradOp : public OpKernel {
       : OpKernel(context) {}
 
   void Compute(OpKernelContext* context) override {
-    deepmd::safe_compute(
+    mdpu::safe_compute(
         context, [this](OpKernelContext* context) { this->_Compute(context); });
   }
 
@@ -235,16 +235,16 @@ class ProdForceSeRGradOp : public OpKernel {
 
     if (device == "GPU") {
 #if GOOGLE_CUDA
-      deepmd::prod_force_grad_r_gpu_cuda(p_grad_net, p_grad, p_in_deriv,
+      mdpu::prod_force_grad_r_gpu_cuda(p_grad_net, p_grad, p_in_deriv,
                                          p_nlist, nloc, nnei, nframes);
 #endif  // GOOGLE_CUDA
 
 #if TENSORFLOW_USE_ROCM
-      deepmd::prod_force_grad_r_gpu_rocm(p_grad_net, p_grad, p_in_deriv,
+      mdpu::prod_force_grad_r_gpu_rocm(p_grad_net, p_grad, p_in_deriv,
                                          p_nlist, nloc, nnei, nframes);
 #endif  // TENSORFLOW_USE_ROCM
     } else if (device == "CPU") {
-      deepmd::prod_force_grad_r_cpu(p_grad_net, p_grad, p_in_deriv, p_nlist,
+      mdpu::prod_force_grad_r_cpu(p_grad_net, p_grad, p_in_deriv, p_nlist,
                                     nloc, nnei, nframes);
     }
   }

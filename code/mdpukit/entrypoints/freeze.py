@@ -21,22 +21,22 @@ from typing import (
 import google.protobuf.message
 
 # load grad of force module
-import deepmd.op  # noqa: F401
-from deepmd.env import (
+import mdpukit.op  # noqa: F401
+from mdpukit.env import (
     FITTING_NET_PATTERN,
     REMOVE_SUFFIX_DICT,
     tf,
 )
-from deepmd.mdpu.entrypoints.freeze import (
+from mdpukit.mdpu.entrypoints.freeze import (
     save_weight,
 )
-from deepmd.utils.errors import (
+from mdpukit.utils.errors import (
     GraphTooLargeError,
 )
-from deepmd.utils.graph import (
+from mdpukit.utils.graph import (
     get_pattern_nodes_from_graph_def,
 )
-from deepmd.utils.sess import (
+from mdpukit.utils.sess import (
     run_sess,
 )
 

@@ -7,17 +7,17 @@ from typing import (
 
 import numpy as np
 
-from deepmd.env import (
+from mdpukit.env import (
     ATTENTION_LAYER_PATTERN,
     EMBEDDING_NET_PATTERN,
     FITTING_NET_PATTERN,
     TYPE_EMBEDDING_PATTERN,
     tf,
 )
-from deepmd.utils.errors import (
+from mdpukit.utils.errors import (
     GraphWithoutTensorError,
 )
-from deepmd.utils.sess import (
+from mdpukit.utils.sess import (
     run_sess,
 )
 

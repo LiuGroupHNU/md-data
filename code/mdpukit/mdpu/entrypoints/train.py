@@ -5,28 +5,28 @@ from typing import (
     Optional,
 )
 
-from deepmd.entrypoints.freeze import (
+from mdpukit.entrypoints.freeze import (
     freeze,
 )
-from deepmd.entrypoints.train import (
+from mdpukit.entrypoints.train import (
     train,
 )
-from deepmd.env import (
+from mdpukit.env import (
     tf,
 )
-from deepmd.mdpu.data.data import (
-    jdata_deepmd_input_v0,
+from mdpukit.mdpu.data.data import (
+    jdata_mdpukit_input_v0,
 )
-from deepmd.mdpu.entrypoints.mapt import (
+from mdpukit.mdpu.entrypoints.mapt import (
     mapt,
 )
-from deepmd.mdpu.entrypoints.wrap import (
+from mdpukit.mdpu.entrypoints.wrap import (
     wrap,
 )
-from deepmd.mdpu.utils.config import (
+from mdpukit.mdpu.utils.config import (
     mdpu_cfg,
 )
-from deepmd.mdpu.utils.fio import (
+from mdpukit.mdpu.utils.fio import (
     FioDic,
 )
 
@@ -55,9 +55,9 @@ jdata_cmd_freeze = {
 def normalized_input(fn, PATH_CNN, CONFIG_CNN):
     r"""Normalize a input script file for continuous neural network."""
     f = FioDic()
-    jdata = f.load(fn, jdata_deepmd_input_v0)
+    jdata = f.load(fn, jdata_mdpukit_input_v0)
     # mdpu
-    jdata_mdpu = jdata_deepmd_input_v0["mdpu"]
+    jdata_mdpu = jdata_mdpukit_input_v0["mdpu"]
     jdata_mdpu["enable"] = True
     jdata_mdpu["config_file"] = CONFIG_CNN
     jdata_mdpu_ = f.get(jdata, "mdpu", jdata_mdpu)
@@ -75,7 +75,7 @@ def normalized_input(fn, PATH_CNN, CONFIG_CNN):
     }
     jdata_model["type_map"] = f.get(jdata_mdpu_, "type_map", [])
     mdpu_cfg.init_from_jdata(jdata_mdpu)
-    mdpu_cfg.init_from_deepmd_input(jdata_model)
+    mdpu_cfg.init_from_mdpukit_input(jdata_model)
     mdpu_cfg.init_train_mode("cnn")
     # training
     jdata_train = f.get(jdata, "training", {})
@@ -97,7 +97,7 @@ def normalized_input(fn, PATH_CNN, CONFIG_CNN):
 def normalized_input_qnn(jdata, PATH_QNN, CONFIG_CNN, WEIGHT_CNN, MAP_CNN):
     r"""Normalize a input script file for quantize neural network."""
     #
-    jdata_mdpu = jdata_deepmd_input_v0["mdpu"]
+    jdata_mdpu = jdata_mdpukit_input_v0["mdpu"]
     jdata_mdpu["enable"] = True
     jdata_mdpu["version"] = mdpu_cfg.version
     jdata_mdpu["config_file"] = CONFIG_CNN

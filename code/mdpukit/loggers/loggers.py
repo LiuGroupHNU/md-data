@@ -44,7 +44,7 @@ class _AppFilter(logging.Filter):
     """Add field `app_name` to log messages."""
 
     def filter(self, record):
-        record.app_name = "DEEPMD"
+        record.app_name = "MDPU"
         return True
 
 
@@ -198,7 +198,7 @@ def set_log_handles(
     os.environ["TF_CPP_MIN_LOG_LEVEL"] = str(int((level / 10) - 1))
 
     # get root logger
-    root_log = logging.getLogger("deepmd")
+    root_log = logging.getLogger("mdpukit")
     root_log.propagate = False
 
     root_log.setLevel(level)
@@ -255,9 +255,9 @@ def set_log_handles(
         elif mpi_log == "workers":
             rank = MPI.COMM_WORLD.Get_rank()
             # if file has suffix than inser rank number before suffix
-            # e.g deepmd.log -> deepmd_<rank>.log
+            # e.g mdpukit.log -> mdpukit_<rank>.log
             # if no suffix is present, insert rank as suffix
-            # e.g. deepmdlog -> deepmdlog.<rank>
+            # e.g. mdpukitlog -> mdpukitlog.<rank>
             if log_path.suffix:
                 worker_log = (log_path.parent / f"{log_path.stem}_{rank}").with_suffix(
                     log_path.suffix

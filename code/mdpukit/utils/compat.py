@@ -16,7 +16,7 @@ from typing import (
 
 import numpy as np
 
-from deepmd.common import (
+from mdpukit.common import (
     j_must_have,
 )
 
@@ -55,7 +55,7 @@ def convert_input_v0_v1(
 
 def _warning_input_v0_v1(fname: Optional[Union[str, Path]]):
     msg = (
-        "It seems that you are using a deepmd-kit input of version 0.x.x, "
+        "It seems that you are using a mdpukit-kit input of version 0.x.x, "
         "which is deprecated. we have converted the input to >2.0.0 compatible"
     )
     if fname is not None:
@@ -320,7 +320,7 @@ def convert_input_v1_v2(
 
 def _warning_input_v1_v2(fname: Optional[Union[str, Path]]):
     msg = (
-        "It seems that you are using a deepmd-kit input of version 1.x.x, "
+        "It seems that you are using a mdpukit-kit input of version 1.x.x, "
         "which is deprecated. we have converted the input to >2.0.0 compatible"
     )
     if fname is not None:
@@ -332,8 +332,6 @@ def deprecate_numb_test(
     jdata: Dict[str, Any], warning: bool = True, dump: Optional[Union[str, Path]] = None
 ) -> Dict[str, Any]:
     """Deprecate `numb_test` since v2.1. It has taken no effect since v2.0.
-
-    See `#1243 <https://github.com/deepmodeling/deepmd-kit/discussions/1243>`_.
 
     Parameters
     ----------
@@ -366,20 +364,20 @@ def deprecate_numb_test(
     return jdata
 
 
-def update_deepmd_input(
+def update_mdpukit_input(
     jdata: Dict[str, Any], warning: bool = True, dump: Optional[Union[str, Path]] = None
 ) -> Dict[str, Any]:
-    def is_deepmd_v0_input(jdata):
+    def is_mdpukit_v0_input(jdata):
         return "model" not in jdata.keys()
 
-    def is_deepmd_v1_input(jdata):
+    def is_mdpukit_v1_input(jdata):
         return "systems" in j_must_have(jdata, "training").keys()
 
-    if is_deepmd_v0_input(jdata):
+    if is_mdpukit_v0_input(jdata):
         jdata = convert_input_v0_v1(jdata, warning, None)
         jdata = convert_input_v1_v2(jdata, False, None)
         jdata = deprecate_numb_test(jdata, False, dump)
-    elif is_deepmd_v1_input(jdata):
+    elif is_mdpukit_v1_input(jdata):
         jdata = convert_input_v1_v2(jdata, warning, None)
         jdata = deprecate_numb_test(jdata, False, dump)
     else:

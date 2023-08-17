@@ -16,13 +16,13 @@ if(MAKE_FF_AD)
 endif()
 
 function(_add_md_variant variant_name prec_def)
-  set(libname "${LIB_DEEPMD_NATIVE}${variant_name}")
+  set(libname "${LIB_MDPU_NATIVE}${variant_name}")
   set(dp_mdnn_name "dp_mdnn${variant_name}")
   set(dp_mdff_name "dp_mdff${variant_name}")
   set(dp_mdad_name "dp_mdad${variant_name}")
 
   add_library(${libname} SHARED ${MD_SRC})
-  target_link_libraries(${libname} PRIVATE ${LIB_DEEPMD})
+  target_link_libraries(${libname} PRIVATE ${LIB_MDPU})
   target_include_directories(${libname} PUBLIC ${MD_INCLUDE_PATH})
   set_target_properties(${libname} PROPERTIES COMPILE_DEFINITIONS ${prec_def}
                                               INSTALL_RPATH "$ORIGIN")
@@ -33,20 +33,20 @@ function(_add_md_variant variant_name prec_def)
     add_executable(${dp_mdad_name} ${MDAD_SOURCE_FILES})
   endif()
 
-  # link: libdeepmd_native libdeepmd_cc libxdr
+  # link: libmdpu_native libmdpu_cc libxdr
   target_link_libraries(
-    ${dp_mdnn_name} PRIVATE ${libname} ${LIB_DEEPMD_CC}${variant_name}
+    ${dp_mdnn_name} PRIVATE ${libname} ${LIB_MDPU_CC}${variant_name}
                             ${XDRFILE_LIBRARIES})
   target_include_directories(${dp_mdnn_name}
                              PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/)
   if(MAKE_FF_AD)
     target_link_libraries(
-      ${dp_mdad_name} PRIVATE ${libname} ${LIB_DEEPMD_CC}${variant_name}
+      ${dp_mdad_name} PRIVATE ${libname} ${LIB_MDPU_CC}${variant_name}
                               ${XDRFILE_LIBRARIES})
     target_include_directories(${dp_mdad_name}
                                PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/)
     target_link_libraries(
-      ${dp_mdff_name} PRIVATE ${libname} ${LIB_DEEPMD_CC}${variant_name}
+      ${dp_mdff_name} PRIVATE ${libname} ${LIB_MDPU_CC}${variant_name}
                               ${XDRFILE_LIBRARIES})
     target_include_directories(${dp_mdff_name}
                                PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/)
@@ -70,7 +70,7 @@ function(_add_md_variant variant_name prec_def)
                  INSTALL_RPATH "$ORIGIN/../lib:${TensorFlow_LIBRARY_PATH}")
   endif()
 
-  install(TARGETS ${LIB_DEEPMD_NATIVE} DESTINATION lib/)
+  install(TARGETS ${LIB_MDPU_NATIVE} DESTINATION lib/)
   install(TARGETS ${dp_mdnn_name} DESTINATION bin/)
   if(MAKE_FF_AD)
     install(TARGETS ${dp_mdad_name} DESTINATION bin/)

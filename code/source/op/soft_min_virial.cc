@@ -27,7 +27,7 @@ class SoftMinVirialOp : public OpKernel {
   }
 
   void Compute(OpKernelContext* context) override {
-    deepmd::safe_compute(
+    mdpu::safe_compute(
         context, [this](OpKernelContext* context) { this->_Compute(context); });
   }
 
@@ -105,7 +105,7 @@ class SoftMinVirialOp : public OpKernel {
     // loop over samples
 #pragma omp parallel for
     for (int kk = 0; kk < nframes; ++kk) {
-      deepmd::soft_min_switch_virial_cpu(
+      mdpu::soft_min_switch_virial_cpu(
           &virial(kk, 0), &atom_virial(kk, 0), &du(kk, 0), &sw_deriv(kk, 0),
           &rij(kk, 0), &nlist(kk, 0), nloc, nall, nnei);
     }

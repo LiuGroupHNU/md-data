@@ -6,7 +6,7 @@
 #include <fstream>
 #include <vector>
 
-#include "deepmd.hpp"
+#include "mdpu.hpp"
 #include "test_utils.h"
 
 template <class VALUETYPE>
@@ -23,10 +23,10 @@ class TestInferDeepDipole : public ::testing::Test {
       -8.571926301526779923e-01, 1.667785136187720063e+00};
   int natoms = 6;
 
-  deepmd::hpp::DeepTensor dp;
+  mdpu::hpp::DeepTensor dp;
 
   void SetUp() override {
-    deepmd::hpp::convert_pbtxt_to_pb("../../tests/infer/deepdipole.pbtxt",
+    mdpu::hpp::convert_pbtxt_to_pb("../../tests/infer/deepdipole.pbtxt",
                                      "deepdipole.pb");
 
     dp.init("deepdipole.pb");
@@ -44,7 +44,7 @@ TYPED_TEST(TestInferDeepDipole, cpu_build_nlist) {
   std::vector<VALUETYPE>& box = this->box;
   std::vector<VALUETYPE>& expected_d = this->expected_d;
   int& natoms = this->natoms;
-  deepmd::hpp::DeepTensor& dp = this->dp;
+  mdpu::hpp::DeepTensor& dp = this->dp;
   EXPECT_EQ(dp.cutoff(), 4.);
   EXPECT_EQ(dp.numb_types(), 2);
   EXPECT_EQ(dp.output_dim(), 3);
@@ -68,7 +68,7 @@ TYPED_TEST(TestInferDeepDipole, cpu_lmp_nlist) {
   std::vector<VALUETYPE>& box = this->box;
   std::vector<VALUETYPE>& expected_d = this->expected_d;
   int& natoms = this->natoms;
-  deepmd::hpp::DeepTensor& dp = this->dp;
+  mdpu::hpp::DeepTensor& dp = this->dp;
   float rc = dp.cutoff();
   int nloc = coord.size() / 3;
   std::vector<VALUETYPE> coord_cpy;
@@ -76,7 +76,7 @@ TYPED_TEST(TestInferDeepDipole, cpu_lmp_nlist) {
   std::vector<int> ilist(nloc), numneigh(nloc);
   std::vector<int*> firstneigh(nloc);
   std::vector<std::vector<int> > nlist_data;
-  deepmd::hpp::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
+  mdpu::hpp::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
   _build_nlist<VALUETYPE>(nlist_data, coord_cpy, atype_cpy, mapping, coord,
                           atype, box, rc);
   int nall = coord_cpy.size() / 3;
@@ -218,11 +218,11 @@ class TestInferDeepDipoleNew : public ::testing::Test {
   int natoms = 6;
   int nsel = 2;
   int odim;
-  deepmd::hpp::DeepTensor dp;
+  mdpu::hpp::DeepTensor dp;
 
   void SetUp() override {
     std::string file_name = "../../tests/infer/deepdipole_new.pbtxt";
-    deepmd::hpp::convert_pbtxt_to_pb("../../tests/infer/deepdipole_new.pbtxt",
+    mdpu::hpp::convert_pbtxt_to_pb("../../tests/infer/deepdipole_new.pbtxt",
                                      "deepdipole_new.pb");
     dp.init("deepdipole_new.pb");
     odim = dp.output_dim();
@@ -262,7 +262,7 @@ TYPED_TEST(TestInferDeepDipoleNew, cpu_build_nlist) {
   int& natoms = this->natoms;
   int& nsel = this->nsel;
   int& odim = this->odim;
-  deepmd::hpp::DeepTensor& dp = this->dp;
+  mdpu::hpp::DeepTensor& dp = this->dp;
   EXPECT_EQ(dp.cutoff(), 4.);
   EXPECT_EQ(dp.numb_types(), 2);
   EXPECT_EQ(dp.output_dim(), 3);
@@ -328,7 +328,7 @@ TYPED_TEST(TestInferDeepDipoleNew, cpu_lmp_nlist) {
   int& natoms = this->natoms;
   int& nsel = this->nsel;
   int& odim = this->odim;
-  deepmd::hpp::DeepTensor& dp = this->dp;
+  mdpu::hpp::DeepTensor& dp = this->dp;
   float rc = dp.cutoff();
   int nloc = coord.size() / 3;
   std::vector<VALUETYPE> coord_cpy;
@@ -336,7 +336,7 @@ TYPED_TEST(TestInferDeepDipoleNew, cpu_lmp_nlist) {
   std::vector<int> ilist(nloc), numneigh(nloc);
   std::vector<int*> firstneigh(nloc);
   std::vector<std::vector<int> > nlist_data;
-  deepmd::hpp::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
+  mdpu::hpp::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
   _build_nlist<VALUETYPE>(nlist_data, coord_cpy, atype_cpy, mapping, coord,
                           atype, box, rc);
   int nall = coord_cpy.size() / 3;
@@ -431,10 +431,10 @@ class TestInferDeepDipoleFake : public ::testing::Test {
       -2.238112120606238209e-01, 2.553133145814526217e-01};
   int natoms = 6;
 
-  deepmd::hpp::DeepTensor dp;
+  mdpu::hpp::DeepTensor dp;
 
   void SetUp() override {
-    deepmd::hpp::convert_pbtxt_to_pb("../../tests/infer/deepdipole_fake.pbtxt",
+    mdpu::hpp::convert_pbtxt_to_pb("../../tests/infer/deepdipole_fake.pbtxt",
                                      "deepdipole_fake.pb");
 
     dp.init("deepdipole_fake.pb");
@@ -452,7 +452,7 @@ TYPED_TEST(TestInferDeepDipoleFake, cpu_build_nlist) {
   std::vector<VALUETYPE>& box = this->box;
   std::vector<VALUETYPE>& expected_d = this->expected_d;
   int& natoms = this->natoms;
-  deepmd::hpp::DeepTensor& dp = this->dp;
+  mdpu::hpp::DeepTensor& dp = this->dp;
   EXPECT_EQ(dp.cutoff(), 2.);
   EXPECT_EQ(dp.numb_types(), 2);
   EXPECT_EQ(dp.output_dim(), 3);
@@ -477,7 +477,7 @@ TYPED_TEST(TestInferDeepDipoleFake, cpu_lmp_nlist) {
   std::vector<VALUETYPE>& box = this->box;
   std::vector<VALUETYPE>& expected_d = this->expected_d;
   int& natoms = this->natoms;
-  deepmd::hpp::DeepTensor& dp = this->dp;
+  mdpu::hpp::DeepTensor& dp = this->dp;
   float rc = dp.cutoff();
   int nloc = coord.size() / 3;
   std::vector<VALUETYPE> coord_cpy;
@@ -485,7 +485,7 @@ TYPED_TEST(TestInferDeepDipoleFake, cpu_lmp_nlist) {
   std::vector<int> ilist(nloc), numneigh(nloc);
   std::vector<int*> firstneigh(nloc);
   std::vector<std::vector<int> > nlist_data;
-  deepmd::hpp::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
+  mdpu::hpp::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
   _build_nlist<VALUETYPE>(nlist_data, coord_cpy, atype_cpy, mapping, coord,
                           atype, box, rc);
   int nall = coord_cpy.size() / 3;

@@ -265,7 +265,7 @@ def set_tf_default_nthreads():
             "the number of threads by setting the environment variables "
             "OMP_NUM_THREADS, TF_INTRA_OP_PARALLELISM_THREADS, and "
             "TF_INTER_OP_PARALLELISM_THREADS. See "
-            "https://deepmd.rtfd.io/parallelism/ for more information."
+            "https://mdpukit.rtfd.io/parallelism/ for more information."
         )
     set_env_if_empty("TF_INTRA_OP_PARALLELISM_THREADS", "0", verbose=False)
     set_env_if_empty("TF_INTER_OP_PARALLELISM_THREADS", "0", verbose=False)
@@ -382,11 +382,11 @@ def get_module(module_name: str) -> "ModuleType":
                 tf_cxx11_abi_flag = tf.sysconfig.CXX11_ABI_FLAG
             if TF_CXX11_ABI_FLAG != tf_cxx11_abi_flag:
                 raise RuntimeError(
-                    "This deepmd-kit package was compiled with "
+                    "This mdpukit-kit package was compiled with "
                     "CXX11_ABI_FLAG=%d, but TensorFlow runtime was compiled "
                     "with CXX11_ABI_FLAG=%d. These two library ABIs are "
                     "incompatible and thus an error is raised when loading %s. "
-                    "You need to rebuild deepmd-kit against this TensorFlow "
+                    "You need to rebuild mdpukit-kit against this TensorFlow "
                     "runtime."
                     % (
                         TF_CXX11_ABI_FLAG,
@@ -401,13 +401,13 @@ def get_module(module_name: str) -> "ModuleType":
             if TF_VERSION != tf_py_version:
                 raise RuntimeError(
                     "The version of TensorFlow used to compile this "
-                    "deepmd-kit package is {}, but the version of TensorFlow "
+                    "mdpukit-kit package is {}, but the version of TensorFlow "
                     "runtime you are using is {}. These two versions are "
                     "incompatible and thus an error is raised when loading {}. "
-                    "You need to install TensorFlow {}, or rebuild deepmd-kit "
+                    "You need to install TensorFlow {}, or rebuild mdpukit-kit "
                     "against TensorFlow {}.\nIf you are using a wheel from "
-                    "pypi, you may consider to install deepmd-kit execuating "
-                    "`pip install deepmd-kit --no-binary deepmd-kit` "
+                    "pypi, you may consider to install mdpukit-kit execuating "
+                    "`pip install mdpukit-kit --no-binary mdpukit-kit` "
                     "instead.".format(
                         TF_VERSION,
                         tf_py_version,
@@ -417,9 +417,9 @@ def get_module(module_name: str) -> "ModuleType":
                     )
                 ) from e
             error_message = (
-                "This deepmd-kit package is inconsitent with TensorFlow "
+                "This mdpukit-kit package is inconsitent with TensorFlow "
                 "Runtime, thus an error is raised when loading {}. "
-                "You need to rebuild deepmd-kit against this TensorFlow "
+                "You need to rebuild mdpukit-kit against this TensorFlow "
                 "runtime.".format(module_name)
             )
             if TF_CXX11_ABI_FLAG == 1:
@@ -457,7 +457,7 @@ MODEL_VERSION = GLOBAL_CONFIG["model_version"]
 TF_VERSION = GLOBAL_CONFIG["tf_version"]
 TF_CXX11_ABI_FLAG = int(GLOBAL_CONFIG["tf_cxx11_abi_flag"])
 
-op_module = get_module("deepmd_op")
+op_module = get_module("mdpukit_op")
 op_grads_module = get_module("op_grads")
 
 # FLOAT_PREC

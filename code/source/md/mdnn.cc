@@ -142,7 +142,7 @@ int main(int argc, char* argv[]) {
 
   Integrator<VALUETYPE> inte;
   ThermostatLangevin<VALUETYPE> thm(temperature, tau_t, seed);
-  deepmd::DeepPot nnp(graph_file);
+  mdpu::DeepPot nnp(graph_file);
 
   Statistics<VALUETYPE> st;
   XtcSaver sxtc(xtc_file.c_str(), nloc);

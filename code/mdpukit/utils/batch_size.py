@@ -8,10 +8,10 @@ from typing import (
 
 import numpy as np
 
-from deepmd.env import (
+from mdpukit.env import (
     tf,
 )
-from deepmd.utils.errors import (
+from mdpukit.utils.errors import (
     OutOfMemoryError,
 )
 
@@ -19,7 +19,7 @@ log = logging.getLogger(__name__)
 
 
 class AutoBatchSize:
-    """This class allows DeePMD-kit to automatically decide the maximum
+    """This class allows mdpu-kit to automatically decide the maximum
     batch size that will not cause an OOM error.
 
     Notes

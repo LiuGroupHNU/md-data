@@ -64,7 +64,7 @@ class TestSelectMap : public ::testing::Test {
 TYPED_TEST_SUITE(TestSelectMap, ValueTypes);
 
 TYPED_TEST(TestSelectMap, selectmap_coord0) {
-  deepmd::select_map(this->coord_out_0, this->coord, this->fwd_map_0, 3);
+  mdpu::select_map(this->coord_out_0, this->coord, this->fwd_map_0, 3);
   EXPECT_EQ(6, this->coord_out_0.size());
   for (int ii = 0; ii < 6; ++ii) {
     EXPECT_EQ(this->expected_coord_out_0[ii], this->coord_out_0[ii]);
@@ -72,7 +72,7 @@ TYPED_TEST(TestSelectMap, selectmap_coord0) {
 }
 
 TYPED_TEST(TestSelectMap, selectmap_coord1) {
-  deepmd::select_map(this->coord_out_1, this->coord, this->fwd_map_1, 3);
+  mdpu::select_map(this->coord_out_1, this->coord, this->fwd_map_1, 3);
   EXPECT_EQ(12, this->coord_out_1.size());
   for (int ii = 0; ii < 12; ++ii) {
     EXPECT_EQ(this->expected_coord_out_1[ii], this->coord_out_1[ii]);
@@ -80,7 +80,7 @@ TYPED_TEST(TestSelectMap, selectmap_coord1) {
 }
 
 TYPED_TEST(TestSelectMap, selectmap_type0) {
-  deepmd::select_map(this->atype_out_0, this->atype, this->fwd_map_0, 1);
+  mdpu::select_map(this->atype_out_0, this->atype, this->fwd_map_0, 1);
   EXPECT_EQ(2, this->atype_out_0.size());
   for (int ii = 0; ii < 2; ++ii) {
     EXPECT_EQ(this->expected_atype_out_0[ii], this->atype_out_0[ii]);
@@ -88,7 +88,7 @@ TYPED_TEST(TestSelectMap, selectmap_type0) {
 }
 
 TYPED_TEST(TestSelectMap, selectmap_type1) {
-  deepmd::select_map(this->atype_out_1, this->atype, this->fwd_map_1, 1);
+  mdpu::select_map(this->atype_out_1, this->atype, this->fwd_map_1, 1);
   EXPECT_EQ(4, this->atype_out_1.size());
   for (int ii = 0; ii < 4; ++ii) {
     EXPECT_EQ(this->expected_atype_out_1[ii], this->atype_out_1[ii]);

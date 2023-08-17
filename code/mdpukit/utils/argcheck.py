@@ -14,14 +14,14 @@ from dargs import (
     dargs,
 )
 
-from deepmd.common import (
+from mdpukit.common import (
     ACTIVATION_FN_DICT,
     PRECISION_DICT,
 )
-from deepmd.mdpu.utils.argcheck import (
+from mdpukit.mdpu.utils.argcheck import (
     mdpu_args,
 )
-from deepmd.utils.plugin import (
+from mdpukit.utils.plugin import (
     Plugin,
 )
 
@@ -591,7 +591,7 @@ def modifier_variant_type_args():
 
 #  --- model compression configurations: --- #
 def model_compression():
-    doc_model_file = "The input model file, which will be compressed by the DeePMD-kit."
+    doc_model_file = "The input model file, which will be compressed by the mdpu-kit."
     doc_table_config = "The arguments of model compression, including extrapolate(scale of model extrapolation), stride(uniform stride of tabulation's first and second table), and frequency(frequency of tabulation overflow check)."
     doc_min_nbor_dist = (
         "The nearest distance between neighbor atoms saved in the frozen model."

@@ -10,7 +10,7 @@ from typing import (
     Tuple,
 )
 
-from deepmd.env import (
+from mdpukit.env import (
     tf,
 )
 

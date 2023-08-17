@@ -5,21 +5,21 @@ from typing import (
     Union,
 )
 
-from deepmd.common import (
+from mdpukit.common import (
     get_activation_func,
     get_precision,
 )
-from deepmd.env import (
+from mdpukit.env import (
     tf,
 )
-from deepmd.mdpu.utils.config import (
+from mdpukit.mdpu.utils.config import (
     mdpu_cfg,
 )
-from deepmd.utils.graph import (
+from mdpukit.utils.graph import (
     get_tensor_by_name_from_graph,
     get_type_embedding_net_variables_from_graph_def,
 )
-from deepmd.utils.network import (
+from mdpukit.utils.network import (
     embedding_net,
 )
 

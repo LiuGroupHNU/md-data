@@ -45,7 +45,7 @@ class GeluOp : public OpKernel {
  public:
   explicit GeluOp(OpKernelConstruction* context) : OpKernel(context) {}
   void Compute(OpKernelContext* context) override {
-    deepmd::safe_compute(
+    mdpu::safe_compute(
         context, [this](OpKernelContext* context) { this->_Compute(context); });
   }
 
@@ -65,14 +65,14 @@ class GeluOp : public OpKernel {
 
     if (device == "GPU") {
 #if GOOGLE_CUDA
-      deepmd::gelu_gpu_cuda(out, x, size);
+      mdpu::gelu_gpu_cuda(out, x, size);
 #endif  // GOOGLE_CUDA
 
 #if TENSORFLOW_USE_ROCM
-      deepmd::gelu_gpu_rocm(out, x, size);
+      mdpu::gelu_gpu_rocm(out, x, size);
 #endif  // TENSORFLOW_USE_ROCM
     } else if (device == "CPU") {
-      deepmd::gelu_cpu(out, x, size);
+      mdpu::gelu_cpu(out, x, size);
     }
   }
 
@@ -87,7 +87,7 @@ class GeluGradOp : public OpKernel {
  public:
   explicit GeluGradOp(OpKernelConstruction* context) : OpKernel(context) {}
   void Compute(OpKernelContext* context) override {
-    deepmd::safe_compute(
+    mdpu::safe_compute(
         context, [this](OpKernelContext* context) { this->_Compute(context); });
   }
 
@@ -109,14 +109,14 @@ class GeluGradOp : public OpKernel {
 
     if (device == "GPU") {
 #if GOOGLE_CUDA
-      deepmd::gelu_grad_gpu_cuda(out, x, dy, size);
+      mdpu::gelu_grad_gpu_cuda(out, x, dy, size);
 #endif  // GOOGLE_CUDA
 
 #if TENSORFLOW_USE_ROCM
-      deepmd::gelu_grad_gpu_rocm(out, x, dy, size);
+      mdpu::gelu_grad_gpu_rocm(out, x, dy, size);
 #endif  // TENSORFLOW_USE_ROCM
     } else if (device == "CPU") {
-      deepmd::gelu_grad_cpu(out, x, dy, size);
+      mdpu::gelu_grad_cpu(out, x, dy, size);
     }
   }
 
@@ -131,7 +131,7 @@ class GeluGradGradOp : public OpKernel {
  public:
   explicit GeluGradGradOp(OpKernelConstruction* context) : OpKernel(context) {}
   void Compute(OpKernelContext* context) override {
-    deepmd::safe_compute(
+    mdpu::safe_compute(
         context, [this](OpKernelContext* context) { this->_Compute(context); });
   }
 
@@ -155,14 +155,14 @@ class GeluGradGradOp : public OpKernel {
 
     if (device == "GPU") {
 #if GOOGLE_CUDA
-      deepmd::gelu_grad_grad_gpu_cuda(out, x, dy, dy_2, size);
+      mdpu::gelu_grad_grad_gpu_cuda(out, x, dy, dy_2, size);
 #endif  // GOOGLE_CUDA
 
 #if TENSORFLOW_USE_ROCM
-      deepmd::gelu_grad_grad_gpu_rocm(out, x, dy, dy_2, size);
+      mdpu::gelu_grad_grad_gpu_rocm(out, x, dy, dy_2, size);
 #endif  // TENSORFLOW_USE_ROCM
     } else if (device == "CPU") {
-      deepmd::gelu_grad_grad_cpu(out, x, dy, dy_2, size);
+      mdpu::gelu_grad_grad_cpu(out, x, dy, dy_2, size);
     }
   }
 

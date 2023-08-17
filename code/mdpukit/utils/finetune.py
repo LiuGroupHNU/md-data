@@ -6,10 +6,10 @@ from typing import (
     Dict,
 )
 
-from deepmd.utils.errors import (
+from mdpukit.utils.errors import (
     GraphWithoutTensorError,
 )
-from deepmd.utils.graph import (
+from mdpukit.utils.graph import (
     get_tensor_by_name,
 )
 
@@ -35,7 +35,7 @@ def replace_model_params_with_pretrained_model(
         raise RuntimeError(
             "The input frozen pretrained model: %s has no training script, "
             "which is not supported to perform finetuning. "
-            "Please use the model pretrained with v2.1.5 or higher version of DeePMD-kit."
+            "Please use the model pretrained with v2.1.5 or higher version of mdpu-kit."
             % input
         ) from e
     pretrained_jdata = json.loads(t_jdata)

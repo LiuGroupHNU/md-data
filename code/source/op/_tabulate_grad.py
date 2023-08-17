@@ -6,11 +6,11 @@ from tensorflow.python.framework import (
     ops,
 )
 
-from deepmd.env import (
+from mdpukit.env import (
     op_module,
 )
 
-# from deepmd.DescrptSeATabulate import last_layer_size
+# from mdpukit.DescrptSeATabulate import last_layer_size
 
 
 @ops.RegisterGradient("TabulateFusion")

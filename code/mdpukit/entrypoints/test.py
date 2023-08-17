@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
-"""Test trained DeePMD model."""
+"""Test trained mdpu model."""
 import logging
 from pathlib import (
     Path,
@@ -14,25 +14,25 @@ from typing import (
 
 import numpy as np
 
-from deepmd import (
+from mdpukit import (
     DeepPotential,
 )
-from deepmd.common import (
+from mdpukit.common import (
     expand_sys_str,
 )
-from deepmd.utils import random as dp_random
-from deepmd.utils.data import (
-    DeepmdData,
+from mdpukit.utils import random as dp_random
+from mdpukit.utils.data import (
+    MDPUData,
 )
-from deepmd.utils.weight_avg import (
+from mdpukit.utils.weight_avg import (
     weighted_average,
 )
 
 if TYPE_CHECKING:
-    from deepmd.infer import (
+    from mdpukit.infer import (
         DeepPot,
     )
-    from deepmd.infer.deep_tensor import (
+    from mdpukit.infer.deep_tensor import (
         DeepTensor,
     )
 
@@ -109,7 +109,7 @@ def test(
 
         # create data class
         tmap = dp.get_type_map() if dp.model_type == "ener" else None
-        data = DeepmdData(system, set_prefix, shuffle_test=shuffle_test, type_map=tmap)
+        data = MDPUData(system, set_prefix, shuffle_test=shuffle_test, type_map=tmap)
 
         if dp.model_type == "ener":
             err = test_ener(
@@ -192,7 +192,7 @@ def save_txt_file(
 
 def test_ener(
     dp: "DeepPot",
-    data: DeepmdData,
+    data: MDPUData,
     system: str,
     numb_test: int,
     detail_file: Optional[str],
@@ -205,7 +205,7 @@ def test_ener(
     ----------
     dp : DeepPot
         instance of deep potential
-    data : DeepmdData
+    data : MDPUData
         data container object
     system : str
         system directory
@@ -491,7 +491,7 @@ def print_ener_sys_avg(avg: Dict[str, float]):
     log.info(f"Virial RMSE/Natoms : {avg['rmse_va']:e} eV")
 
 
-def run_test(dp: "DeepTensor", test_data: dict, numb_test: int, test_sys: DeepmdData):
+def run_test(dp: "DeepTensor", test_data: dict, numb_test: int, test_sys: MDPUData):
     """Run tests.
 
     Parameters
@@ -502,7 +502,7 @@ def run_test(dp: "DeepTensor", test_data: dict, numb_test: int, test_sys: Deepmd
         dictionary with test data
     numb_test : int
         munber of tests to do
-    test_sys : DeepmdData
+    test_sys : MDPUData
         test system
 
     Returns

@@ -3,10 +3,10 @@ from typing import (
     Tuple,
 )
 
-from deepmd.env import (
+from mdpukit.env import (
     tf,
 )
-from deepmd.utils.graph import (
+from mdpukit.utils.graph import (
     get_embedding_net_variables_from_graph_def,
     get_tensor_by_name_from_graph,
 )
@@ -22,7 +22,7 @@ class DescrptSe(Descriptor):
     Notes
     -----
     All of these descriptors have an environmental matrix and an
-    embedding network (:meth:`deepmd.utils.network.embedding_net`), so
+    embedding network (:meth:`mdpukit.utils.network.embedding_net`), so
     they can share some similiar methods without defining them twice.
 
     Attributes

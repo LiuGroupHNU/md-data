@@ -5,7 +5,7 @@ from typing import (
 
 import numpy as np
 
-from deepmd.env import (
+from mdpukit.env import (
     tf,
 )
 

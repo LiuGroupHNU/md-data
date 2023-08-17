@@ -7,41 +7,41 @@ from common import (
     tests_path,
 )
 
-from deepmd.env import (
+from mdpukit.env import (
     GLOBAL_TF_FLOAT_PRECISION,
     tf,
 )
-from deepmd.mdpu.data.data import (
-    jdata_deepmd_input_v0,
-    jdata_deepmd_input_v1,
+from mdpukit.mdpu.data.data import (
+    jdata_mdpukit_input_v0,
+    jdata_mdpukit_input_v1,
 )
-from deepmd.mdpu.entrypoints.freeze import (
+from mdpukit.mdpu.entrypoints.freeze import (
     save_weight,
 )
-from deepmd.mdpu.entrypoints.mapt import (
+from mdpukit.mdpu.entrypoints.mapt import (
     MapTable,
 )
-from deepmd.mdpu.entrypoints.wrap import (
+from mdpukit.mdpu.entrypoints.wrap import (
     wrap,
 )
-from deepmd.mdpu.utils.config import (
+from mdpukit.mdpu.utils.config import (
     mdpu_cfg,
 )
-from deepmd.mdpu.utils.fio import (
+from mdpukit.mdpu.utils.fio import (
     FioBin,
     FioNpyDic,
 )
-from deepmd.train.run_options import (
+from mdpukit.train.run_options import (
     RunOptions,
 )
-from deepmd.train.trainer import (
+from mdpukit.train.trainer import (
     DPTrainer,
 )
-from deepmd.utils.argcheck import (
+from mdpukit.utils.argcheck import (
     normalize,
 )
-from deepmd.utils.compat import (
-    update_deepmd_input,
+from mdpukit.utils.compat import (
+    update_mdpukit_input,
 )
 
 
@@ -397,7 +397,7 @@ class TestMdpuEntrypointsV0(tf.test.TestCase):
     def test_model_qnn_v0(self):
         tf.reset_default_graph()
         # open MDPU
-        jdata_cf = jdata_deepmd_input_v0["mdpu"]
+        jdata_cf = jdata_mdpukit_input_v0["mdpu"]
         jdata_cf["config_file"] = str(
             tests_path / "mdpu" / "ref" / "config_v0_cnn.npy"
         )
@@ -410,9 +410,9 @@ class TestMdpuEntrypointsV0(tf.test.TestCase):
         mdpu_cfg.init_train_mode("qnn")
         # build trainer
         ntype = mdpu_cfg.dscp["ntype"]
-        jdata = mdpu_cfg.get_deepmd_jdata()
+        jdata = mdpu_cfg.get_mdpukit_jdata()
         run_opt = RunOptions(log_path=None, log_level=20)
-        jdata = update_deepmd_input(jdata, warning=True, dump="input_v2_compat.json")
+        jdata = update_mdpukit_input(jdata, warning=True, dump="input_v2_compat.json")
         jdata = normalize(jdata)
         self.trainer = DPTrainer(jdata, run_opt, False)
         self.model = self.trainer.model
@@ -705,7 +705,7 @@ class TestMdpuEntrypointsV1(tf.test.TestCase):
     def test_model_qnn_v1(self):
         tf.reset_default_graph()
         # open MDPU
-        jdata_cf = jdata_deepmd_input_v1["mdpu"]
+        jdata_cf = jdata_mdpukit_input_v1["mdpu"]
         jdata_cf["config_file"] = str(
             tests_path / "mdpu" / "ref" / "config_v1_cnn.npy"
         )
@@ -718,9 +718,9 @@ class TestMdpuEntrypointsV1(tf.test.TestCase):
         mdpu_cfg.init_train_mode("qnn")
         # build trainer
         ntype = mdpu_cfg.dscp["ntype"]
-        jdata = mdpu_cfg.get_deepmd_jdata()
+        jdata = mdpu_cfg.get_mdpukit_jdata()
         run_opt = RunOptions(log_path=None, log_level=20)
-        jdata = update_deepmd_input(jdata, warning=True, dump="input_v2_compat.json")
+        jdata = update_mdpukit_input(jdata, warning=True, dump="input_v2_compat.json")
         jdata = normalize(jdata)
         self.trainer = DPTrainer(jdata, run_opt, False)
         self.model = self.trainer.model

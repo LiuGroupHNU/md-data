@@ -8,16 +8,16 @@ from typing import (
 
 import numpy as np
 
-from deepmd.env import (
+from mdpukit.env import (
     GLOBAL_NP_FLOAT_PRECISION,
     default_tf_session_config,
     op_module,
     tf,
 )
-from deepmd.utils.data_system import (
-    DeepmdDataSystem,
+from mdpukit.utils.data_system import (
+    MDPUDataSystem,
 )
-from deepmd.utils.parallel_op import (
+from mdpukit.utils.parallel_op import (
     ParallelOp,
 )
 
@@ -27,7 +27,7 @@ log = logging.getLogger(__name__)
 class NeighborStat:
     """Class for getting training data information.
 
-    It loads data from DeepmdData object, and measures the data info, including neareest nbor distance between atoms, max nbor size of atoms and the output data range of the environment matrix.
+    It loads data from MDPUData object, and measures the data info, including neareest nbor distance between atoms, max nbor size of atoms and the output data range of the environment matrix.
 
     Parameters
     ----------
@@ -89,13 +89,13 @@ class NeighborStat:
 
         self.sub_sess = tf.Session(graph=sub_graph, config=default_tf_session_config)
 
-    def get_stat(self, data: DeepmdDataSystem) -> Tuple[float, List[int]]:
+    def get_stat(self, data: MDPUDataSystem) -> Tuple[float, List[int]]:
         """Get the data statistics of the training data, including nearest nbor distance between atoms, max nbor size of atoms.
 
         Parameters
         ----------
         data
-            Class for manipulating many data systems. It is implemented with the help of DeepmdData.
+            Class for manipulating many data systems. It is implemented with the help of MDPUData.
 
         Returns
         -------

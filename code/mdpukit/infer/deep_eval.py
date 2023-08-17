@@ -11,15 +11,15 @@ from typing import (
 
 import numpy as np
 
-from deepmd.env import (
+from mdpukit.env import (
     MODEL_VERSION,
     default_tf_session_config,
     tf,
 )
-from deepmd.utils.batch_size import (
+from mdpukit.utils.batch_size import (
     AutoBatchSize,
 )
-from deepmd.utils.sess import (
+from mdpukit.utils.sess import (
     run_sess,
 )
 
@@ -64,7 +64,7 @@ class DeepEval:
             raise RuntimeError(
                 f"model in graph (version {self.model_version}) is incompatible"
                 f"with the model (version {MODEL_VERSION}) supported by the current code."
-                "See https://deepmd.rtfd.io/compatability/ for details."
+                "See https://mdpukit.rtfd.io/compatability/ for details."
             )
 
         # set default to False, as subclasses may not support
@@ -104,7 +104,7 @@ class DeepEval:
         try:
             t_mt = self._get_tensor("model_attr/model_version:0")
         except KeyError:
-            # For deepmd-kit version 0.x - 1.x, set model version to 0.0
+            # For mdpukit-kit version 0.x - 1.x, set model version to 0.0
             return "0.0"
         else:
             [mt] = run_sess(self.sess, [t_mt], feed_dict={})
@@ -289,7 +289,7 @@ class DeepEval:
     def make_natoms_vec(
         self, atom_types: np.ndarray, mixed_type: bool = False
     ) -> np.ndarray:
-        """Make the natom vector used by deepmd-kit.
+        """Make the natom vector used by mdpukit-kit.
 
         Parameters
         ----------
@@ -340,13 +340,13 @@ class DeepEval:
 
         See Also
         --------
-        deepmd.utils.type_embed.TypeEmbedNet : The type embedding network.
+        mdpukit.utils.type_embed.TypeEmbedNet : The type embedding network.
 
         Examples
         --------
         Get the output of type embedding network of `graph.pb`:
 
-        >>> from deepmd.infer import DeepPotential
+        >>> from mdpukit.infer import DeepPotential
         >>> dp = DeepPotential('graph.pb')
         >>> dp.eval_typeebd()
         """

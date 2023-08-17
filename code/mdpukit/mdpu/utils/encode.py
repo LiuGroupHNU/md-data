@@ -3,7 +3,7 @@ import logging
 
 import numpy as np
 
-from deepmd.mdpu.data.data import (
+from mdpukit.mdpu.data.data import (
     jdata_sys,
 )
 

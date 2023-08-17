@@ -16,7 +16,7 @@
 #include "tf_public.h"
 #endif
 
-namespace deepmd {
+namespace mdpu {
 
 typedef double ENERGYTYPE;
 
@@ -33,7 +33,7 @@ struct NeighborListData {
  public:
   void copy_from_nlist(const InputNlist& inlist);
   void shuffle(const std::vector<int>& fwd_map);
-  void shuffle(const deepmd::AtomMap& map);
+  void shuffle(const mdpu::AtomMap& map);
   void shuffle_exclude_empty(const std::vector<int>& fwd_map);
   void make_inlist(InputNlist& inlist);
 };
@@ -159,17 +159,17 @@ void get_env_nthreads(int& num_intra_nthreads, int& num_inter_nthreads);
  */
 void load_op_library();
 
-/** @struct deepmd::deepmd_exception
+/** @struct mdpu::mdpu_exception
  **/
 
 /**
  * @brief Throw exception if TensorFlow doesn't work.
  **/
-struct tf_exception : public deepmd::deepmd_exception {
+struct tf_exception : public mdpu::mdpu_exception {
  public:
-  tf_exception() : deepmd::deepmd_exception("TensorFlow Error!"){};
+  tf_exception() : mdpu::mdpu_exception("TensorFlow Error!"){};
   tf_exception(const std::string& msg)
-      : deepmd::deepmd_exception(std::string("TensorFlow Error: ") + msg){};
+      : mdpu::mdpu_exception(std::string("TensorFlow Error: ") + msg){};
 };
 
 /**
@@ -239,7 +239,7 @@ int session_input_tensors(
     const double& cell_size,
     const std::vector<VALUETYPE>& fparam_,
     const std::vector<VALUETYPE>& aparam_,
-    const deepmd::AtomMap& atommap,
+    const mdpu::AtomMap& atommap,
     const std::string scope = "");
 
 /**
@@ -266,7 +266,7 @@ int session_input_tensors(
     InputNlist& dlist,
     const std::vector<VALUETYPE>& fparam_,
     const std::vector<VALUETYPE>& aparam_,
-    const deepmd::AtomMap& atommap,
+    const mdpu::AtomMap& atommap,
     const int nghost,
     const int ago,
     const std::string scope = "");
@@ -297,7 +297,7 @@ int session_input_tensors_mixed_type(
     const double& cell_size,
     const std::vector<VALUETYPE>& fparam_,
     const std::vector<VALUETYPE>& aparam_,
-    const deepmd::AtomMap& atommap,
+    const mdpu::AtomMap& atommap,
     const std::string scope = "");
 
 /**
@@ -315,9 +315,9 @@ void read_file_to_string(std::string model, std::string& file_content);
 void convert_pbtxt_to_pb(std::string fn_pb_txt, std::string fn_pb);
 
 /**
- * @brief Print the summary of DeePMD-kit, including the version and the build
+ * @brief Print the summary of mdpu-kit, including the version and the build
  * information.
  * @param[in] pre The prefix to each line.
  */
 void print_summary(const std::string& pre);
-}  // namespace deepmd
+}  // namespace mdpu

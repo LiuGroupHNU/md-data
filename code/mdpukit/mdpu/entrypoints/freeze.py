@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 
 # SPDX-License-Identifier: LGPL-3.0-or-later
-from deepmd.env import (
+from mdpukit.env import (
     tf,
 )
-from deepmd.mdpu.utils.fio import (
+from mdpukit.mdpu.utils.fio import (
     FioDic,
 )
-from deepmd.utils.graph import (
+from mdpukit.utils.graph import (
     get_tensor_by_name_from_graph,
 )
 

@@ -8,15 +8,15 @@ import shutil
 import dpdata
 import numpy as np
 
-from deepmd.common import j_loader as dp_j_loader
-from deepmd.entrypoints.main import (
+from mdpukit.common import j_loader as dp_j_loader
+from mdpukit.entrypoints.main import (
     main,
 )
-from deepmd.env import (
+from mdpukit.env import (
     GLOBAL_NP_FLOAT_PRECISION,
     tf,
 )
-from deepmd.utils import random as dp_random
+from mdpukit.utils import random as dp_random
 
 if GLOBAL_NP_FLOAT_PRECISION == np.float32:
     global_default_fv_hh = 1e-2
@@ -54,7 +54,7 @@ def gen_data_type_specific(nframes=1, dim_fparam=2):
     sys.data["cells"] = sys.data["cells"].reshape([nframes, 3, 3])
     sys.data["energies"] = np.zeros([nframes, 1])
     sys.data["forces"] = np.zeros([nframes, natoms, 3])
-    sys.to_deepmd_npy("system", prec=np.float64)
+    sys.to_mdpukit_npy("system", prec=np.float64)
     np.save("system/set.000/fparam.npy", tmpdata.fparam)
     np.save(
         "system/set.000/aparam.npy",
@@ -76,7 +76,7 @@ def gen_data_mixed_type(nframes=1, dim_fparam=2):
     sys.data["cells"] = sys.data["cells"].reshape([nframes, 3, 3])
     sys.data["energies"] = np.zeros([nframes, 1])
     sys.data["forces"] = np.zeros([nframes, natoms, 3])
-    sys.to_deepmd_npy("system_mixed_type", prec=np.float64)
+    sys.to_mdpukit_npy("system_mixed_type", prec=np.float64)
     np.savetxt("system_mixed_type/type_map.raw", real_type_map, fmt="%s")
     np.save(
         "system_mixed_type/set.000/real_atom_types.npy",
@@ -115,7 +115,7 @@ def gen_data_virtual_type(nframes=1, nghost=4, dim_fparam=2):
     sys.data["cells"] = sys.data["cells"].reshape([nframes, 3, 3])
     sys.data["energies"] = np.zeros([nframes, 1])
     sys.data["forces"] = np.zeros([nframes, natoms + nghost, 3])
-    sys.to_deepmd_npy("system_mixed_type", prec=np.float64)
+    sys.to_mdpukit_npy("system_mixed_type", prec=np.float64)
     np.savetxt("system_mixed_type/type_map.raw", real_type_map, fmt="%s")
     np.save(
         "system_mixed_type/set.000/real_atom_types.npy",
@@ -533,7 +533,7 @@ def strerch_box(old_coord, old_box, new_box):
 def run_dp(cmd: str) -> int:
     """Run DP directly from the entry point instead of the subprocess.
 
-    It is quite slow to start DeePMD-kit with subprocess.
+    It is quite slow to start mdpu-kit with subprocess.
 
     Parameters
     ----------

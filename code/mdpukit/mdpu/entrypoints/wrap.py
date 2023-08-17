@@ -6,32 +6,32 @@ from typing import (
 
 import numpy as np
 
-from deepmd.env import (
+from mdpukit.env import (
     op_module,
     tf,
 )
-from deepmd.mdpu.data.data import (
-    jdata_deepmd_input_v0,
+from mdpukit.mdpu.data.data import (
+    jdata_mdpukit_input_v0,
     jdata_sys,
 )
-from deepmd.mdpu.utils.config import (
+from mdpukit.mdpu.utils.config import (
     mdpu_cfg,
 )
-from deepmd.mdpu.utils.encode import (
+from mdpukit.mdpu.utils.encode import (
     Encode,
 )
-from deepmd.mdpu.utils.fio import (
+from mdpukit.mdpu.utils.fio import (
     FioBin,
     FioTxt,
 )
-from deepmd.mdpu.utils.network import (
+from mdpukit.mdpu.utils.network import (
     get_sess,
 )
-from deepmd.mdpu.utils.weight import (
+from mdpukit.mdpu.utils.weight import (
     get_fitnet_weight,
     get_type_weight,
 )
-from deepmd.utils.sess import (
+from mdpukit.utils.sess import (
     run_sess,
 )
 
@@ -77,7 +77,7 @@ class Wrap:
         self.map_file = map_file
         self.model_file = model_file
 
-        jdata = jdata_deepmd_input_v0["mdpu"]
+        jdata = jdata_mdpukit_input_v0["mdpu"]
         jdata["config_file"] = config_file
         jdata["weight_file"] = weight_file
         jdata["map_file"] = map_file

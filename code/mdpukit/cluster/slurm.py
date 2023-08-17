@@ -15,7 +15,7 @@ from typing import (
 
 import hostlist
 
-from deepmd.cluster import (
+from mdpukit.cluster import (
     local,
 )
 

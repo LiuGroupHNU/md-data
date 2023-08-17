@@ -1180,7 +1180,7 @@ const char* DP_DipoleChargeModifierCheckOK(DP_DipoleChargeModifier* dcm);
 extern void DP_ConvertPbtxtToPb(const char* c_pbtxt, const char* c_pb);
 
 /**
- * @brief Print the summary of DeePMD-kit, including the version and the build
+ * @brief Print the summary of mdpu-kit, including the version and the build
  * information.
  * @param[in] c_pre The prefix to each line.
  */

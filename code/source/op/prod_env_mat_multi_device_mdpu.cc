@@ -10,7 +10,7 @@
 //==================================================
 
 code: mdpu
-reference: deepmd
+reference: mdpu
 author: mph (pinghui_mo@outlook.com)
 date: 2021-12-6
 
@@ -118,7 +118,7 @@ static void _prepare_coord_nlist_cpu(OpKernelContext* context,
                                      int const** type,
                                      std::vector<int>& type_cpy,
                                      std::vector<int>& idx_mapping,
-                                     deepmd::InputNlist& inlist,
+                                     mdpu::InputNlist& inlist,
                                      std::vector<int>& ilist,
                                      std::vector<int>& numneigh,
                                      std::vector<int*>& firstneigh,
@@ -151,7 +151,7 @@ static int _norm_copy_coord_cpu(std::vector<FPTYPE>& coord_cpy,
                                 const float& rcut_r) {
   std::vector<FPTYPE> tmp_coord(nall * 3);
   std::copy(coord, coord + nall * 3, tmp_coord.begin());
-  deepmd::Region<FPTYPE> region;
+  mdpu::Region<FPTYPE> region;
   init_region_cpu(region, box);
   normalize_coord_cpu(&tmp_coord[0], nall, region);
   int tt;
@@ -189,7 +189,7 @@ static int _build_nlist_cpu(std::vector<int>& ilist,
       jlist[ii].resize(mem_nnei);
       firstneigh[ii] = &jlist[ii][0];
     }
-    deepmd::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
+    mdpu::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
     int ret = build_nlist_cpu(inlist, &max_nnei, coord, nloc, new_nall,
                               mem_nnei, rcut_r);
     if (ret == 0) {
@@ -224,7 +224,7 @@ static void _map_nei_info_cpu(int* nlist,
                               const int& nnei,
                               const int& ntypes,
                               const bool& b_nlist_map) {
-  deepmd::use_nei_info_cpu(nlist, ntype, nmask, type, idx_mapping, nloc, nnei,
+  mdpu::use_nei_info_cpu(nlist, ntype, nmask, type, idx_mapping, nloc, nnei,
                            ntypes, b_nlist_map);
 }
 
@@ -235,7 +235,7 @@ static void _prepare_coord_nlist_cpu(OpKernelContext* context,
                                      int const** type,
                                      std::vector<int>& type_cpy,
                                      std::vector<int>& idx_mapping,
-                                     deepmd::InputNlist& inlist,
+                                     mdpu::InputNlist& inlist,
                                      std::vector<int>& ilist,
                                      std::vector<int>& numneigh,
                                      std::vector<int*>& firstneigh,
@@ -309,8 +309,8 @@ class ProdEnvMatAMdpuQuantizeOp : public OpKernel {
     OP_REQUIRES_OK(context, context->GetAttr("sel_r", &sel_r));
     // OP_REQUIRES_OK(context, context->GetAttr("nloc", &nloc_f));
     // OP_REQUIRES_OK(context, context->GetAttr("nall", &nall_f));
-    deepmd::cum_sum(sec_a, sel_a);
-    deepmd::cum_sum(sec_r, sel_r);
+    mdpu::cum_sum(sec_a, sel_a);
+    mdpu::cum_sum(sec_r, sel_r);
     ndescrpt_a = sec_a.back() * 4;
     ndescrpt_r = sec_r.back() * 1;
     ndescrpt = ndescrpt_a + ndescrpt_r;
@@ -325,7 +325,7 @@ class ProdEnvMatAMdpuQuantizeOp : public OpKernel {
   }
 
   void Compute(OpKernelContext* context) override {
-    deepmd::safe_compute(
+    mdpu::safe_compute(
         context, [this](OpKernelContext* context) { this->_Compute(context); });
   }
 
@@ -413,10 +413,10 @@ class ProdEnvMatAMdpuQuantizeOp : public OpKernel {
       nei_mode = -1;
     } else if (mesh_tensor.shape().dim_size(0) == 7 ||
                mesh_tensor.shape().dim_size(0) == 1) {
-      throw deepmd::deepmd_exception(
+      throw mdpu::mdpu_exception(
           "Mixed types are not supported by this OP.");
     } else {
-      throw deepmd::deepmd_exception("invalid mesh tensor");
+      throw mdpu::mdpu_exception("invalid mesh tensor");
     }
 
     // Create output tensors
@@ -479,7 +479,7 @@ class ProdEnvMatAMdpuQuantizeOp : public OpKernel {
 // UNDEFINE
 #endif  // TENSORFLOW_USE_ROCM
       } else if (device == "CPU") {
-        deepmd::InputNlist inlist;
+        mdpu::InputNlist inlist;
         // some buffers, be freed after the evaluation of this frame
         std::vector<int> idx_mapping;
         std::vector<int> ilist(nloc), numneigh(nloc);
@@ -495,7 +495,7 @@ class ProdEnvMatAMdpuQuantizeOp : public OpKernel {
             max_nbor_size, box, mesh_tensor.flat<int>().data(), nloc, nei_mode,
             rcut_r, max_cpy_trial, max_nnei_trial);
         // launch the cpu compute function
-        deepmd::prod_env_mat_a_mdpu_quantize_cpu(
+        mdpu::prod_env_mat_a_mdpu_quantize_cpu(
             em, em_deriv, rij, nlist, coord, type, inlist, max_nbor_size, avg,
             std, nloc, frame_nall, rcut_r, rcut_r_smth, sec_a);
         // do nlist mapping if coords were copied
@@ -522,7 +522,7 @@ class ProdEnvMatAMdpuQuantizeOp : public OpKernel {
   std::string device;
   int* array_int = NULL;
   unsigned long long* array_longlong = NULL;
-  deepmd::InputNlist gpu_inlist;
+  mdpu::InputNlist gpu_inlist;
   int* nbor_list_dev = NULL;
 };
 
@@ -545,8 +545,8 @@ class ProdEnvMatAMixMdpuQuantizeOp : public OpKernel {
     OP_REQUIRES_OK(context, context->GetAttr("sel_r", &sel_r));
     // OP_REQUIRES_OK(context, context->GetAttr("nloc", &nloc_f));
     // OP_REQUIRES_OK(context, context->GetAttr("nall", &nall_f));
-    deepmd::cum_sum(sec_a, sel_a);
-    deepmd::cum_sum(sec_r, sel_r);
+    mdpu::cum_sum(sec_a, sel_a);
+    mdpu::cum_sum(sec_r, sel_r);
     ndescrpt_a = sec_a.back() * 4;
     ndescrpt_r = sec_r.back() * 1;
     ndescrpt = ndescrpt_a + ndescrpt_r;
@@ -561,7 +561,7 @@ class ProdEnvMatAMixMdpuQuantizeOp : public OpKernel {
   }
 
   void Compute(OpKernelContext* context) override {
-    deepmd::safe_compute(
+    mdpu::safe_compute(
         context, [this](OpKernelContext* context) { this->_Compute(context); });
   }
 
@@ -647,7 +647,7 @@ class ProdEnvMatAMixMdpuQuantizeOp : public OpKernel {
       assert(nloc == nall);
       nei_mode = -1;
     } else {
-      throw deepmd::deepmd_exception("invalid mesh tensor");
+      throw mdpu::mdpu_exception("invalid mesh tensor");
     }
 
     // Create output tensors
@@ -728,7 +728,7 @@ class ProdEnvMatAMixMdpuQuantizeOp : public OpKernel {
 // UNDEFINE
 #endif  // TENSORFLOW_USE_ROCM
       } else if (device == "CPU") {
-        deepmd::InputNlist inlist;
+        mdpu::InputNlist inlist;
         // some buffers, be freed after the evaluation of this frame
         std::vector<int> idx_mapping;
         std::vector<int> ilist(nloc), numneigh(nloc);
@@ -751,7 +751,7 @@ class ProdEnvMatAMixMdpuQuantizeOp : public OpKernel {
             max_nbor_size, box, mesh_tensor.flat<int>().data(), nloc, nei_mode,
             rcut_r, max_cpy_trial, max_nnei_trial);
         // launch the cpu compute function
-        deepmd::prod_env_mat_a_mdpu_quantize_cpu(
+        mdpu::prod_env_mat_a_mdpu_quantize_cpu(
             em, em_deriv, rij, nlist, coord, type, inlist, max_nbor_size, avg,
             std, nloc, frame_nall, rcut_r, rcut_r_smth, sec_a, f_type);
         // do nlist mapping if coords were copied
@@ -777,7 +777,7 @@ class ProdEnvMatAMixMdpuQuantizeOp : public OpKernel {
   std::string device;
   int* array_int = NULL;
   unsigned long long* array_longlong = NULL;
-  deepmd::InputNlist gpu_inlist;
+  mdpu::InputNlist gpu_inlist;
   int* nbor_list_dev = NULL;
 };
 

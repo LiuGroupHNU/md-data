@@ -23,20 +23,20 @@ class TestInferDeepPotModeDevi : public ::testing::Test {
   std::vector<VALUETYPE> box = {13., 0., 0., 0., 13., 0., 0., 0., 13.};
   int natoms;
 
-  deepmd::DeepPot dp0;
-  deepmd::DeepPot dp1;
-  deepmd::DeepPotModelDevi dp_md;
+  mdpu::DeepPot dp0;
+  mdpu::DeepPot dp1;
+  mdpu::DeepPotModelDevi dp_md;
 
   void SetUp() override {
     {
       std::string file_name = "../../tests/infer/deeppot.pbtxt";
-      deepmd::convert_pbtxt_to_pb("../../tests/infer/deeppot.pbtxt",
+      mdpu::convert_pbtxt_to_pb("../../tests/infer/deeppot.pbtxt",
                                   "deeppot.pb");
       dp0.init("deeppot.pb");
     }
     {
       std::string file_name = "../../tests/infer/deeppot-1.pbtxt";
-      deepmd::convert_pbtxt_to_pb("../../tests/infer/deeppot-1.pbtxt",
+      mdpu::convert_pbtxt_to_pb("../../tests/infer/deeppot-1.pbtxt",
                                   "deeppot-1.pb");
       dp1.init("deeppot-1.pb");
     }
@@ -73,20 +73,20 @@ class TestInferDeepPotModeDeviPython : public ::testing::Test {
   std::vector<VALUETYPE> expected_md_v = {0.167004837423, 0.00041822790564,
                                           0.0804864867641};  // max min avg
 
-  deepmd::DeepPot dp0;
-  deepmd::DeepPot dp1;
-  deepmd::DeepPotModelDevi dp_md;
+  mdpu::DeepPot dp0;
+  mdpu::DeepPot dp1;
+  mdpu::DeepPotModelDevi dp_md;
 
   void SetUp() override {
     {
       std::string file_name = "../../tests/infer/deeppot.pbtxt";
-      deepmd::convert_pbtxt_to_pb("../../tests/infer/deeppot.pbtxt",
+      mdpu::convert_pbtxt_to_pb("../../tests/infer/deeppot.pbtxt",
                                   "deeppot.pb");
       dp0.init("deeppot.pb");
     }
     {
       std::string file_name = "../../tests/infer/deeppot-1.pbtxt";
-      deepmd::convert_pbtxt_to_pb("../../tests/infer/deeppot-1.pbtxt",
+      mdpu::convert_pbtxt_to_pb("../../tests/infer/deeppot-1.pbtxt",
                                   "deeppot-1.pb");
       dp1.init("deeppot-1.pb");
     }
@@ -107,9 +107,9 @@ TYPED_TEST(TestInferDeepPotModeDevi, attrs) {
   std::vector<int>& atype = this->atype;
   std::vector<VALUETYPE>& box = this->box;
   int& natoms = this->natoms;
-  deepmd::DeepPot& dp0 = this->dp0;
-  deepmd::DeepPot& dp1 = this->dp1;
-  deepmd::DeepPotModelDevi& dp_md = this->dp_md;
+  mdpu::DeepPot& dp0 = this->dp0;
+  mdpu::DeepPot& dp1 = this->dp1;
+  mdpu::DeepPotModelDevi& dp_md = this->dp_md;
   EXPECT_EQ(dp0.cutoff(), dp_md.cutoff());
   EXPECT_EQ(dp0.numb_types(), dp_md.numb_types());
   EXPECT_EQ(dp0.dim_fparam(), dp_md.dim_fparam());
@@ -126,9 +126,9 @@ TYPED_TEST(TestInferDeepPotModeDevi, cpu_lmp_list) {
   std::vector<int>& atype = this->atype;
   std::vector<VALUETYPE>& box = this->box;
   int& natoms = this->natoms;
-  deepmd::DeepPot& dp0 = this->dp0;
-  deepmd::DeepPot& dp1 = this->dp1;
-  deepmd::DeepPotModelDevi& dp_md = this->dp_md;
+  mdpu::DeepPot& dp0 = this->dp0;
+  mdpu::DeepPot& dp1 = this->dp1;
+  mdpu::DeepPotModelDevi& dp_md = this->dp_md;
   float rc = dp_md.cutoff();
   int nloc = coord.size() / 3;
   std::vector<VALUETYPE> coord_cpy;
@@ -139,7 +139,7 @@ TYPED_TEST(TestInferDeepPotModeDevi, cpu_lmp_list) {
   int nall = coord_cpy.size() / 3;
   std::vector<int> ilist(nloc), numneigh(nloc);
   std::vector<int*> firstneigh(nloc);
-  deepmd::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
+  mdpu::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
   convert_nlist(inlist, nlist_data);
 
   int nmodel = 2;
@@ -181,9 +181,9 @@ TYPED_TEST(TestInferDeepPotModeDevi, cpu_lmp_list_atomic) {
   std::vector<int>& atype = this->atype;
   std::vector<VALUETYPE>& box = this->box;
   int& natoms = this->natoms;
-  deepmd::DeepPot& dp0 = this->dp0;
-  deepmd::DeepPot& dp1 = this->dp1;
-  deepmd::DeepPotModelDevi& dp_md = this->dp_md;
+  mdpu::DeepPot& dp0 = this->dp0;
+  mdpu::DeepPot& dp1 = this->dp1;
+  mdpu::DeepPotModelDevi& dp_md = this->dp_md;
   float rc = dp_md.cutoff();
   int nloc = coord.size() / 3;
   std::vector<VALUETYPE> coord_cpy;
@@ -194,7 +194,7 @@ TYPED_TEST(TestInferDeepPotModeDevi, cpu_lmp_list_atomic) {
   int nall = coord_cpy.size() / 3;
   std::vector<int> ilist(nloc), numneigh(nloc);
   std::vector<int*> firstneigh(nloc);
-  deepmd::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
+  mdpu::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
   convert_nlist(inlist, nlist_data);
 
   int nmodel = 2;
@@ -249,9 +249,9 @@ TYPED_TEST(TestInferDeepPotModeDevi, cpu_lmp_list_std) {
   std::vector<int>& atype = this->atype;
   std::vector<VALUETYPE>& box = this->box;
   int& natoms = this->natoms;
-  deepmd::DeepPot& dp0 = this->dp0;
-  deepmd::DeepPot& dp1 = this->dp1;
-  deepmd::DeepPotModelDevi& dp_md = this->dp_md;
+  mdpu::DeepPot& dp0 = this->dp0;
+  mdpu::DeepPot& dp1 = this->dp1;
+  mdpu::DeepPotModelDevi& dp_md = this->dp_md;
   float rc = dp_md.cutoff();
   int nloc = coord.size() / 3;
   std::vector<VALUETYPE> coord_cpy;
@@ -262,7 +262,7 @@ TYPED_TEST(TestInferDeepPotModeDevi, cpu_lmp_list_std) {
   int nall = coord_cpy.size() / 3;
   std::vector<int> ilist(nloc), numneigh(nloc);
   std::vector<int*> firstneigh(nloc);
-  deepmd::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
+  mdpu::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
   convert_nlist(inlist, nlist_data);
 
   int nmodel = 2;
@@ -403,9 +403,9 @@ TYPED_TEST(TestInferDeepPotModeDeviPython, cpu_lmp_list_std) {
   std::vector<int>& atype = this->atype;
   std::vector<VALUETYPE>& box = this->box;
   int& natoms = this->natoms;
-  deepmd::DeepPot& dp0 = this->dp0;
-  deepmd::DeepPot& dp1 = this->dp1;
-  deepmd::DeepPotModelDevi& dp_md = this->dp_md;
+  mdpu::DeepPot& dp0 = this->dp0;
+  mdpu::DeepPot& dp1 = this->dp1;
+  mdpu::DeepPotModelDevi& dp_md = this->dp_md;
   std::vector<VALUETYPE>& expected_md_f = this->expected_md_f;
   std::vector<VALUETYPE>& expected_md_v = this->expected_md_v;
   float rc = dp_md.cutoff();
@@ -418,7 +418,7 @@ TYPED_TEST(TestInferDeepPotModeDeviPython, cpu_lmp_list_std) {
   int nall = coord_cpy.size() / 3;
   std::vector<int> ilist(nloc), numneigh(nloc);
   std::vector<int*> firstneigh(nloc);
-  deepmd::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
+  mdpu::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
   convert_nlist(inlist, nlist_data);
 
   int nmodel = 2;

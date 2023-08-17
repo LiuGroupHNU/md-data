@@ -3,18 +3,18 @@ import logging
 
 import numpy as np
 
-from deepmd.mdpu.data.data import (
+from mdpukit.mdpu.data.data import (
     MDPU_CITATION,
     MDPU_WELCOME,
     jdata_config_v0,
     jdata_config_v1,
-    jdata_deepmd_input_v0,
-    jdata_deepmd_input_v1,
+    jdata_mdpukit_input_v0,
+    jdata_mdpukit_input_v1,
 )
-from deepmd.mdpu.utils.fio import (
+from mdpukit.mdpu.utils.fio import (
     FioDic,
 )
-from deepmd.mdpu.utils.op import (
+from mdpukit.mdpu.utils.op import (
     r2s,
 )
 
@@ -122,10 +122,10 @@ class MdpuConfig:
         self.version = version
         log.debug("#Set mdpu version as %d " % self.version)
         if self.version == 0:
-            self.jdata_deepmd_input = jdata_deepmd_input_v0.copy()
+            self.jdata_mdpukit_input = jdata_mdpukit_input_v0.copy()
             self.config = jdata_config_v0.copy()
         if self.version == 1:
-            self.jdata_deepmd_input = jdata_deepmd_input_v1.copy()
+            self.jdata_mdpukit_input = jdata_mdpukit_input_v1.copy()
             self.config = jdata_config_v1.copy()
 
     def init_net_size(self):
@@ -134,8 +134,8 @@ class MdpuConfig:
         if self.enable:
             self.config["fitn"]["neuron"] = [self.net_size] * 3
 
-    def init_from_deepmd_input(self, jdata):
-        r"""Initialize members with input script of deepmd."""
+    def init_from_mdpukit_input(self, jdata):
+        r"""Initialize members with input script of mdpukit."""
         fioObj = FioDic()
         self.config["dscp"] = fioObj.update(jdata["descriptor"], self.config["dscp"])
         self.config["fitn"] = fioObj.update(jdata["fitting_net"], self.config["fitn"])
@@ -190,7 +190,7 @@ class MdpuConfig:
         return jdata
 
     def init_dpin(self, jdata: dict, jdata_parent: dict = {}) -> dict:
-        r"""Initialize members about other deepmd input."""
+        r"""Initialize members about other mdpukit input."""
         return jdata
 
     def init_size(self, jdata: dict, jdata_parent: dict = {}) -> dict:
@@ -277,7 +277,7 @@ class MdpuConfig:
     def get_dscp_jdata(self):
         r"""Generate `model/descriptor` in input script."""
         dscp = self.dscp
-        jdata = self.jdata_deepmd_input["model"]["descriptor"]
+        jdata = self.jdata_mdpukit_input["model"]["descriptor"]
         jdata["sel"] = dscp["sel"]
         jdata["rcut"] = dscp["rcut"]
         jdata["rcut_smth"] = dscp["rcut_smth"]
@@ -289,13 +289,13 @@ class MdpuConfig:
     def get_fitn_jdata(self):
         r"""Generate `model/fitting_net` in input script."""
         fitn = self.fitn
-        jdata = self.jdata_deepmd_input["model"]["fitting_net"]
+        jdata = self.jdata_mdpukit_input["model"]["fitting_net"]
         jdata["neuron"] = fitn["neuron"]
         return jdata
 
     def get_model_jdata(self):
         r"""Generate `model` in input script."""
-        jdata = self.jdata_deepmd_input["model"]
+        jdata = self.jdata_mdpukit_input["model"]
         jdata["descriptor"] = self.get_dscp_jdata()
         jdata["fitting_net"] = self.get_fitn_jdata()
         if len(self.dpin["type_map"]) > 0:
@@ -304,7 +304,7 @@ class MdpuConfig:
 
     def get_mdpu_jdata(self):
         r"""Generate `mdpu` in input script."""
-        jdata = self.jdata_deepmd_input["mdpu"]
+        jdata = self.jdata_mdpukit_input["mdpu"]
         jdata["net_size"] = self.net_size
         jdata["config_file"] = self.config_file
         jdata["weight_file"] = self.weight_file
@@ -318,19 +318,19 @@ class MdpuConfig:
 
     def get_learning_rate_jdata(self):
         r"""Generate `learning_rate` in input script."""
-        return self.jdata_deepmd_input["learning_rate"]
+        return self.jdata_mdpukit_input["learning_rate"]
 
     def get_loss_jdata(self):
         r"""Generate `loss` in input script."""
-        return self.jdata_deepmd_input["loss"]
+        return self.jdata_mdpukit_input["loss"]
 
     def get_training_jdata(self):
         r"""Generate `training` in input script."""
-        return self.jdata_deepmd_input["training"]
+        return self.jdata_mdpukit_input["training"]
 
-    def get_deepmd_jdata(self):
+    def get_mdpukit_jdata(self):
         r"""Generate input script with member element one by one."""
-        jdata = self.jdata_deepmd_input.copy()
+        jdata = self.jdata_mdpukit_input.copy()
         jdata["model"] = self.get_model_jdata()
         jdata["mdpu"] = self.get_mdpu_jdata()
         jdata["learning_rate"] = self.get_learning_rate_jdata()
@@ -364,4 +364,4 @@ class MdpuConfig:
 
 
 # global configuration for mdpu
-mdpu_cfg = MdpuConfig(jdata_deepmd_input_v0["mdpu"])
+mdpu_cfg = MdpuConfig(jdata_mdpukit_input_v0["mdpu"])

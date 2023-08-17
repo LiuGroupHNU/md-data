@@ -12,12 +12,12 @@ build-backend = "dp_backend"
 backend-path = ["backend"]
 
 [project]
-name = "deepmd-kit"
+name = "mdpu-kit"
 dynamic = ["version", "optional-dependencies", "entry-points"]
-description = "A deep learning package for many-body potential energy representation and molecular dynamics"
+description = "A deep learning package for Molecular Dynamics Processing Unit"
 authors = [
-  {name = "DeepModeling"},
-  {name = "Han Wang", email = "wang_han@iapcm.ac.cn"},
+  {name = "Molecular Dynamics Processing Unit"},
+  {name = "Jie Liu"},
 ]
 license = {file = "LICENSE"}
 classifiers = [
@@ -51,19 +51,19 @@ dependencies = [
 ]
 requires-python = ">=3.7"
 readme = "README.md"
-keywords = ["deepmd"]
+keywords = ["mdpu"]
 
 [project.urls]
-Homepage = "https://github.com/deepmodeling/deepmd-kit"
-documentation = "https://docs.deepmodeling.com/projects/deepmd-kit"
-repository = "https://github.com/deepmodeling/deepmd-kit"
+Homepage = "https://github.com/deepmodeling/mdpu-kit"
+documentation = "https://docs.deepmodeling.com/projects/mdpu-kit"
+repository = "https://github.com/deepmodeling/mdpu-kit"
 
 [tool.setuptools_scm]
-write_to = "deepmd/_version.py"
+write_to = "mdpu/_version.py"
 
 [tool.cibuildwheel]
 test-command = [
-    "python -m deepmd -h",
+    "python -m mdpu -h",
     "dp -h",
     "pytest {project}/source/tests/test_lammps.py"
 ]
@@ -97,7 +97,7 @@ before-all = [
 environment = { PIP_PREFER_BINARY="1" }
 test-extras = ["cpu"]
 test-command = [
-    "python -m deepmd -h",
+    "python -m mdpu -h",
     "dp -h",
 ]
 

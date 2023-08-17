@@ -25,7 +25,7 @@ class SoftMinForceOp : public OpKernel {
   }
 
   void Compute(OpKernelContext* context) override {
-    deepmd::safe_compute(
+    mdpu::safe_compute(
         context, [this](OpKernelContext* context) { this->_Compute(context); });
   }
 
@@ -87,7 +87,7 @@ class SoftMinForceOp : public OpKernel {
     // loop over samples
 #pragma omp parallel for
     for (int kk = 0; kk < nframes; ++kk) {
-      deepmd::soft_min_switch_force_cpu(&force(kk, 0), &du(kk, 0),
+      mdpu::soft_min_switch_force_cpu(&force(kk, 0), &du(kk, 0),
                                         &sw_deriv(kk, 0), &nlist(kk, 0), nloc,
                                         nall, nnei);
     }

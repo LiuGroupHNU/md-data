@@ -51,7 +51,7 @@ class DescrptOp : public OpKernel {
   }
 
   void Compute(OpKernelContext* context) override {
-    deepmd::safe_compute(
+    mdpu::safe_compute(
         context, [this](OpKernelContext* context) { this->_Compute(context); });
   }
 
@@ -127,10 +127,10 @@ class DescrptOp : public OpKernel {
       nei_mode = -1;
     } else if (mesh_tensor.shape().dim_size(0) == 7 ||
                mesh_tensor.shape().dim_size(0) == 1) {
-      throw deepmd::deepmd_exception(
+      throw mdpu::mdpu_exception(
           "Mixed types are not supported by this OP.");
     } else {
-      throw deepmd::deepmd_exception("invalid mesh tensor");
+      throw mdpu::mdpu_exception("invalid mesh tensor");
     }
     bool b_pbc = true;
     // if region is given extended, do not use pbc
@@ -293,7 +293,7 @@ class DescrptOp : public OpKernel {
       } else if (nei_mode == -1) {
         ::build_nlist(d_nlist_a, d_nlist_r, d_coord3, rcut_a, rcut_r, NULL);
       } else {
-        throw deepmd::deepmd_exception("unknow neighbor mode");
+        throw mdpu::mdpu_exception("unknow neighbor mode");
       }
 
       // loop over atoms, compute descriptors for each atom
@@ -528,7 +528,7 @@ class DescrptOp : public OpKernel {
             }
           }
           sort_info.push_back(
-              std::pair<compute_t, int>(deepmd::dot3(diff, diff), list_idx));
+              std::pair<compute_t, int>(mdpu::dot3(diff, diff), list_idx));
         }
       }
       sort(sort_info.begin(), sort_info.end());
@@ -565,7 +565,7 @@ class DescrptOp : public OpKernel {
             }
           }
           sort_info.push_back(
-              std::pair<compute_t, int>(deepmd::dot3(diff, diff), list_idx));
+              std::pair<compute_t, int>(mdpu::dot3(diff, diff), list_idx));
         }
       }
       sort(sort_info.begin(), sort_info.end());
@@ -613,9 +613,9 @@ class DescrptOp : public OpKernel {
         }
       }
     }
-    compute_t rij = deepmd::dot3(diff[0], diff[1]);
-    compute_t rii = deepmd::dot3(diff[0], diff[0]);
-    compute_t rjj = deepmd::dot3(diff[1], diff[1]);
+    compute_t rij = mdpu::dot3(diff[0], diff[1]);
+    compute_t rii = mdpu::dot3(diff[0], diff[0]);
+    compute_t rjj = mdpu::dot3(diff[1], diff[1]);
     if (fabs(rij / sqrt(rii * rjj) + 1) < 1e-4) {
       return false;
     } else {
