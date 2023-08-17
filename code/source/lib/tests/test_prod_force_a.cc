@@ -95,7 +95,7 @@ class TestProdForceA : public ::testing::Test {
       }
       std::vector<double> t_env, t_env_deriv, t_rij_a;
       // compute env_mat and its deriv, record
-      deepmd::env_mat_a_cpu<double>(t_env, t_env_deriv, t_rij_a, posi_cpy,
+      mdpu::env_mat_a_cpu<double>(t_env, t_env_deriv, t_rij_a, posi_cpy,
                                     atype_cpy, ii, fmt_nlist_a, sec_a, rc_smth,
                                     rc);
       for (int jj = 0; jj < ndescrpt; ++jj) {
@@ -120,7 +120,7 @@ class TestProdForceA : public ::testing::Test {
 TEST_F(TestProdForceA, cpu) {
   std::vector<double> force(nframes * nall * 3);
   int n_a_sel = nnei;
-  deepmd::prod_force_a_cpu<double>(&force[0], &net_deriv[0], &env_deriv[0],
+  mdpu::prod_force_a_cpu<double>(&force[0], &net_deriv[0], &env_deriv[0],
                                    &nlist[0], nloc, nall, nnei, nframes);
   EXPECT_EQ(force.size(), nframes * nall * 3);
   EXPECT_EQ(force.size(), expected_force.size());
@@ -141,19 +141,19 @@ TEST_F(TestProdForceA, gpu_cuda) {
   int* nlist_dev = NULL;
   double *force_dev = NULL, *net_deriv_dev = NULL, *env_deriv_dev = NULL;
 
-  deepmd::malloc_device_memory_sync(nlist_dev, nlist);
-  deepmd::malloc_device_memory_sync(force_dev, force);
-  deepmd::malloc_device_memory_sync(net_deriv_dev, net_deriv);
-  deepmd::malloc_device_memory_sync(env_deriv_dev, env_deriv);
+  mdpu::malloc_device_memory_sync(nlist_dev, nlist);
+  mdpu::malloc_device_memory_sync(force_dev, force);
+  mdpu::malloc_device_memory_sync(net_deriv_dev, net_deriv);
+  mdpu::malloc_device_memory_sync(env_deriv_dev, env_deriv);
 
-  deepmd::prod_force_a_gpu_cuda<double>(force_dev, net_deriv_dev, env_deriv_dev,
+  mdpu::prod_force_a_gpu_cuda<double>(force_dev, net_deriv_dev, env_deriv_dev,
                                         nlist_dev, nloc, nall, nnei, nframes);
 
-  deepmd::memcpy_device_to_host(force_dev, force);
-  deepmd::delete_device_memory(nlist_dev);
-  deepmd::delete_device_memory(force_dev);
-  deepmd::delete_device_memory(net_deriv_dev);
-  deepmd::delete_device_memory(env_deriv_dev);
+  mdpu::memcpy_device_to_host(force_dev, force);
+  mdpu::delete_device_memory(nlist_dev);
+  mdpu::delete_device_memory(force_dev);
+  mdpu::delete_device_memory(net_deriv_dev);
+  mdpu::delete_device_memory(env_deriv_dev);
 
   EXPECT_EQ(force.size(), nframes * nall * 3);
   EXPECT_EQ(force.size(), expected_force.size());
@@ -171,19 +171,19 @@ TEST_F(TestProdForceA, gpu_rocm) {
   int* nlist_dev = NULL;
   double *force_dev = NULL, *net_deriv_dev = NULL, *env_deriv_dev = NULL;
 
-  deepmd::malloc_device_memory_sync(nlist_dev, nlist);
-  deepmd::malloc_device_memory_sync(force_dev, force);
-  deepmd::malloc_device_memory_sync(net_deriv_dev, net_deriv);
-  deepmd::malloc_device_memory_sync(env_deriv_dev, env_deriv);
+  mdpu::malloc_device_memory_sync(nlist_dev, nlist);
+  mdpu::malloc_device_memory_sync(force_dev, force);
+  mdpu::malloc_device_memory_sync(net_deriv_dev, net_deriv);
+  mdpu::malloc_device_memory_sync(env_deriv_dev, env_deriv);
 
-  deepmd::prod_force_a_gpu_rocm<double>(force_dev, net_deriv_dev, env_deriv_dev,
+  mdpu::prod_force_a_gpu_rocm<double>(force_dev, net_deriv_dev, env_deriv_dev,
                                         nlist_dev, nloc, nall, nnei, nframes);
 
-  deepmd::memcpy_device_to_host(force_dev, force);
-  deepmd::delete_device_memory(nlist_dev);
-  deepmd::delete_device_memory(force_dev);
-  deepmd::delete_device_memory(net_deriv_dev);
-  deepmd::delete_device_memory(env_deriv_dev);
+  mdpu::memcpy_device_to_host(force_dev, force);
+  mdpu::delete_device_memory(nlist_dev);
+  mdpu::delete_device_memory(force_dev);
+  mdpu::delete_device_memory(net_deriv_dev);
+  mdpu::delete_device_memory(env_deriv_dev);
 
   EXPECT_EQ(force.size(), nframes * nall * 3);
   EXPECT_EQ(force.size(), expected_force.size());

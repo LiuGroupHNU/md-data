@@ -13,7 +13,7 @@ int omp_get_thread_num() { return 0; }
 #include "region.h"
 #include "utilities.h"
 
-namespace deepmd {
+namespace mdpu {
 
 // 8.988e9 / pc.electron_volt / pc.angstrom * (1.602e-19)**2
 const double ElectrostaticConvertion = 14.39964535475696995031;
@@ -34,7 +34,7 @@ void ewald_recp(VALUETYPE& ener,
                 std::vector<VALUETYPE>& virial,
                 const std::vector<VALUETYPE>& coord,
                 const std::vector<VALUETYPE>& charge,
-                const deepmd::Region<VALUETYPE>& region,
+                const mdpu::Region<VALUETYPE>& region,
                 const EwaldParameters<VALUETYPE>& param);
 
-}  // namespace deepmd
+}  // namespace mdpu

@@ -10,7 +10,7 @@
 //==================================================
 
 code: mdpu
-reference: deepmd
+reference: mdpu
 author: mph (pinghui_mo@outlook.com)
 date: 2021-12-6
 
@@ -30,7 +30,7 @@ date: 2021-12-6
 */
 
 template <typename FPTYPE>
-void deepmd::env_mat_a_mdpu_quantize_cpu(std::vector<FPTYPE>& descrpt_a,
+void mdpu::env_mat_a_mdpu_quantize_cpu(std::vector<FPTYPE>& descrpt_a,
                                           std::vector<FPTYPE>& descrpt_a_deriv,
                                           std::vector<FPTYPE>& rij_a,
                                           const std::vector<FPTYPE>& posi,
@@ -117,7 +117,7 @@ void deepmd::env_mat_a_mdpu_quantize_cpu(std::vector<FPTYPE>& descrpt_a,
   }
 }
 
-template void deepmd::env_mat_a_mdpu_quantize_cpu<double>(
+template void mdpu::env_mat_a_mdpu_quantize_cpu<double>(
     std::vector<double>& descrpt_a,
     std::vector<double>& descrpt_a_deriv,
     std::vector<double>& rij_a,
@@ -129,7 +129,7 @@ template void deepmd::env_mat_a_mdpu_quantize_cpu<double>(
     const float& rmin,
     const float& rmax);
 
-template void deepmd::env_mat_a_mdpu_quantize_cpu<float>(
+template void mdpu::env_mat_a_mdpu_quantize_cpu<float>(
     std::vector<float>& descrpt_a,
     std::vector<float>& descrpt_a_deriv,
     std::vector<float>& rij_a,

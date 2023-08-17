@@ -2,7 +2,7 @@
 #include "map_aparam.h"
 
 template <typename FPTYPE>
-void deepmd::map_aparam_cpu(FPTYPE* output,
+void mdpu::map_aparam_cpu(FPTYPE* output,
                             const FPTYPE* aparam,
                             const int* nlist,
                             const int& nloc,
@@ -39,14 +39,14 @@ void deepmd::map_aparam_cpu(FPTYPE* output,
   }
 }
 
-template void deepmd::map_aparam_cpu<double>(double* output,
+template void mdpu::map_aparam_cpu<double>(double* output,
                                              const double* aparam,
                                              const int* nlist,
                                              const int& nloc,
                                              const int& nnei,
                                              const int& numb_aparam);
 
-template void deepmd::map_aparam_cpu<float>(float* output,
+template void mdpu::map_aparam_cpu<float>(float* output,
                                             const float* aparam,
                                             const int* nlist,
                                             const int& nloc,

@@ -2,7 +2,7 @@
 #pragma once
 #include <vector>
 
-namespace deepmd {
+namespace mdpu {
 
 template <typename FPTYPE>
 void pair_tab_cpu(FPTYPE* energy,

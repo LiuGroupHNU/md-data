@@ -3,7 +3,7 @@
 
 #include <vector>
 
-namespace deepmd {
+namespace mdpu {
 
 template <typename FPTYPE>
 void env_mat_a_cpu(std::vector<FPTYPE>& descrpt_a,
@@ -29,7 +29,7 @@ void env_mat_r_cpu(std::vector<FPTYPE>& descrpt_a,
                    const float& rmin,
                    const float& rmax);
 
-}  // namespace deepmd
+}  // namespace mdpu
 
 ////////////////////////////////////////////////////////
 // legacy code

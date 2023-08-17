@@ -79,7 +79,7 @@ __global__ void force_grad_wrt_neighbors_r(FPTYPE* grad_net,
                                         env_deriv + idx * nnei * 3 + idy * 3);
 }
 
-namespace deepmd {
+namespace mdpu {
 template <typename FPTYPE>
 void prod_force_grad_a_gpu_rocm(FPTYPE* grad_net,
                                 const FPTYPE* grad,
@@ -165,4 +165,4 @@ template void prod_force_grad_r_gpu_rocm<double>(double* grad_net,
                                                  const int nloc,
                                                  const int nnei,
                                                  const int nframes);
-}  // namespace deepmd
+}  // namespace mdpu

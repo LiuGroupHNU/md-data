@@ -86,7 +86,7 @@ TEST_F(TestNeighborList, cpu) {
     firstneigh[ii] = new int[mem_size];
   }
 
-  deepmd::InputNlist nlist(nloc, ilist, numneigh, firstneigh);
+  mdpu::InputNlist nlist(nloc, ilist, numneigh, firstneigh);
   int max_list_size;
   int ret = build_nlist_cpu(nlist, &max_list_size, &posi_cpy[0], nloc, nall,
                             mem_size, rc);
@@ -119,7 +119,7 @@ TEST_F(TestNeighborList, cpu_lessmem) {
     firstneigh[ii] = new int[mem_size];
   }
 
-  deepmd::InputNlist nlist(nloc, ilist, numneigh, firstneigh);
+  mdpu::InputNlist nlist(nloc, ilist, numneigh, firstneigh);
   int max_list_size;
   int ret = build_nlist_cpu(nlist, &max_list_size, &posi_cpy[0], nloc, nall,
                             mem_size, rc);
@@ -145,19 +145,19 @@ TEST_F(TestNeighborList, gpu) {
   std::vector<int*> temp_firstneigh(nloc);
   double* c_cpy_dev = NULL;
 
-  deepmd::malloc_device_memory(nlist_data_dev, 2 * nloc * mem_size);
-  deepmd::malloc_device_memory(jlist_dev, nloc * mem_size);
-  deepmd::malloc_device_memory(ilist_dev, nloc);
-  deepmd::malloc_device_memory(numneigh_dev, nloc);
+  mdpu::malloc_device_memory(nlist_data_dev, 2 * nloc * mem_size);
+  mdpu::malloc_device_memory(jlist_dev, nloc * mem_size);
+  mdpu::malloc_device_memory(ilist_dev, nloc);
+  mdpu::malloc_device_memory(numneigh_dev, nloc);
   for (int ii = 0; ii < nloc; ++ii) {
     temp_firstneigh[ii] = jlist_dev + ii * mem_size;
   }
-  deepmd::malloc_device_memory_sync(firstneigh_dev, temp_firstneigh);
-  deepmd::malloc_device_memory_sync(c_cpy_dev, posi_cpy);
-  deepmd::InputNlist nlist_dev(nloc, ilist_dev, numneigh_dev, firstneigh_dev);
+  mdpu::malloc_device_memory_sync(firstneigh_dev, temp_firstneigh);
+  mdpu::malloc_device_memory_sync(c_cpy_dev, posi_cpy);
+  mdpu::InputNlist nlist_dev(nloc, ilist_dev, numneigh_dev, firstneigh_dev);
 
   int max_list_size;
-  int ret = deepmd::build_nlist_gpu(nlist_dev, &max_list_size, nlist_data_dev,
+  int ret = mdpu::build_nlist_gpu(nlist_dev, &max_list_size, nlist_data_dev,
                                     c_cpy_dev, nloc, nall, mem_size, rc);
 
   EXPECT_EQ(ret, 0);
@@ -165,14 +165,14 @@ TEST_F(TestNeighborList, gpu) {
   int* numneigh = new int[nloc];
   int** firstneigh = new int*[nloc];
   int* jlist = new int[nloc * mem_size];
-  deepmd::memcpy_device_to_host(jlist_dev, jlist, nloc * mem_size);
-  deepmd::memcpy_device_to_host(ilist_dev, ilist, nloc);
-  deepmd::memcpy_device_to_host(numneigh_dev, numneigh, nloc);
+  mdpu::memcpy_device_to_host(jlist_dev, jlist, nloc * mem_size);
+  mdpu::memcpy_device_to_host(ilist_dev, ilist, nloc);
+  mdpu::memcpy_device_to_host(numneigh_dev, numneigh, nloc);
   for (int ii = 0; ii < nloc; ++ii) {
     firstneigh[ii] = jlist + ii * mem_size;
   }
 
-  deepmd::InputNlist nlist(nlist_dev.inum, ilist, numneigh, firstneigh);
+  mdpu::InputNlist nlist(nlist_dev.inum, ilist, numneigh, firstneigh);
   EXPECT_EQ(nlist.inum, nloc);
   EXPECT_EQ(max_list_size, 5);
   for (int ii = 0; ii < nloc; ++ii) {
@@ -188,12 +188,12 @@ TEST_F(TestNeighborList, gpu) {
   delete[] numneigh;
   delete[] jlist;
   delete[] firstneigh;
-  deepmd::delete_device_memory(nlist_data_dev);
-  deepmd::delete_device_memory(jlist_dev);
-  deepmd::delete_device_memory(ilist_dev);
-  deepmd::delete_device_memory(numneigh_dev);
-  deepmd::delete_device_memory(firstneigh_dev);
-  deepmd::delete_device_memory(c_cpy_dev);
+  mdpu::delete_device_memory(nlist_data_dev);
+  mdpu::delete_device_memory(jlist_dev);
+  mdpu::delete_device_memory(ilist_dev);
+  mdpu::delete_device_memory(numneigh_dev);
+  mdpu::delete_device_memory(firstneigh_dev);
+  mdpu::delete_device_memory(c_cpy_dev);
 }
 
 TEST_F(TestNeighborList, gpu_lessmem) {
@@ -205,28 +205,28 @@ TEST_F(TestNeighborList, gpu_lessmem) {
   std::vector<int*> temp_firstneigh(nloc);
   double* c_cpy_dev = NULL;
 
-  deepmd::malloc_device_memory(nlist_data_dev, 2 * nloc * mem_size);
-  deepmd::malloc_device_memory(jlist_dev, nloc * mem_size);
-  deepmd::malloc_device_memory(ilist_dev, nloc);
-  deepmd::malloc_device_memory(numneigh_dev, nloc);
+  mdpu::malloc_device_memory(nlist_data_dev, 2 * nloc * mem_size);
+  mdpu::malloc_device_memory(jlist_dev, nloc * mem_size);
+  mdpu::malloc_device_memory(ilist_dev, nloc);
+  mdpu::malloc_device_memory(numneigh_dev, nloc);
   for (int ii = 0; ii < nloc; ++ii) {
     temp_firstneigh[ii] = jlist_dev + ii * mem_size;
   }
-  deepmd::malloc_device_memory_sync(firstneigh_dev, temp_firstneigh);
-  deepmd::malloc_device_memory_sync(c_cpy_dev, posi_cpy);
-  deepmd::InputNlist nlist_dev(nloc, ilist_dev, numneigh_dev, firstneigh_dev);
+  mdpu::malloc_device_memory_sync(firstneigh_dev, temp_firstneigh);
+  mdpu::malloc_device_memory_sync(c_cpy_dev, posi_cpy);
+  mdpu::InputNlist nlist_dev(nloc, ilist_dev, numneigh_dev, firstneigh_dev);
 
   int max_list_size;
-  int ret = deepmd::build_nlist_gpu(nlist_dev, &max_list_size, nlist_data_dev,
+  int ret = mdpu::build_nlist_gpu(nlist_dev, &max_list_size, nlist_data_dev,
                                     c_cpy_dev, nloc, nall, mem_size, rc);
 
   EXPECT_EQ(ret, 1);
-  deepmd::delete_device_memory(nlist_data_dev);
-  deepmd::delete_device_memory(jlist_dev);
-  deepmd::delete_device_memory(ilist_dev);
-  deepmd::delete_device_memory(numneigh_dev);
-  deepmd::delete_device_memory(firstneigh_dev);
-  deepmd::delete_device_memory(c_cpy_dev);
+  mdpu::delete_device_memory(nlist_data_dev);
+  mdpu::delete_device_memory(jlist_dev);
+  mdpu::delete_device_memory(ilist_dev);
+  mdpu::delete_device_memory(numneigh_dev);
+  mdpu::delete_device_memory(firstneigh_dev);
+  mdpu::delete_device_memory(c_cpy_dev);
 }
 
 #endif  // GOOGLE_CUDA
@@ -241,20 +241,20 @@ TEST_F(TestNeighborList, gpu) {
   std::vector<int*> temp_firstneigh(nloc);
   double* c_cpy_dev = NULL;
 
-  deepmd::malloc_device_memory(nlist_data_dev, 2 * nloc * mem_size);
-  deepmd::malloc_device_memory(jlist_dev, nloc * mem_size);
-  deepmd::malloc_device_memory(ilist_dev, nloc);
-  deepmd::malloc_device_memory(numneigh_dev, nloc);
+  mdpu::malloc_device_memory(nlist_data_dev, 2 * nloc * mem_size);
+  mdpu::malloc_device_memory(jlist_dev, nloc * mem_size);
+  mdpu::malloc_device_memory(ilist_dev, nloc);
+  mdpu::malloc_device_memory(numneigh_dev, nloc);
   for (int ii = 0; ii < nloc; ++ii) {
     temp_firstneigh[ii] = jlist_dev + ii * mem_size;
   }
-  deepmd::malloc_device_memory_sync(firstneigh_dev, temp_firstneigh);
-  deepmd::malloc_device_memory_sync(c_cpy_dev, posi_cpy);
-  deepmd::InputNlist nlist_dev(nloc, ilist_dev, numneigh_dev, firstneigh_dev);
+  mdpu::malloc_device_memory_sync(firstneigh_dev, temp_firstneigh);
+  mdpu::malloc_device_memory_sync(c_cpy_dev, posi_cpy);
+  mdpu::InputNlist nlist_dev(nloc, ilist_dev, numneigh_dev, firstneigh_dev);
 
   int max_list_size;
   int ret =
-      deepmd::build_nlist_gpu_rocm(nlist_dev, &max_list_size, nlist_data_dev,
+      mdpu::build_nlist_gpu_rocm(nlist_dev, &max_list_size, nlist_data_dev,
                                    c_cpy_dev, nloc, nall, mem_size, rc);
 
   EXPECT_EQ(ret, 0);
@@ -262,14 +262,14 @@ TEST_F(TestNeighborList, gpu) {
   int* numneigh = new int[nloc];
   int** firstneigh = new int*[nloc];
   int* jlist = new int[nloc * mem_size];
-  deepmd::memcpy_device_to_host(jlist_dev, jlist, nloc * mem_size);
-  deepmd::memcpy_device_to_host(ilist_dev, ilist, nloc);
-  deepmd::memcpy_device_to_host(numneigh_dev, numneigh, nloc);
+  mdpu::memcpy_device_to_host(jlist_dev, jlist, nloc * mem_size);
+  mdpu::memcpy_device_to_host(ilist_dev, ilist, nloc);
+  mdpu::memcpy_device_to_host(numneigh_dev, numneigh, nloc);
   for (int ii = 0; ii < nloc; ++ii) {
     firstneigh[ii] = jlist + ii * mem_size;
   }
 
-  deepmd::InputNlist nlist(nlist_dev.inum, ilist, numneigh, firstneigh);
+  mdpu::InputNlist nlist(nlist_dev.inum, ilist, numneigh, firstneigh);
   EXPECT_EQ(nlist.inum, nloc);
   EXPECT_EQ(max_list_size, 5);
   for (int ii = 0; ii < nloc; ++ii) {
@@ -285,12 +285,12 @@ TEST_F(TestNeighborList, gpu) {
   delete[] numneigh;
   delete[] jlist;
   delete[] firstneigh;
-  deepmd::delete_device_memory(nlist_data_dev);
-  deepmd::delete_device_memory(jlist_dev);
-  deepmd::delete_device_memory(ilist_dev);
-  deepmd::delete_device_memory(numneigh_dev);
-  deepmd::delete_device_memory(firstneigh_dev);
-  deepmd::delete_device_memory(c_cpy_dev);
+  mdpu::delete_device_memory(nlist_data_dev);
+  mdpu::delete_device_memory(jlist_dev);
+  mdpu::delete_device_memory(ilist_dev);
+  mdpu::delete_device_memory(numneigh_dev);
+  mdpu::delete_device_memory(firstneigh_dev);
+  mdpu::delete_device_memory(c_cpy_dev);
 }
 
 TEST_F(TestNeighborList, gpu_lessmem) {
@@ -302,29 +302,29 @@ TEST_F(TestNeighborList, gpu_lessmem) {
   std::vector<int*> temp_firstneigh(nloc);
   double* c_cpy_dev = NULL;
 
-  deepmd::malloc_device_memory(nlist_data_dev, 2 * nloc * mem_size);
-  deepmd::malloc_device_memory(jlist_dev, nloc * mem_size);
-  deepmd::malloc_device_memory(ilist_dev, nloc);
-  deepmd::malloc_device_memory(numneigh_dev, nloc);
+  mdpu::malloc_device_memory(nlist_data_dev, 2 * nloc * mem_size);
+  mdpu::malloc_device_memory(jlist_dev, nloc * mem_size);
+  mdpu::malloc_device_memory(ilist_dev, nloc);
+  mdpu::malloc_device_memory(numneigh_dev, nloc);
   for (int ii = 0; ii < nloc; ++ii) {
     temp_firstneigh[ii] = jlist_dev + ii * mem_size;
   }
-  deepmd::malloc_device_memory_sync(firstneigh_dev, temp_firstneigh);
-  deepmd::malloc_device_memory_sync(c_cpy_dev, posi_cpy);
-  deepmd::InputNlist nlist_dev(nloc, ilist_dev, numneigh_dev, firstneigh_dev);
+  mdpu::malloc_device_memory_sync(firstneigh_dev, temp_firstneigh);
+  mdpu::malloc_device_memory_sync(c_cpy_dev, posi_cpy);
+  mdpu::InputNlist nlist_dev(nloc, ilist_dev, numneigh_dev, firstneigh_dev);
 
   int max_list_size;
   int ret =
-      deepmd::build_nlist_gpu_rocm(nlist_dev, &max_list_size, nlist_data_dev,
+      mdpu::build_nlist_gpu_rocm(nlist_dev, &max_list_size, nlist_data_dev,
                                    c_cpy_dev, nloc, nall, mem_size, rc);
 
   EXPECT_EQ(ret, 1);
-  deepmd::delete_device_memory(nlist_data_dev);
-  deepmd::delete_device_memory(jlist_dev);
-  deepmd::delete_device_memory(ilist_dev);
-  deepmd::delete_device_memory(numneigh_dev);
-  deepmd::delete_device_memory(firstneigh_dev);
-  deepmd::delete_device_memory(c_cpy_dev);
+  mdpu::delete_device_memory(nlist_data_dev);
+  mdpu::delete_device_memory(jlist_dev);
+  mdpu::delete_device_memory(ilist_dev);
+  mdpu::delete_device_memory(numneigh_dev);
+  mdpu::delete_device_memory(firstneigh_dev);
+  mdpu::delete_device_memory(c_cpy_dev);
 }
 
 #endif  // TENSORFLOW_USE_ROCM

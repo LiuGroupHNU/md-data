@@ -3,13 +3,13 @@
 
 #include "region.h"
 
-namespace deepmd {
+namespace mdpu {
 
 // normalize coords
 template <typename FPTYPE>
 void normalize_coord_cpu(FPTYPE* coord,
                          const int natom,
-                         const deepmd::Region<FPTYPE>& region);
+                         const mdpu::Region<FPTYPE>& region);
 
 // copy coordinates
 // outputs:
@@ -31,7 +31,7 @@ int copy_coord_cpu(FPTYPE* out_c,
                    const int& nloc,
                    const int& mem_nall,
                    const float& rcut,
-                   const deepmd::Region<FPTYPE>& region);
+                   const mdpu::Region<FPTYPE>& region);
 
 // compute cell information
 // output:
@@ -42,7 +42,7 @@ int copy_coord_cpu(FPTYPE* out_c,
 template <typename FPTYPE>
 void compute_cell_info(int* cell_info,
                        const float& rcut,
-                       const deepmd::Region<FPTYPE>& region);
+                       const mdpu::Region<FPTYPE>& region);
 
 #if GOOGLE_CUDA
 // normalize coords
@@ -53,7 +53,7 @@ void compute_cell_info(int* cell_info,
 template <typename FPTYPE>
 void normalize_coord_gpu(FPTYPE* coord,
                          const int natom,
-                         const deepmd::Region<FPTYPE>& region);
+                         const mdpu::Region<FPTYPE>& region);
 
 // copy coordinates
 // outputs:
@@ -82,7 +82,7 @@ int copy_coord_gpu(FPTYPE* out_c,
                    const int& loc_cellnum,
                    const int& total_cellnum,
                    const int* cell_info,
-                   const deepmd::Region<FPTYPE>& region);
+                   const mdpu::Region<FPTYPE>& region);
 #endif  // GOOGLE_CUDA
 
 #if TENSORFLOW_USE_ROCM
@@ -94,7 +94,7 @@ int copy_coord_gpu(FPTYPE* out_c,
 template <typename FPTYPE>
 void normalize_coord_gpu_rocm(FPTYPE* coord,
                               const int natom,
-                              const deepmd::Region<FPTYPE>& region);
+                              const mdpu::Region<FPTYPE>& region);
 
 // copy coordinates
 // outputs:
@@ -123,7 +123,7 @@ int copy_coord_gpu_rocm(FPTYPE* out_c,
                         const int& loc_cellnum,
                         const int& total_cellnum,
                         const int* cell_info,
-                        const deepmd::Region<FPTYPE>& region);
+                        const mdpu::Region<FPTYPE>& region);
 #endif  // TENSORFLOW_USE_ROCM
 
-}  // namespace deepmd
+}  // namespace mdpu

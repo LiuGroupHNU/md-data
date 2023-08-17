@@ -2,7 +2,7 @@
 #pragma once
 #include "device.h"
 
-namespace deepmd {
+namespace mdpu {
 
 template <typename FPTYPE>
 void gelu_cpu(FPTYPE* out, const FPTYPE* xx, const int_64 size);
@@ -56,4 +56,4 @@ void gelu_grad_grad_gpu_rocm(FPTYPE* out,
                              const int_64 size);
 
 #endif  // TENSORFLOW_USE_ROCM
-}  // namespace deepmd
+}  // namespace mdpu

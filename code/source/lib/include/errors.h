@@ -4,21 +4,21 @@
 #include <stdexcept>
 #include <string>
 
-namespace deepmd {
+namespace mdpu {
 /**
- * @brief General DeePMD-kit exception. Throw if anything doesn't work.
+ * @brief General mdpu-kit exception. Throw if anything doesn't work.
  **/
-struct deepmd_exception : public std::runtime_error {
+struct mdpu_exception : public std::runtime_error {
  public:
-  deepmd_exception() : runtime_error("DeePMD-kit Error!"){};
-  deepmd_exception(const std::string& msg)
-      : runtime_error(std::string("DeePMD-kit Error: ") + msg){};
+  mdpu_exception() : runtime_error("mdpu-kit Error!"){};
+  mdpu_exception(const std::string& msg)
+      : runtime_error(std::string("mdpu-kit Error: ") + msg){};
 };
 
-struct deepmd_exception_oom : public deepmd_exception {
+struct mdpu_exception_oom : public mdpu_exception {
  public:
-  deepmd_exception_oom() : deepmd_exception("DeePMD-kit OOM!"){};
-  deepmd_exception_oom(const std::string& msg)
-      : deepmd_exception(std::string("DeePMD-kit OOM: ") + msg){};
+  mdpu_exception_oom() : mdpu_exception("mdpu-kit OOM!"){};
+  mdpu_exception_oom(const std::string& msg)
+      : mdpu_exception(std::string("mdpu-kit OOM: ") + msg){};
 };
-};  // namespace deepmd
+};  // namespace mdpu

@@ -10,7 +10,7 @@
 //==================================================
 
 code: mdpu
-reference: deepmd
+reference: mdpu
 author: mph (pinghui_mo@outlook.com)
 date: 2021-12-6
 
@@ -26,7 +26,7 @@ date: 2021-12-6
 #include "env_mat_mdpu.h"
 #include "fmt_nlist.h"
 
-using namespace deepmd;
+using namespace mdpu;
 
 /*
 //==================================================
@@ -43,7 +43,7 @@ using namespace deepmd;
 */
 
 template <typename FPTYPE>
-void deepmd::prod_env_mat_a_mdpu_quantize_cpu(FPTYPE *em,
+void mdpu::prod_env_mat_a_mdpu_quantize_cpu(FPTYPE *em,
                                                FPTYPE *em_deriv,
                                                FPTYPE *rij,
                                                int *nlist,
@@ -142,7 +142,7 @@ void deepmd::prod_env_mat_a_mdpu_quantize_cpu(FPTYPE *em,
   }
 }
 
-template void deepmd::prod_env_mat_a_mdpu_quantize_cpu<double>(
+template void mdpu::prod_env_mat_a_mdpu_quantize_cpu<double>(
     double *em,
     double *em_deriv,
     double *rij,
@@ -160,7 +160,7 @@ template void deepmd::prod_env_mat_a_mdpu_quantize_cpu<double>(
     const std::vector<int> sec,
     const int *f_type);
 
-template void deepmd::prod_env_mat_a_mdpu_quantize_cpu<float>(
+template void mdpu::prod_env_mat_a_mdpu_quantize_cpu<float>(
     float *em,
     float *em_deriv,
     float *rij,

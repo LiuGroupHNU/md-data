@@ -239,7 +239,7 @@ void build_nlist_cell(std::vector<std::vector<int> >& nlist0,
           diff[dd0] += shift[dd1] * boxt[3 * dd1 + dd0];
         }
       }
-      double r2 = deepmd::dot3(diff, diff);
+      double r2 = mdpu::dot3(diff, diff);
       if (r2 < rc02) {
         if (i_idx < nloc) {
           nlist0[i_idx].push_back(j_idx);
@@ -290,7 +290,7 @@ void build_nlist_cell(std::vector<std::vector<int> >& nlist0,
           diff[dd0] += shift[dd1] * boxt[3 * dd1 + dd0];
         }
       }
-      double r2 = deepmd::dot3(diff, diff);
+      double r2 = mdpu::dot3(diff, diff);
       if (r2 < rc02) {
         nlist0[i_idx].push_back(j_idx);
       } else if (r2 < rc12) {
@@ -713,7 +713,7 @@ void build_nlist(std::vector<std::vector<int> >& nlist0,
         diff[1] = posi3[jj * 3 + 1] - posi3[ii * 3 + 1];
         diff[2] = posi3[jj * 3 + 2] - posi3[ii * 3 + 2];
       }
-      double r2 = deepmd::dot3(diff, diff);
+      double r2 = mdpu::dot3(diff, diff);
       if (r2 < rc02) {
         nlist0[ii].push_back(jj);
         nlist0[jj].push_back(ii);
@@ -844,9 +844,9 @@ void copy_coord(std::vector<double>& out_c,
   }
 }
 
-using namespace deepmd;
+using namespace mdpu;
 
-void deepmd::convert_nlist(InputNlist& to_nlist,
+void mdpu::convert_nlist(InputNlist& to_nlist,
                            std::vector<std::vector<int> >& from_nlist) {
   to_nlist.inum = from_nlist.size();
   for (int ii = 0; ii < to_nlist.inum; ++ii) {
@@ -856,7 +856,7 @@ void deepmd::convert_nlist(InputNlist& to_nlist,
   }
 }
 
-int deepmd::max_numneigh(const InputNlist& nlist) {
+int mdpu::max_numneigh(const InputNlist& nlist) {
   int max_num = 0;
   for (int ii = 0; ii < nlist.inum; ++ii) {
     if (nlist.numneigh[ii] > max_num) {
@@ -867,7 +867,7 @@ int deepmd::max_numneigh(const InputNlist& nlist) {
 }
 
 template <typename FPTYPE>
-int deepmd::build_nlist_cpu(InputNlist& nlist,
+int mdpu::build_nlist_cpu(InputNlist& nlist,
                             int* max_list_size,
                             const FPTYPE* c_cpy,
                             const int& nloc,
@@ -891,7 +891,7 @@ int deepmd::build_nlist_cpu(InputNlist& nlist,
       for (int dd = 0; dd < 3; ++dd) {
         diff[dd] = c_cpy[ii * 3 + dd] - c_cpy[jj * 3 + dd];
       }
-      FPTYPE diff2 = deepmd::dot3(diff, diff);
+      FPTYPE diff2 = mdpu::dot3(diff, diff);
       if (diff2 < rcut2) {
         jlist.push_back(jj);
       }
@@ -911,7 +911,7 @@ int deepmd::build_nlist_cpu(InputNlist& nlist,
   return 0;
 }
 
-void deepmd::use_nei_info_cpu(int* nlist,
+void mdpu::use_nei_info_cpu(int* nlist,
                               int* ntype,
                               bool* nmask,
                               const int* type,
@@ -953,7 +953,7 @@ void deepmd::use_nei_info_cpu(int* nlist,
   }
 }
 
-template int deepmd::build_nlist_cpu<double>(InputNlist& nlist,
+template int mdpu::build_nlist_cpu<double>(InputNlist& nlist,
                                              int* max_list_size,
                                              const double* c_cpy,
                                              const int& nloc,
@@ -961,7 +961,7 @@ template int deepmd::build_nlist_cpu<double>(InputNlist& nlist,
                                              const int& mem_size,
                                              const float& rcut);
 
-template int deepmd::build_nlist_cpu<float>(InputNlist& nlist,
+template int mdpu::build_nlist_cpu<float>(InputNlist& nlist,
                                             int* max_list_size,
                                             const float* c_cpy,
                                             const int& nloc,
@@ -970,7 +970,7 @@ template int deepmd::build_nlist_cpu<float>(InputNlist& nlist,
                                             const float& rcut);
 
 #if GOOGLE_CUDA || TENSORFLOW_USE_ROCM
-void deepmd::convert_nlist_gpu_device(InputNlist& gpu_nlist,
+void mdpu::convert_nlist_gpu_device(InputNlist& gpu_nlist,
                                       InputNlist& cpu_nlist,
                                       int*& gpu_memory,
                                       const int& max_nbor_size) {
@@ -992,7 +992,7 @@ void deepmd::convert_nlist_gpu_device(InputNlist& gpu_nlist,
   free(_firstneigh);
 }
 
-void deepmd::free_nlist_gpu_device(InputNlist& gpu_nlist) {
+void mdpu::free_nlist_gpu_device(InputNlist& gpu_nlist) {
   delete_device_memory(gpu_nlist.ilist);
   delete_device_memory(gpu_nlist.numneigh);
   delete_device_memory(gpu_nlist.firstneigh);

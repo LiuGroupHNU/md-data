@@ -10,18 +10,18 @@
 #include <string>
 #include <vector>
 
-#include "deepmd.hpp"
+#include "mdpu.hpp"
 
-TEST(TestDeepmdException, deepmdexception) {
-  std::string expected_error_message = "DeePMD-kit C API Error: unittest";
+TEST(TestMDPUException, mdpuexception) {
+  std::string expected_error_message = "mdpu-kit C API Error: unittest";
   try {
-    throw deepmd::hpp::deepmd_exception("unittest");
-  } catch (deepmd::hpp::deepmd_exception &ex) {
+    throw mdpu::hpp::mdpu_exception("unittest");
+  } catch (mdpu::hpp::mdpu_exception &ex) {
     EXPECT_STREQ(expected_error_message.c_str(), ex.what());
   }
 }
 
-TEST(TestDeepmdException, deepmdexception_nofile) {
-  ASSERT_THROW(deepmd::hpp::DeepPot("_no_such_file.pb"),
-               deepmd::hpp::deepmd_exception);
+TEST(TestMDPUException, mdpuexception_nofile) {
+  ASSERT_THROW(mdpu::hpp::DeepPot("_no_such_file.pb"),
+               mdpu::hpp::mdpu_exception);
 }

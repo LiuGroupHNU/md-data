@@ -9,7 +9,7 @@
 #include "SimulationRegion.h"
 #include "errors.h"
 
-using namespace deepmd;
+using namespace mdpu;
 
 template <typename FPTYPE>
 struct NeighborInfo {
@@ -68,7 +68,7 @@ int format_nlist_i_fill_a(std::vector<int> &fmt_nei_idx_a,
         diff[dd] = posi[j_idx * 3 + dd] - posi[i_idx * 3 + dd];
       }
     }
-    double rr = sqrt(deepmd::dot3(diff, diff));
+    double rr = sqrt(mdpu::dot3(diff, diff));
     if (rr <= rcut) {
       sel_nei.push_back(NeighborInfo<double>(type[j_idx], rr, j_idx));
     }
@@ -122,7 +122,7 @@ int format_nlist_i_cpu(std::vector<int> &fmt_nei_idx_a,
     for (int dd = 0; dd < 3; ++dd) {
       diff[dd] = (float)posi[j_idx * 3 + dd] - (float)posi[i_idx * 3 + dd];
     }
-    float rr2 = deepmd::dot3(diff, diff);
+    float rr2 = mdpu::dot3(diff, diff);
     if (rr2 <= rcut2) {
       sel_nei.push_back(NeighborInfo<float>(type[j_idx], rr2, j_idx));
     }
@@ -143,7 +143,7 @@ int format_nlist_i_cpu(std::vector<int> &fmt_nei_idx_a,
 }
 
 template <typename FPTYPE>
-void deepmd::format_nlist_cpu(int *nlist,
+void mdpu::format_nlist_cpu(int *nlist,
                               const InputNlist &in_nlist,
                               const FPTYPE *coord,
                               const int *type,
@@ -170,7 +170,7 @@ void deepmd::format_nlist_cpu(int *nlist,
       std::cerr << "FATAL: formatted nlist of i have length "
                 << fmt_ilist.size() << " which does not match " << nnei
                 << std::endl;
-      throw deepmd::deepmd_exception();
+      throw mdpu::mdpu_exception();
     }
     std::copy(fmt_ilist.begin(), fmt_ilist.end(), cur_nlist);
   }
@@ -192,9 +192,9 @@ template int format_nlist_i_cpu<float>(std::vector<int> &fmt_nei_idx_a,
                                        const float &rcut,
                                        const std::vector<int> &sec_a);
 
-template void deepmd::format_nlist_cpu<double>(
+template void mdpu::format_nlist_cpu<double>(
     int *nlist,
-    const deepmd::InputNlist &in_nlist,
+    const mdpu::InputNlist &in_nlist,
     const double *coord,
     const int *type,
     const int nloc,
@@ -202,9 +202,9 @@ template void deepmd::format_nlist_cpu<double>(
     const float rcut,
     const std::vector<int> sec);
 
-template void deepmd::format_nlist_cpu<float>(
+template void mdpu::format_nlist_cpu<float>(
     int *nlist,
-    const deepmd::InputNlist &in_nlist,
+    const mdpu::InputNlist &in_nlist,
     const float *coord,
     const int *type,
     const int nloc,

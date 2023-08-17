@@ -6,11 +6,11 @@
 #include "SimulationRegion.h"
 #include "neighbor_list.h"
 
-using namespace deepmd;
+using namespace mdpu;
 
 // normalize coords
 template <typename FPTYPE>
-void deepmd::normalize_coord_cpu(FPTYPE* coord,
+void mdpu::normalize_coord_cpu(FPTYPE* coord,
                                  const int natom,
                                  const Region<FPTYPE>& region) {
   for (int ii = 0; ii < natom; ++ii) {
@@ -27,7 +27,7 @@ void deepmd::normalize_coord_cpu(FPTYPE* coord,
 }
 
 template <typename FPTYPE>
-int deepmd::copy_coord_cpu(FPTYPE* out_c,
+int mdpu::copy_coord_cpu(FPTYPE* out_c,
                            int* out_t,
                            int* mapping,
                            int* nall,
@@ -65,7 +65,7 @@ int deepmd::copy_coord_cpu(FPTYPE* out_c,
 }
 
 template <typename FPTYPE>
-void deepmd::compute_cell_info(
+void mdpu::compute_cell_info(
     int*
         cell_info,  // nat_stt,ncell,ext_stt,ext_end,ngcell,cell_shift,cell_iter,loc_cellnum,total_cellnum
     const float& rcut,
@@ -100,13 +100,13 @@ void deepmd::compute_cell_info(
                   (2 * cell_info[12 + 2] + cell_info[3 + 2]);  // total_cellnum
 }
 
-template void deepmd::normalize_coord_cpu<double>(
-    double* coord, const int natom, const deepmd::Region<double>& region);
+template void mdpu::normalize_coord_cpu<double>(
+    double* coord, const int natom, const mdpu::Region<double>& region);
 
-template void deepmd::normalize_coord_cpu<float>(
-    float* coord, const int natom, const deepmd::Region<float>& region);
+template void mdpu::normalize_coord_cpu<float>(
+    float* coord, const int natom, const mdpu::Region<float>& region);
 
-template int deepmd::copy_coord_cpu<double>(
+template int mdpu::copy_coord_cpu<double>(
     double* out_c,
     int* out_t,
     int* mapping,
@@ -116,9 +116,9 @@ template int deepmd::copy_coord_cpu<double>(
     const int& nloc,
     const int& mem_nall,
     const float& rcut,
-    const deepmd::Region<double>& region);
+    const mdpu::Region<double>& region);
 
-template int deepmd::copy_coord_cpu<float>(float* out_c,
+template int mdpu::copy_coord_cpu<float>(float* out_c,
                                            int* out_t,
                                            int* mapping,
                                            int* nall,
@@ -127,15 +127,15 @@ template int deepmd::copy_coord_cpu<float>(float* out_c,
                                            const int& nloc,
                                            const int& mem_nall,
                                            const float& rcut,
-                                           const deepmd::Region<float>& region);
+                                           const mdpu::Region<float>& region);
 
-template void deepmd::compute_cell_info<double>(
+template void mdpu::compute_cell_info<double>(
     int*
         cell_info,  // nat_stt,ncell,ext_stt,ext_end,ngcell,cell_shift,cell_iter,loc_cellnum,total_cellnum
     const float& rcut,
     const Region<double>& region);
 
-template void deepmd::compute_cell_info<float>(
+template void mdpu::compute_cell_info<float>(
     int*
         cell_info,  // nat_stt,ncell,ext_stt,ext_end,ngcell,cell_shift,cell_iter,loc_cellnum,total_cellnum
     const float& rcut,

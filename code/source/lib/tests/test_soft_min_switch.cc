@@ -66,7 +66,7 @@ class TestSoftMinSwitch : public ::testing::Test {
       }
       std::vector<double> t_env, t_env_deriv, t_rij;
       // compute env_mat and its deriv, record
-      deepmd::env_mat_a_cpu<double>(t_env, t_env_deriv, t_rij, posi_cpy,
+      mdpu::env_mat_a_cpu<double>(t_env, t_env_deriv, t_rij, posi_cpy,
                                     atype_cpy, ii, fmt_nlist_a, sec_a, rc_smth,
                                     rc);
       for (int jj = 0; jj < nnei * 3; ++jj) {
@@ -80,7 +80,7 @@ class TestSoftMinSwitch : public ::testing::Test {
 TEST_F(TestSoftMinSwitch, cpu) {
   std::vector<double> sw_value(nloc);
   std::vector<double> sw_deriv(nloc * nnei * 3);
-  deepmd::soft_min_switch_cpu<double>(&sw_value[0], &sw_deriv[0], &rij[0],
+  mdpu::soft_min_switch_cpu<double>(&sw_value[0], &sw_deriv[0], &rij[0],
                                       &nlist[0], nloc, nnei, alpha, rmin, rmax);
   EXPECT_EQ(sw_value.size(), nloc);
   EXPECT_EQ(sw_value.size(), expected_value.size());
@@ -107,7 +107,7 @@ TEST_F(TestSoftMinSwitch, cpu_num_deriv) {
   std::vector<int> fmt_nlist_a;
   double hh = 1e-5;
 
-  deepmd::soft_min_switch_cpu<double>(&sw_value[0], &sw_deriv[0], &rij[0],
+  mdpu::soft_min_switch_cpu<double>(&sw_value[0], &sw_deriv[0], &rij[0],
                                       &nlist[0], nloc, nnei, alpha, rmin, rmax);
   EXPECT_EQ(sw_value.size(), nloc);
   EXPECT_EQ(sw_deriv.size(), nloc * nnei * 3);
@@ -128,10 +128,10 @@ TEST_F(TestSoftMinSwitch, cpu_num_deriv) {
         std::vector<double> posi_1 = posi_cpy;
         posi_0[j_idx * 3 + dd] -= hh;
         posi_1[j_idx * 3 + dd] += hh;
-        deepmd::env_mat_a_cpu<double>(env, env_deriv, t_rij_0, posi_0,
+        mdpu::env_mat_a_cpu<double>(env, env_deriv, t_rij_0, posi_0,
                                       atype_cpy, ii, fmt_nlist_a, sec_a,
                                       rc_smth, rc);
-        deepmd::env_mat_a_cpu<double>(env, env_deriv, t_rij_1, posi_1,
+        mdpu::env_mat_a_cpu<double>(env, env_deriv, t_rij_1, posi_1,
                                       atype_cpy, ii, fmt_nlist_a, sec_a,
                                       rc_smth, rc);
         EXPECT_EQ(t_rij_0.size(), nnei * 3);
@@ -142,10 +142,10 @@ TEST_F(TestSoftMinSwitch, cpu_num_deriv) {
           rij_0[ii * nnei * 3 + jj * 3 + dd] = t_rij_0[jj * 3 + dd];
           rij_1[ii * nnei * 3 + jj * 3 + dd] = t_rij_1[jj * 3 + dd];
         }
-        deepmd::soft_min_switch_cpu<double>(&sw_value_0[0], &sw_deriv_0[0],
+        mdpu::soft_min_switch_cpu<double>(&sw_value_0[0], &sw_deriv_0[0],
                                             &rij_0[0], &nlist[0], nloc, nnei,
                                             alpha, rmin, rmax);
-        deepmd::soft_min_switch_cpu<double>(&sw_value_1[0], &sw_deriv_1[0],
+        mdpu::soft_min_switch_cpu<double>(&sw_value_1[0], &sw_deriv_1[0],
                                             &rij_1[0], &nlist[0], nloc, nnei,
                                             alpha, rmin, rmax);
         double ana_deriv = sw_deriv[ii * nnei * 3 + jj * 3 + dd];

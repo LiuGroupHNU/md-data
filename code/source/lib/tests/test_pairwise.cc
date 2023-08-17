@@ -8,7 +8,7 @@ TEST(TestGroupAtoms, group_atoms) {
   std::vector<int> idxs = {1, 1, 1, 0, 0, 2, 2, 2, 3, 3, 0, 1};
   // ((3,4,10), (0,1,2,11), (5,6,7), (8,9))
   std::vector<std::vector<int>> fragments;
-  deepmd::group_atoms_cpu(fragments, idxs);
+  mdpu::group_atoms_cpu(fragments, idxs);
   EXPECT_EQ(fragments.size(), 4);
   ASSERT_THAT(fragments[0], testing::ElementsAre(3, 4, 10));
   ASSERT_THAT(fragments[1], testing::ElementsAre(0, 1, 2, 11));
@@ -19,11 +19,11 @@ TEST(TestGroupAtoms, group_atoms) {
 TEST(TestPairwiseMap, pairwise_map) {
   std::vector<int> idxs = {1, 1, 1, 0, 0, 2, 2, 2, 3, 3, 0, 1};
   std::vector<std::vector<int>> fragments;
-  deepmd::group_atoms_cpu(fragments, idxs);
+  mdpu::group_atoms_cpu(fragments, idxs);
   std::vector<int> forward_qm_map, backward_qm_map, forward_qmmm_map,
       backward_qmmm_map;
   int nloc_qm, nloc_qmmm, nall_qm, nall_qmmm;
-  deepmd::dprc_pairwise_map_cpu(
+  mdpu::dprc_pairwise_map_cpu(
       forward_qm_map, backward_qm_map, forward_qmmm_map, backward_qmmm_map,
       nloc_qm, nloc_qmmm, nall_qm, nall_qmmm, fragments, 10, 12);
   ASSERT_THAT(forward_qm_map, testing::ElementsAre(3, 4, 10));

@@ -3,7 +3,7 @@
 
 #include "SimulationRegion.h"
 
-using namespace deepmd;
+using namespace mdpu;
 
 template <typename VALUETYPE>
 VALUETYPE dir_err_esti(const VALUETYPE& test_q,
@@ -69,7 +69,7 @@ void cmpt_k(std::vector<int>& KK,
             const EwaldParameters<VALUETYPE>& param) {
   KK.resize(3);
   for (int dd = 0; dd < 3; ++dd) {
-    VALUETYPE ll = sqrt(deepmd::dot3(boxt + dd * 3, boxt + dd * 3));
+    VALUETYPE ll = sqrt(mdpu::dot3(boxt + dd * 3, boxt + dd * 3));
     KK[dd] = ll / param.spacing;
     // KK[dd] should be large enough
     if (KK[dd] * param.spacing < ll) {
@@ -88,7 +88,7 @@ void cmpt_k(std::vector<int>& KK,
 // outputs: energy force virial
 // inputs: coordinates charges region
 template <typename VALUETYPE>
-void deepmd::ewald_recp(VALUETYPE& ener,
+void mdpu::ewald_recp(VALUETYPE& ener,
                         std::vector<VALUETYPE>& force,
                         std::vector<VALUETYPE>& virial,
                         const std::vector<VALUETYPE>& coord,
@@ -279,7 +279,7 @@ void deepmd::ewald_recp(VALUETYPE& ener,
   delete[] sqi;
 }
 
-template void deepmd::ewald_recp<float>(float& ener,
+template void mdpu::ewald_recp<float>(float& ener,
                                         std::vector<float>& force,
                                         std::vector<float>& virial,
                                         const std::vector<float>& coord,
@@ -287,7 +287,7 @@ template void deepmd::ewald_recp<float>(float& ener,
                                         const Region<float>& region,
                                         const EwaldParameters<float>& param);
 
-template void deepmd::ewald_recp<double>(double& ener,
+template void mdpu::ewald_recp<double>(double& ener,
                                          std::vector<double>& force,
                                          std::vector<double>& virial,
                                          const std::vector<double>& coord,

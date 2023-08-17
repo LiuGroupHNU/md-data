@@ -100,7 +100,7 @@ __global__ void force_deriv_wrt_neighbors_r(FPTYPE* force,
                 in_deriv[idx * ndescrpt * 3 + idy * 3 + idz]);
 }
 
-namespace deepmd {
+namespace mdpu {
 template <typename FPTYPE>
 void prod_force_a_gpu_rocm(FPTYPE* force,
                            const FPTYPE* net_deriv,
@@ -190,4 +190,4 @@ template void prod_force_r_gpu_rocm<double>(double* force,
                                             const int nnei,
                                             const int nframes);
 
-}  // namespace deepmd
+}  // namespace mdpu

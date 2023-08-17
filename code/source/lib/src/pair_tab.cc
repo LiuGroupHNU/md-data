@@ -26,7 +26,7 @@ inline void _pair_tabulated_inter(double& ener,
   // std::cout << rr << " " << rmin << " " << hh << " " << uu << std::endl;
   if (uu < 0) {
     std::cerr << "coord go beyond table lower boundary" << std::endl;
-    throw deepmd::deepmd_exception();
+    throw mdpu::mdpu_exception();
   }
   int idx = uu;
   if (idx >= nspline) {
@@ -112,7 +112,7 @@ inline void _cum_sum(std::vector<int>& sec, const std::vector<int>& n_sel) {
 }
 
 template <typename FPTYPE>
-void deepmd::pair_tab_cpu(FPTYPE* energy,
+void mdpu::pair_tab_cpu(FPTYPE* energy,
                           FPTYPE* force,
                           FPTYPE* virial,
                           const double* p_table_info,
@@ -170,7 +170,7 @@ void deepmd::pair_tab_cpu(FPTYPE* energy,
   }
 }
 
-template void deepmd::pair_tab_cpu<float>(float* energy,
+template void mdpu::pair_tab_cpu<float>(float* energy,
                                           float* force,
                                           float* virial,
                                           const double* table_info,
@@ -183,7 +183,7 @@ template void deepmd::pair_tab_cpu<float>(float* energy,
                                           const std::vector<int>& sel_a,
                                           const std::vector<int>& sel_r);
 
-template void deepmd::pair_tab_cpu<double>(double* energy,
+template void mdpu::pair_tab_cpu<double>(double* energy,
                                            double* force,
                                            double* virial,
                                            const double* table_info,

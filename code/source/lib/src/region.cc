@@ -8,7 +8,7 @@
 #include "errors.h"
 #define BOXT_DIM 9
 
-using namespace deepmd;
+using namespace mdpu;
 
 template <typename FPTYPE>
 Region<FPTYPE>::Region() {
@@ -22,8 +22,8 @@ Region<FPTYPE>::~Region() {
   delete[] rec_boxt;
 }
 
-template struct deepmd::Region<double>;
-template struct deepmd::Region<float>;
+template struct mdpu::Region<double>;
+template struct mdpu::Region<float>;
 
 template <typename FPTYPE>
 inline FPTYPE compute_volume(const FPTYPE* boxt) {
@@ -92,49 +92,49 @@ inline void tensor_t_dot_vec(FPTYPE* o_v,
 }
 
 template <typename FPTYPE>
-void deepmd::init_region_cpu(Region<FPTYPE>& region, const FPTYPE* boxt) {
+void mdpu::init_region_cpu(Region<FPTYPE>& region, const FPTYPE* boxt) {
   std::copy(boxt, boxt + BOXT_DIM, region.boxt);
   compute_rec_boxt(region.rec_boxt, region.boxt);
 }
 
 template <typename FPTYPE>
-void deepmd::convert_to_inter_cpu(FPTYPE* ri,
+void mdpu::convert_to_inter_cpu(FPTYPE* ri,
                                   const Region<FPTYPE>& region,
                                   const FPTYPE* rp) {
   tensor_dot_vec(ri, region.rec_boxt, rp);
 }
 
 template <typename FPTYPE>
-void deepmd::convert_to_phys_cpu(FPTYPE* rp,
+void mdpu::convert_to_phys_cpu(FPTYPE* rp,
                                  const Region<FPTYPE>& region,
                                  const FPTYPE* ri) {
   tensor_t_dot_vec(rp, region.boxt, ri);
 }
 
 template <typename FPTYPE>
-FPTYPE deepmd::volume_cpu(const Region<FPTYPE>& region) {
+FPTYPE mdpu::volume_cpu(const Region<FPTYPE>& region) {
   return compute_volume(region.boxt);
 }
 
-template void deepmd::init_region_cpu<double>(deepmd::Region<double>& region,
+template void mdpu::init_region_cpu<double>(mdpu::Region<double>& region,
                                               const double* boxt);
 
-template void deepmd::init_region_cpu<float>(deepmd::Region<float>& region,
+template void mdpu::init_region_cpu<float>(mdpu::Region<float>& region,
                                              const float* boxt);
 
-template void deepmd::convert_to_inter_cpu<double>(
-    double* ri, const deepmd::Region<double>& region, const double* rp);
+template void mdpu::convert_to_inter_cpu<double>(
+    double* ri, const mdpu::Region<double>& region, const double* rp);
 
-template void deepmd::convert_to_inter_cpu<float>(
-    float* ri, const deepmd::Region<float>& region, const float* rp);
+template void mdpu::convert_to_inter_cpu<float>(
+    float* ri, const mdpu::Region<float>& region, const float* rp);
 
-template void deepmd::convert_to_phys_cpu<double>(
-    double* ri, const deepmd::Region<double>& region, const double* rp);
+template void mdpu::convert_to_phys_cpu<double>(
+    double* ri, const mdpu::Region<double>& region, const double* rp);
 
-template void deepmd::convert_to_phys_cpu<float>(
-    float* ri, const deepmd::Region<float>& region, const float* rp);
+template void mdpu::convert_to_phys_cpu<float>(
+    float* ri, const mdpu::Region<float>& region, const float* rp);
 
-template double deepmd::volume_cpu<double>(
-    const deepmd::Region<double>& region);
+template double mdpu::volume_cpu<double>(
+    const mdpu::Region<double>& region);
 
-template float deepmd::volume_cpu<float>(const deepmd::Region<float>& region);
+template float mdpu::volume_cpu<float>(const mdpu::Region<float>& region);

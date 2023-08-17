@@ -21,7 +21,7 @@ inline void DPAssert(hipError_t code,
     fprintf(stderr, "hip assert: %s %s %d\n", hipGetErrorString(code), file,
             line);
     if (abort) {
-      throw deepmd::deepmd_exception("HIP Assert");
+      throw mdpu::mdpu_exception("HIP Assert");
     }
   }
 }
@@ -34,14 +34,14 @@ inline void nborAssert(hipError_t code,
                        bool abort = true) {
   if (code != hipSuccess) {
     fprintf(stderr, "hip assert: %s %s %d\n",
-            "DeePMD-kit:\tillegal nbor list sorting", file, line);
+            "mdpu-kit:\tillegal nbor list sorting", file, line);
     if (abort) {
-      throw deepmd::deepmd_exception("HIP Assert: illegal nbor list sorting");
+      throw mdpu::mdpu_exception("HIP Assert: illegal nbor list sorting");
     }
   }
 }
 
-namespace deepmd {
+namespace mdpu {
 inline void DPGetDeviceCount(int &gpu_num) { hipGetDeviceCount(&gpu_num); }
 
 inline hipError_t DPSetDevice(int rank) { return hipSetDevice(rank); }
@@ -103,4 +103,4 @@ template <typename FPTYPE>
 void memset_device_memory(FPTYPE *device, const int var, const int size) {
   DPErrcheck(hipMemset(device, var, sizeof(FPTYPE) * size));
 }
-}  // namespace deepmd
+}  // namespace mdpu

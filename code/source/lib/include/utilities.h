@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-namespace deepmd {
+namespace mdpu {
 
 void cum_sum(std::vector<int>& sec, const std::vector<int>& n_sel);
 
@@ -57,4 +57,4 @@ inline float invsqrt<float>(const float x) {
   return 1.f / sqrtf(x);
 }
 
-}  // namespace deepmd
+}  // namespace mdpu

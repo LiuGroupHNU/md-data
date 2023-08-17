@@ -16,12 +16,12 @@ inline void make_index_range(int& idx_start,
     idx_start = nei_idx * 4;
     idx_end = nei_idx * 4 + 4;
   } else {
-    throw deepmd::deepmd_exception("should no reach here");
+    throw mdpu::mdpu_exception("should no reach here");
   }
 }
 
 template <typename FPTYPE>
-void deepmd::prod_force_a_cpu(FPTYPE* force,
+void mdpu::prod_force_a_cpu(FPTYPE* force,
                               const FPTYPE* net_deriv,
                               const FPTYPE* env_deriv,
                               const int* nlist,
@@ -74,7 +74,7 @@ void deepmd::prod_force_a_cpu(FPTYPE* force,
 
 // overload to provide default values
 template <typename FPTYPE>
-void deepmd::prod_force_a_cpu(FPTYPE* force,
+void mdpu::prod_force_a_cpu(FPTYPE* force,
                               const FPTYPE* net_deriv,
                               const FPTYPE* env_deriv,
                               const int* nlist,
@@ -82,11 +82,11 @@ void deepmd::prod_force_a_cpu(FPTYPE* force,
                               const int nall,
                               const int nnei,
                               const int nframes) {
-  deepmd::prod_force_a_cpu(force, net_deriv, env_deriv, nlist, nloc, nall, nnei,
+  mdpu::prod_force_a_cpu(force, net_deriv, env_deriv, nlist, nloc, nall, nnei,
                            nframes, nloc, 0);
 };
 
-template void deepmd::prod_force_a_cpu<double>(double* force,
+template void mdpu::prod_force_a_cpu<double>(double* force,
                                                const double* net_deriv,
                                                const double* env_deriv,
                                                const int* nlist,
@@ -97,7 +97,7 @@ template void deepmd::prod_force_a_cpu<double>(double* force,
                                                const int thread_nloc,
                                                const int thread_start_index);
 
-template void deepmd::prod_force_a_cpu<float>(float* force,
+template void mdpu::prod_force_a_cpu<float>(float* force,
                                               const float* net_deriv,
                                               const float* env_deriv,
                                               const int* nlist,
@@ -108,7 +108,7 @@ template void deepmd::prod_force_a_cpu<float>(float* force,
                                               const int thread_nloc,
                                               const int thread_start_index);
 
-template void deepmd::prod_force_a_cpu<double>(double* force,
+template void mdpu::prod_force_a_cpu<double>(double* force,
                                                const double* net_deriv,
                                                const double* env_deriv,
                                                const int* nlist,
@@ -117,7 +117,7 @@ template void deepmd::prod_force_a_cpu<double>(double* force,
                                                const int nnei,
                                                const int nframes);
 
-template void deepmd::prod_force_a_cpu<float>(float* force,
+template void mdpu::prod_force_a_cpu<float>(float* force,
                                               const float* net_deriv,
                                               const float* env_deriv,
                                               const int* nlist,
@@ -127,7 +127,7 @@ template void deepmd::prod_force_a_cpu<float>(float* force,
                                               const int nframes);
 
 template <typename FPTYPE>
-void deepmd::prod_force_r_cpu(FPTYPE* force,
+void mdpu::prod_force_r_cpu(FPTYPE* force,
                               const FPTYPE* net_deriv,
                               const FPTYPE* env_deriv,
                               const int* nlist,
@@ -179,7 +179,7 @@ void deepmd::prod_force_r_cpu(FPTYPE* force,
   }
 }
 
-template void deepmd::prod_force_r_cpu<double>(double* force,
+template void mdpu::prod_force_r_cpu<double>(double* force,
                                                const double* net_deriv,
                                                const double* env_deriv,
                                                const int* nlist,
@@ -188,7 +188,7 @@ template void deepmd::prod_force_r_cpu<double>(double* force,
                                                const int nnei,
                                                const int nframes);
 
-template void deepmd::prod_force_r_cpu<float>(float* force,
+template void mdpu::prod_force_r_cpu<float>(float* force,
                                               const float* net_deriv,
                                               const float* env_deriv,
                                               const int* nlist,

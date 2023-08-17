@@ -82,7 +82,7 @@ __global__ void virial_grad_wrt_neighbors_r(FPTYPE* grad_net,
   grad_net[idx * ndescrpt + idy] -= (FPTYPE)-1.0 * dev_dot9(grad_one, tmp);
 }
 
-namespace deepmd {
+namespace mdpu {
 template <typename FPTYPE>
 void prod_virial_grad_a_gpu_rocm(FPTYPE* grad_net,
                                  const FPTYPE* grad,
@@ -151,4 +151,4 @@ template void prod_virial_grad_r_gpu_rocm<double>(double* grad_net,
                                                   const int* nlist,
                                                   const int nloc,
                                                   const int nnei);
-}  // namespace deepmd
+}  // namespace mdpu

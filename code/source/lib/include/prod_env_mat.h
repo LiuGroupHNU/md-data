@@ -5,7 +5,7 @@
 #include "device.h"
 #include "neighbor_list.h"
 
-namespace deepmd {
+namespace mdpu {
 
 template <typename FPTYPE>
 void prod_env_mat_a_cpu(FPTYPE *em,
@@ -138,4 +138,4 @@ void env_mat_nbor_update(InputNlist &inlist,
                          const int size);
 #endif  // TENSORFLOW_USE_ROCM
 
-}  // namespace deepmd
+}  // namespace mdpu

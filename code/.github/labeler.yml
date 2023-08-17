@@ -1,6 +1,6 @@
 Python:
-- deepmd/**/*
-- deepmd_cli/**/*
+- mdpu/**/*
+- mdpu_cli/**/*
 - source/tests/**/*
 Docs: doc/**/*
 Examples: examples/**/*

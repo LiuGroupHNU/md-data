@@ -104,11 +104,11 @@ static void compute_dRdT(double (*dRdT)[9],
   const double *xx = rot;
   const double *yy = rot + 3;
 
-  double nr1 = sqrt(deepmd::dot3(r1, r1));
+  double nr1 = sqrt(mdpu::dot3(r1, r1));
   double nr12 = nr1 * nr1;
   double nr13 = nr1 * nr12;
   double nr14 = nr12 * nr12;
-  double r1dr2 = deepmd::dot3(r1, r2);
+  double r1dr2 = mdpu::dot3(r1, r2);
 
   // dRdT0
   for (int ii = 0; ii < 3; ++ii) {
@@ -135,7 +135,7 @@ static void compute_dRdT(double (*dRdT)[9],
   for (int dd = 0; dd < 3; ++dd) {
     tmpy[dd] = r2[dd] - r1dr2 / nr12 * r1[dd];
   }
-  double ntmpy = sqrt(deepmd::dot3(tmpy, tmpy));
+  double ntmpy = sqrt(mdpu::dot3(tmpy, tmpy));
   double ydRdy[3] = {0};
   for (int ii = 0; ii < 3; ++ii) {
     for (int jj = 0; jj < 3; ++jj) {
@@ -151,8 +151,8 @@ static void compute_dRdT(double (*dRdT)[9],
   // dRdT2
   for (int ii = 0; ii < 3; ++ii) {
     double res[3];
-    deepmd::cprod(dRdT0 + ii * 3, yy, dRdT2 + ii * 3);
-    deepmd::cprod(xx, dRdT1 + ii * 3, res);
+    mdpu::cprod(dRdT0 + ii * 3, yy, dRdT2 + ii * 3);
+    mdpu::cprod(xx, dRdT1 + ii * 3, res);
     for (int dd = 0; dd < 3; ++dd) {
       dRdT2[ii * 3 + dd] += res[dd];
     }
@@ -169,11 +169,11 @@ static void compute_dRdT_1(double (*dRdT)[9],
   const double *xx = rot;
   const double *yy = rot + 3;
 
-  double nr1 = sqrt(deepmd::dot3(r1, r1));
+  double nr1 = sqrt(mdpu::dot3(r1, r1));
   double nr12 = nr1 * nr1;
   double nr13 = nr1 * nr12;
   double nr14 = nr12 * nr12;
-  double r1dr2 = deepmd::dot3(r1, r2);
+  double r1dr2 = mdpu::dot3(r1, r2);
 
   // dRdT0
   for (int ii = 0; ii < 3; ++ii) {
@@ -200,7 +200,7 @@ static void compute_dRdT_1(double (*dRdT)[9],
   for (int dd = 0; dd < 3; ++dd) {
     tmpy[dd] = r2[dd] - r1dr2 / nr12 * r1[dd];
   }
-  double ntmpy = sqrt(deepmd::dot3(tmpy, tmpy));
+  double ntmpy = sqrt(mdpu::dot3(tmpy, tmpy));
   double ydRdy[3] = {0};
   for (int ii = 0; ii < 3; ++ii) {
     for (int jj = 0; jj < 3; ++jj) {
@@ -216,8 +216,8 @@ static void compute_dRdT_1(double (*dRdT)[9],
   // dRdT2
   for (int ii = 0; ii < 3; ++ii) {
     double res[3];
-    deepmd::cprod(dRdT0 + ii * 3, yy, dRdT2 + ii * 3);
-    deepmd::cprod(xx, dRdT1 + ii * 3, res);
+    mdpu::cprod(dRdT0 + ii * 3, yy, dRdT2 + ii * 3);
+    mdpu::cprod(xx, dRdT1 + ii * 3, res);
     for (int dd = 0; dd < 3; ++dd) {
       dRdT2[ii * 3 + dd] += res[dd];
     }
@@ -234,9 +234,9 @@ static void compute_dRdT_2(double (*dRdT)[9],
   const double *xx = rot;
   const double *yy = rot + 3;
 
-  double nr1 = sqrt(deepmd::dot3(r1, r1));
+  double nr1 = sqrt(mdpu::dot3(r1, r1));
   double nr12 = nr1 * nr1;
-  double r1dr2 = deepmd::dot3(r1, r2);
+  double r1dr2 = mdpu::dot3(r1, r2);
 
   // dRdT0
   for (int ii = 0; ii < 3; ++ii) {
@@ -259,7 +259,7 @@ static void compute_dRdT_2(double (*dRdT)[9],
   for (int dd = 0; dd < 3; ++dd) {
     tmpy[dd] = r2[dd] - r1dr2 / nr12 * r1[dd];
   }
-  double ntmpy = sqrt(deepmd::dot3(tmpy, tmpy));
+  double ntmpy = sqrt(mdpu::dot3(tmpy, tmpy));
   double ydRdy[3] = {0};
   for (int ii = 0; ii < 3; ++ii) {
     for (int jj = 0; jj < 3; ++jj) {
@@ -275,8 +275,8 @@ static void compute_dRdT_2(double (*dRdT)[9],
   // dRdT2
   for (int ii = 0; ii < 3; ++ii) {
     double res[3];
-    deepmd::cprod(dRdT0 + ii * 3, yy, dRdT2 + ii * 3);
-    deepmd::cprod(xx, dRdT1 + ii * 3, res);
+    mdpu::cprod(dRdT0 + ii * 3, yy, dRdT2 + ii * 3);
+    mdpu::cprod(xx, dRdT1 + ii * 3, res);
     for (int dd = 0; dd < 3; ++dd) {
       dRdT2[ii * 3 + dd] += res[dd];
     }
@@ -369,7 +369,7 @@ void compute_descriptor(std::vector<double> &descrpt_a,
   // 	cout << jj << "\t  jidx " << j_idx;
   // 	if (j_idx >= 0){
   // 	  cout << "\t type " << type[j_idx];
-  // 	  cout << "\t " << sqrt(deepmd::dot3(&sel_a_diff[jj][0],
+  // 	  cout << "\t " << sqrt(mdpu::dot3(&sel_a_diff[jj][0],
   // &sel_a_diff[jj][0]));
   // 	}
   // 	cout << endl;
@@ -382,7 +382,7 @@ void compute_descriptor(std::vector<double> &descrpt_a,
   // 	cout << jj << "\t  jidx " << j_idx;
   // 	if (j_idx >= 0){
   // 	  cout << "\t type " << type[j_idx];
-  // 	  cout << "\t " << sqrt(deepmd::dot3(&sel_r_diff[jj][0],
+  // 	  cout << "\t " << sqrt(mdpu::dot3(&sel_r_diff[jj][0],
   // &sel_r_diff[jj][0]));
   // 	}
   // 	cout << endl;
@@ -418,19 +418,19 @@ void compute_descriptor(std::vector<double> &descrpt_a,
     xx[dd] = r1[dd];
     yy[dd] = r2[dd];
   }
-  double norm_xx = sqrt(deepmd::dot3(xx, xx));
+  double norm_xx = sqrt(mdpu::dot3(xx, xx));
   for (unsigned dd = 0; dd < 3; ++dd) {
     xx[dd] /= norm_xx;
   }
-  double dxy = deepmd::dot3(xx, yy);
+  double dxy = mdpu::dot3(xx, yy);
   for (unsigned dd = 0; dd < 3; ++dd) {
     yy[dd] -= dxy * xx[dd];
   }
-  double norm_yy = sqrt(deepmd::dot3(yy, yy));
+  double norm_yy = sqrt(mdpu::dot3(yy, yy));
   for (unsigned dd = 0; dd < 3; ++dd) {
     yy[dd] /= norm_yy;
   }
-  deepmd::cprod(xx, yy, zz);
+  mdpu::cprod(xx, yy, zz);
   rot_mat.resize(9);
   for (int dd = 0; dd < 9; ++dd) {
     rot_mat[dd] = rot[dd];
@@ -445,8 +445,8 @@ void compute_descriptor(std::vector<double> &descrpt_a,
         break;
       }
       double rdiff[3];
-      deepmd::dotmv3(rdiff, rot, &sel_a_diff[jj][0]);
-      double rr2 = deepmd::dot3(rdiff, rdiff);
+      mdpu::dotmv3(rdiff, rot, &sel_a_diff[jj][0]);
+      double rr2 = mdpu::dot3(rdiff, rdiff);
       double rr = sqrt(rr2);
 #ifdef DESCRPT_THETAPHI
       double cos_theta = rdiff[2] / rr;
@@ -473,7 +473,7 @@ void compute_descriptor(std::vector<double> &descrpt_a,
         break;
       }
       const double *rdiff = &sel_r_diff[jj][0];
-      double rr = sqrt(deepmd::dot3(rdiff, rdiff));
+      double rr = sqrt(mdpu::dot3(rdiff, rdiff));
       descrpt_r[jj] = 1. / rr;
     }
   }
@@ -505,8 +505,8 @@ void compute_descriptor(std::vector<double> &descrpt_a,
       double dtrdST[4][3];
       double *rr = &sel_a_diff[nei_iter][0];
       double tr[3];
-      deepmd::dotmv3(tr, rot, rr);
-      double nr2 = deepmd::dot3(tr, tr);
+      mdpu::dotmv3(tr, rot, rr);
+      double nr2 = mdpu::dot3(tr, tr);
       double nr = sqrt(nr2);
       double nr3 = nr * nr2;
       for (int dd = 0; dd < 3; ++dd) {
@@ -639,7 +639,7 @@ void compute_descriptor(std::vector<double> &descrpt_a,
       }
 
       const double *rr = &sel_r_diff[nei_iter][0];
-      double nr = sqrt(deepmd::dot3(rr, rr));
+      double nr = sqrt(mdpu::dot3(rr, rr));
       double nr3 = nr * nr * nr;
       int idx = nei_iter * 12;
 
@@ -741,19 +741,19 @@ void compute_descriptor(std::vector<double> &descrpt_a,
     xx[dd] = r1[dd];
     yy[dd] = r2[dd];
   }
-  double norm_xx = sqrt(deepmd::dot3(xx, xx));
+  double norm_xx = sqrt(mdpu::dot3(xx, xx));
   for (unsigned dd = 0; dd < 3; ++dd) {
     xx[dd] /= norm_xx;
   }
-  double dxy = deepmd::dot3(xx, yy);
+  double dxy = mdpu::dot3(xx, yy);
   for (unsigned dd = 0; dd < 3; ++dd) {
     yy[dd] -= dxy * xx[dd];
   }
-  double norm_yy = sqrt(deepmd::dot3(yy, yy));
+  double norm_yy = sqrt(mdpu::dot3(yy, yy));
   for (unsigned dd = 0; dd < 3; ++dd) {
     yy[dd] /= norm_yy;
   }
-  deepmd::cprod(xx, yy, zz);
+  mdpu::cprod(xx, yy, zz);
   rot_mat.resize(9);
   for (int dd = 0; dd < 9; ++dd) {
     rot_mat[dd] = rot[dd];
@@ -768,8 +768,8 @@ void compute_descriptor(std::vector<double> &descrpt_a,
         break;
       }
       double rdiff[3];
-      deepmd::dotmv3(rdiff, rot, &sel_a_diff[jj][0]);
-      double rr2 = deepmd::dot3(rdiff, rdiff);
+      mdpu::dotmv3(rdiff, rot, &sel_a_diff[jj][0]);
+      double rr2 = mdpu::dot3(rdiff, rdiff);
       double rr = sqrt(rr2);
 #ifdef DESCRPT_THETAPHI
       double cos_theta = rdiff[2] / rr;
@@ -796,8 +796,8 @@ void compute_descriptor(std::vector<double> &descrpt_a,
         break;
       }
       double rdiff[3];
-      deepmd::dotmv3(rdiff, rot, &sel_r_diff[jj][0]);
-      double rr = sqrt(deepmd::dot3(rdiff, rdiff));
+      mdpu::dotmv3(rdiff, rot, &sel_r_diff[jj][0]);
+      double rr = sqrt(mdpu::dot3(rdiff, rdiff));
       descrpt_r[jj] = 1. / rr;
     }
   }
@@ -829,7 +829,7 @@ void compute_descriptor_se_a_extf(std::vector<double> &descrpt_a,
       ef[ii] = ef_[ii];
     }
   }
-  assert(fabs(deepmd::dot3(ef, ef) - 1.0) < 1e-12),
+  assert(fabs(mdpu::dot3(ef, ef) - 1.0) < 1e-12),
       "ef should be a normalized std::vector";
 
   // compute the diff of the neighbors
@@ -874,18 +874,18 @@ void compute_descriptor_se_a_extf(std::vector<double> &descrpt_a,
       }
       const double *rr = &sel_a_diff[nei_iter][0];
       // check validity of ef
-      double nr2 = deepmd::dot3(rr, rr);
+      double nr2 = mdpu::dot3(rr, rr);
       double inr = 1. / sqrt(nr2);
       double nr = nr2 * inr;
       double inr2 = inr * inr;
       double inr4 = inr2 * inr2;
       double inr3 = inr4 * nr;
       double sw, dsw;
-      deepmd::spline5_switch(sw, dsw, nr, rmin, rmax);
+      mdpu::spline5_switch(sw, dsw, nr, rmin, rmax);
       int idx_deriv = nei_iter * 4 * 3;  // 4 components time 3 directions
       int idx_value = nei_iter * 4;      // 4 components
       // projections
-      double rp = deepmd::dot3(rr, ef);
+      double rp = mdpu::dot3(rr, ef);
       double rv[3];
       rv[0] = rr[0] - rp * ef[0];
       rv[1] = rr[1] - rp * ef[1];
@@ -970,7 +970,7 @@ void compute_descriptor_se_a_ef_para(std::vector<double> &descrpt_a,
       ef[ii] = ef_[ii];
     }
   }
-  assert(fabs(deepmd::dot3(ef, ef) - 1.0) < 1e-12),
+  assert(fabs(mdpu::dot3(ef, ef) - 1.0) < 1e-12),
       "ef should be a normalized vector";
 
   // compute the diff of the neighbors
@@ -1015,21 +1015,21 @@ void compute_descriptor_se_a_ef_para(std::vector<double> &descrpt_a,
       }
       const double *rr = &sel_a_diff[nei_iter][0];
       // check validity of ef
-      double nr2 = deepmd::dot3(rr, rr);
+      double nr2 = mdpu::dot3(rr, rr);
       double inr = 1. / sqrt(nr2);
       double nr = nr2 * inr;
       double inr2 = inr * inr;
       double inr4 = inr2 * inr2;
       double inr3 = inr4 * nr;
       double sw, dsw;
-      deepmd::spline5_switch(sw, dsw, nr, rmin, rmax);
+      mdpu::spline5_switch(sw, dsw, nr, rmin, rmax);
       int idx_deriv = nei_iter * 4 * 3;  // 4 components time 3 directions
       int idx_value = nei_iter * 4;      // 4 components
       // projections
       double rp[3];
-      rp[0] = deepmd::dot3(rr, ef) * ef[0];
-      rp[1] = deepmd::dot3(rr, ef) * ef[1];
-      rp[2] = deepmd::dot3(rr, ef) * ef[2];
+      rp[0] = mdpu::dot3(rr, ef) * ef[0];
+      rp[1] = mdpu::dot3(rr, ef) * ef[1];
+      rp[2] = mdpu::dot3(rr, ef) * ef[2];
       // 4 value components
       descrpt_a[idx_value + 0] = 1 / nr;
       descrpt_a[idx_value + 1] = rp[0] / nr2;
@@ -1107,7 +1107,7 @@ void compute_descriptor_se_a_ef_vert(std::vector<double> &descrpt_a,
       ef[ii] = ef_[ii];
     }
   }
-  assert(fabs(deepmd::dot3(ef, ef) - 1.0) < 1e-12),
+  assert(fabs(mdpu::dot3(ef, ef) - 1.0) < 1e-12),
       "ef should be a normalized vector";
 
   // compute the diff of the neighbors
@@ -1152,18 +1152,18 @@ void compute_descriptor_se_a_ef_vert(std::vector<double> &descrpt_a,
       }
       const double *rr = &sel_a_diff[nei_iter][0];
       // check validity of ef
-      double nr2 = deepmd::dot3(rr, rr);
+      double nr2 = mdpu::dot3(rr, rr);
       double inr = 1. / sqrt(nr2);
       double nr = nr2 * inr;
       double inr2 = inr * inr;
       double inr4 = inr2 * inr2;
       double inr3 = inr4 * nr;
       double sw, dsw;
-      deepmd::spline5_switch(sw, dsw, nr, rmin, rmax);
+      mdpu::spline5_switch(sw, dsw, nr, rmin, rmax);
       int idx_deriv = nei_iter * 4 * 3;  // 4 components time 3 directions
       int idx_value = nei_iter * 4;      // 4 components
       // projections
-      double rp = deepmd::dot3(rr, ef);
+      double rp = mdpu::dot3(rr, ef);
       double rv[3];
       rv[0] = rr[0] - rp * ef[0];
       rv[1] = rr[1] - rp * ef[1];

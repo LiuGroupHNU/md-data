@@ -11,7 +11,7 @@
 //==================================================
 
 code: mdpu
-reference: deepmd
+reference: mdpu
 author: mph (pinghui_mo@outlook.com)
 date: 2021-12-6
 
@@ -25,7 +25,7 @@ date: 2021-12-6
 #include "env_mat_mdpu.h"
 #include "utilities.h"
 
-namespace deepmd {
+namespace mdpu {
 
 template <typename FPTYPE>
 void env_mat_a_mdpu_quantize_cpu(std::vector<FPTYPE> &descrpt_a,

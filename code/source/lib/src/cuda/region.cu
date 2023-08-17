@@ -21,7 +21,7 @@ __global__ void _compute_volume(FPTYPE *volume, const FPTYPE *boxt) {
   volume[0] = compute_volume(boxt);
 }
 
-namespace deepmd {
+namespace mdpu {
 // only for unittest
 template <typename FPTYPE>
 void convert_to_inter_gpu(FPTYPE *ri,
@@ -68,4 +68,4 @@ template void convert_to_phys_gpu<double>(double *rp,
                                           const double *ri);
 template void volume_gpu<float>(float *volume, const Region<float> &region);
 template void volume_gpu<double>(double *volume, const Region<double> &region);
-}  // namespace deepmd
+}  // namespace mdpu

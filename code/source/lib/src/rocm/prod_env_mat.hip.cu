@@ -207,7 +207,7 @@ template <typename FPTYPE>
 void format_nbor_list_256(uint_64* key,
                           const FPTYPE* coord,
                           const int* type,
-                          const deepmd::InputNlist& gpu_inlist,
+                          const mdpu::InputNlist& gpu_inlist,
                           const int& nloc,
                           const float& rcut,
                           int* i_idx) {
@@ -237,7 +237,7 @@ template <typename FPTYPE>
 void format_nbor_list_512(uint_64* key,
                           const FPTYPE* coord,
                           const int* type,
-                          const deepmd::InputNlist& gpu_inlist,
+                          const mdpu::InputNlist& gpu_inlist,
                           const int& nloc,
                           const float& rcut,
                           int* i_idx) {
@@ -267,7 +267,7 @@ template <typename FPTYPE>
 void format_nbor_list_1024(uint_64* key,
                            const FPTYPE* coord,
                            const int* type,
-                           const deepmd::InputNlist& gpu_inlist,
+                           const mdpu::InputNlist& gpu_inlist,
                            const int& nloc,
                            const float& rcut,
                            int* i_idx) {
@@ -297,7 +297,7 @@ template <typename FPTYPE>
 void format_nbor_list_2048(uint_64* key,
                            const FPTYPE* coord,
                            const int* type,
-                           const deepmd::InputNlist& gpu_inlist,
+                           const mdpu::InputNlist& gpu_inlist,
                            const int& nloc,
                            const float& rcut,
                            int* i_idx) {
@@ -327,7 +327,7 @@ template <typename FPTYPE>
 void format_nbor_list_4096(uint_64* key,
                            const FPTYPE* coord,
                            const int* type,
-                           const deepmd::InputNlist& gpu_inlist,
+                           const mdpu::InputNlist& gpu_inlist,
                            const int& nloc,
                            const float& rcut,
                            int* i_idx) {
@@ -563,12 +563,12 @@ __global__ void compute_env_mat_r(FPTYPE* em,
   }
 }
 
-namespace deepmd {
+namespace mdpu {
 template <typename FPTYPE>
 void format_nbor_list_gpu_rocm(int* nlist,
                                const FPTYPE* coord,
                                const int* type,
-                               const deepmd::InputNlist& gpu_inlist,
+                               const mdpu::InputNlist& gpu_inlist,
                                int* array_int,
                                uint_64* array_longlong,
                                const int max_nbor_size,
@@ -790,7 +790,7 @@ template void format_nbor_list_gpu_rocm<float>(
     int* nlist,
     const float* coord,
     const int* type,
-    const deepmd::InputNlist& gpu_inlist,
+    const mdpu::InputNlist& gpu_inlist,
     int* array_int,
     uint_64* array_longlong,
     const int max_nbor_size,
@@ -802,7 +802,7 @@ template void format_nbor_list_gpu_rocm<double>(
     int* nlist,
     const double* coord,
     const int* type,
-    const deepmd::InputNlist& gpu_inlist,
+    const mdpu::InputNlist& gpu_inlist,
     int* array_int,
     uint_64* array_longlong,
     const int max_nbor_size,
@@ -826,4 +826,4 @@ template void test_encoding_decoding_nbor_info_gpu_rocm(
     const double* in_dist,
     const int* in_index,
     const int size_of_array);
-}  // namespace deepmd
+}  // namespace mdpu

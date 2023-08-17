@@ -7,7 +7,7 @@
 #include "switcher.h"
 
 template <typename FPTYPE>
-void deepmd::soft_min_switch_cpu(FPTYPE* sw_value,
+void mdpu::soft_min_switch_cpu(FPTYPE* sw_value,
                                  FPTYPE* sw_deriv,
                                  const FPTYPE* rij,
                                  const int* nlist,
@@ -78,7 +78,7 @@ void deepmd::soft_min_switch_cpu(FPTYPE* sw_value,
   }
 }
 
-template void deepmd::soft_min_switch_cpu<double>(double* sw_value,
+template void mdpu::soft_min_switch_cpu<double>(double* sw_value,
                                                   double* sw_deriv,
                                                   const double* rij,
                                                   const int* nlist,
@@ -88,7 +88,7 @@ template void deepmd::soft_min_switch_cpu<double>(double* sw_value,
                                                   const double& rmin,
                                                   const double& rmax);
 
-template void deepmd::soft_min_switch_cpu<float>(float* sw_value,
+template void mdpu::soft_min_switch_cpu<float>(float* sw_value,
                                                  float* sw_deriv,
                                                  const float* rij,
                                                  const int* nlist,

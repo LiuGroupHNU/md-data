@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 #pragma once
 
-namespace deepmd {
+namespace mdpu {
 
 template <typename FPTYPE>
 void prod_virial_a_cpu(FPTYPE* virial,
@@ -73,4 +73,4 @@ void prod_virial_r_gpu_rocm(FPTYPE* virial,
                             const int nnei);
 #endif  // TENSORFLOW_USE_ROCM
 
-}  // namespace deepmd
+}  // namespace mdpu

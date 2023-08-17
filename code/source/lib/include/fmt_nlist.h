@@ -6,7 +6,7 @@
 #include "device.h"
 #include "neighbor_list.h"
 
-namespace deepmd {
+namespace mdpu {
 
 template <typename FPTYPE>
 void format_nlist_cpu(int* nlist,
@@ -23,7 +23,7 @@ template <typename FPTYPE>
 void format_nbor_list_gpu_cuda(int* nlist,
                                const FPTYPE* coord,
                                const int* type,
-                               const deepmd::InputNlist& gpu_inlist,
+                               const mdpu::InputNlist& gpu_inlist,
                                int* array_int,
                                uint_64* array_longlong,
                                const int max_nbor_size,
@@ -47,7 +47,7 @@ template <typename FPTYPE>
 void format_nbor_list_gpu_rocm(int* nlist,
                                const FPTYPE* coord,
                                const int* type,
-                               const deepmd::InputNlist& gpu_inlist,
+                               const mdpu::InputNlist& gpu_inlist,
                                int* array_int,
                                uint_64* array_longlong,
                                const int max_nbor_size,
@@ -66,7 +66,7 @@ void test_encoding_decoding_nbor_info_gpu_rocm(uint_64* key,
                                                const int size_of_array);
 #endif  // TENSORFLOW_USE_ROCM
 
-}  // namespace deepmd
+}  // namespace mdpu
 
 ////////////////////////////////////////////////////////
 // legacy code

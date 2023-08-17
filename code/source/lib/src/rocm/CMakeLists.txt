@@ -1,7 +1,7 @@
 # required cmake version
 cmake_minimum_required(VERSION 3.21)
 # project name
-project(deepmd_op_rocm)
+project(_op_rocm)
 set(CMAKE_LINK_WHAT_YOU_USE TRUE)
 
 # set c++ version c++11
@@ -20,20 +20,20 @@ endif()
 
 file(GLOB SOURCE_FILES "*.hip.cu")
 
-hip_add_library(deepmd_op_rocm SHARED ${SOURCE_FILES})
+hip_add_library(_op_rocm SHARED ${SOURCE_FILES})
 target_include_directories(
-  deepmd_op_rocm
+  _op_rocm
   PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../../include/>
          $<INSTALL_INTERFACE:include>)
-target_precompile_headers(deepmd_op_rocm PUBLIC [["device.h"]])
+target_precompile_headers(_op_rocm PUBLIC [["device.h"]])
 
-install(TARGETS deepmd_op_rocm DESTINATION lib/)
+install(TARGETS _op_rocm DESTINATION lib/)
 if(BUILD_CPP_IF)
   install(
-    TARGETS deepmd_op_rocm
+    TARGETS _op_rocm
     EXPORT ${CMAKE_PROJECT_NAME}Targets
     DESTINATION lib/)
 endif(BUILD_CPP_IF)
 if(BUILD_PY_IF)
-  install(TARGETS deepmd_op_rocm DESTINATION deepmd/op/)
+  install(TARGETS _op_rocm DESTINATION mdpu/op/)
 endif(BUILD_PY_IF)

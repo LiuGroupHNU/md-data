@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 #pragma once
 
-namespace deepmd {
+namespace mdpu {
 
 template <typename FPTYPE>
 struct Region {
@@ -58,4 +58,4 @@ void convert_to_phys_gpu_rocm(FPTYPE* rp,
 template <typename FPTYPE>
 void volume_gpu_rocm(FPTYPE* volume, const Region<FPTYPE>& region);
 #endif  // TENSORFLOW_USE_ROCM
-}  // namespace deepmd
+}  // namespace mdpu

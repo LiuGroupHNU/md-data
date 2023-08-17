@@ -173,7 +173,7 @@ __global__ void map_nei_info_noconvert(int *nlist,
   }
 }
 
-namespace deepmd {
+namespace mdpu {
 template <typename FPTYPE>
 int build_nlist_gpu_rocm(InputNlist &nlist,
                          int *max_list_size,
@@ -295,4 +295,4 @@ void filter_ftype_gpu_rocm(int *ftype_out,
   DPErrcheck(hipGetLastError());
   DPErrcheck(hipDeviceSynchronize());
 }
-}  // namespace deepmd
+}  // namespace mdpu

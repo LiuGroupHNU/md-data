@@ -3,7 +3,7 @@
 
 #include <cmath>
 
-namespace deepmd {
+namespace mdpu {
 
 inline double cos_switch(const double& xx,
                          const double& rmin,
@@ -82,4 +82,4 @@ inline void spline5_switch(FPTYPE& vv,
   }
 }
 
-}  // namespace deepmd
+}  // namespace mdpu

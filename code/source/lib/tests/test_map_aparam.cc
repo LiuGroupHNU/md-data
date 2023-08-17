@@ -84,7 +84,7 @@ class TestMapAparam : public ::testing::Test {
 
 TEST_F(TestMapAparam, cpu) {
   std::vector<double> output(nloc * nnei * numb_aparam);
-  deepmd::map_aparam_cpu(&output[0], &aparam[0], &nlist[0], nloc, nnei,
+  mdpu::map_aparam_cpu(&output[0], &aparam[0], &nlist[0], nloc, nnei,
                          numb_aparam);
   for (int jj = 0; jj < nloc * nnei * numb_aparam; ++jj) {
     EXPECT_LT(fabs(output[jj] - expected_output[jj]), 1e-10);

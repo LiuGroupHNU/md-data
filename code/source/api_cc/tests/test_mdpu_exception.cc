@@ -12,15 +12,15 @@
 
 #include "DeepPot.h"
 #include "errors.h"
-TEST(TestDeepmdException, deepmdexception) {
-  std::string expected_error_message = "DeePMD-kit Error: unittest";
+TEST(TestMDPUException, mdpuexception) {
+  std::string expected_error_message = "mdpu-kit Error: unittest";
   try {
-    throw deepmd::deepmd_exception("unittest");
-  } catch (deepmd::deepmd_exception &ex) {
+    throw mdpu::mdpu_exception("unittest");
+  } catch (mdpu::mdpu_exception &ex) {
     EXPECT_STREQ(expected_error_message.c_str(), ex.what());
   }
 }
 
-TEST(TestDeepmdException, deepmdexception_nofile) {
-  ASSERT_THROW(deepmd::DeepPot("_no_such_file.pb"), deepmd::deepmd_exception);
+TEST(TestMDPUException, mdpuexception_nofile) {
+  ASSERT_THROW(mdpu::DeepPot("_no_such_file.pb"), mdpu::mdpu_exception);
 }

@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 /*
-Header-only DeePMD-kit C++ 11 library
+Header-only mdpu-kit C++ 11 library
 
-This header-only library provides a C++ 11 interface to the DeePMD-kit C API.
+This header-only library provides a C++ 11 interface to the mdpu-kit C API.
 */
 
 #pragma once
@@ -18,19 +18,19 @@ This header-only library provides a C++ 11 interface to the DeePMD-kit C API.
 
 #include "c_api.h"
 
-namespace deepmd {
+namespace mdpu {
 namespace hpp {
 /**
- * @brief General DeePMD-kit exception. Throw if anything doesn't work.
+ * @brief General mdpu-kit exception. Throw if anything doesn't work.
  **/
-struct deepmd_exception : public std::runtime_error {
+struct mdpu_exception : public std::runtime_error {
  public:
-  deepmd_exception() : runtime_error("DeePMD-kit C API Error!"){};
-  deepmd_exception(const std::string &msg)
-      : runtime_error(std::string("DeePMD-kit C API Error: ") + msg){};
+  mdpu_exception() : runtime_error("mdpu-kit C API Error!"){};
+  mdpu_exception(const std::string &msg)
+      : runtime_error(std::string("mdpu-kit C API Error: ") + msg){};
 };
 }  // namespace hpp
-}  // namespace deepmd
+}  // namespace mdpu
 
 /**
  * @brief Check if any exceptions throw in the C++ API. Throw if possible.
@@ -38,7 +38,7 @@ struct deepmd_exception : public std::runtime_error {
 #define DP_CHECK_OK(check_func, dp)     \
   const char *err_msg = check_func(dp); \
   if (std::strlen(err_msg))             \
-    throw deepmd::hpp::deepmd_exception(std::string(err_msg));
+    throw mdpu::hpp::mdpu_exception(std::string(err_msg));
 
 template <typename FPTYPE>
 inline void _DP_DeepPotCompute(DP_DeepPot *dp,
@@ -496,7 +496,7 @@ inline double *_DP_Get_Energy_Pointer(double &vec, const int nframes) {
   return &vec;
 }
 
-namespace deepmd {
+namespace mdpu {
 namespace hpp {
 /**
  * @brief Neighbor list.
@@ -587,7 +587,7 @@ class DeepPot {
             const int &gpu_rank = 0,
             const std::string &file_content = "") {
     if (dp) {
-      std::cerr << "WARNING: deepmd-kit should not be initialized twice, do "
+      std::cerr << "WARNING: mdpu-kit should not be initialized twice, do "
                    "nothing at the second call of initializer"
                 << std::endl;
       return;
@@ -1011,7 +1011,7 @@ class DeepPot {
     delete[] type_map_c;
   };
   /**
-   * @brief Print the summary of DeePMD-kit, including the version and the build
+   * @brief Print the summary of mdpu-kit, including the version and the build
    * information.
    * @param[in] pre The prefix to each line.
    */
@@ -1045,14 +1045,14 @@ class DeepPot {
                               const std::vector<VALUETYPE> &fparam,
                               const std::vector<VALUETYPE> &aparam) const {
     if (fparam.size() != dfparam && fparam.size() != nframes * dfparam) {
-      throw deepmd::hpp::deepmd_exception(
+      throw mdpu::hpp::mdpu_exception(
           "the dim of frame parameter provided is not consistent with what the "
           "model uses");
     }
 
     if (aparam.size() != daparam * nloc &&
         aparam.size() != nframes * daparam * nloc) {
-      throw deepmd::hpp::deepmd_exception(
+      throw mdpu::hpp::mdpu_exception(
           "the dim of atom parameter provided is not consistent with what the "
           "model uses");
     }
@@ -1101,7 +1101,7 @@ class DeepPotModelDevi {
             const std::vector<std::string> &file_content =
                 std::vector<std::string>()) {
     if (dp) {
-      std::cerr << "WARNING: deepmd-kit should not be initialized twice, do "
+      std::cerr << "WARNING: mdpu-kit should not be initialized twice, do "
                    "nothing at the second call of initializer"
                 << std::endl;
       return;
@@ -1454,14 +1454,14 @@ class DeepPotModelDevi {
                               const std::vector<VALUETYPE> &fparam,
                               const std::vector<VALUETYPE> &aparam) const {
     if (fparam.size() != dfparam && fparam.size() != nframes * dfparam) {
-      throw deepmd::hpp::deepmd_exception(
+      throw mdpu::hpp::mdpu_exception(
           "the dim of frame parameter provided is not consistent with what the "
           "model uses");
     }
 
     if (aparam.size() != daparam * nloc &&
         aparam.size() != nframes * daparam * nloc) {
-      throw deepmd::hpp::deepmd_exception(
+      throw mdpu::hpp::mdpu_exception(
           "the dim of atom parameter provided is not consistent with what the "
           "model uses");
     }
@@ -1510,7 +1510,7 @@ class DeepTensor {
             const int &gpu_rank = 0,
             const std::string &name_scope = "") {
     if (dt) {
-      std::cerr << "WARNING: deepmd-kit should not be initialized twice, do "
+      std::cerr << "WARNING: mdpu-kit should not be initialized twice, do "
                    "nothing at the second call of initializer"
                 << std::endl;
       return;
@@ -1830,7 +1830,7 @@ class DeepTensor {
     return sel_types_vec;
   }
   /**
-   * @brief Print the summary of DeePMD-kit, including the version and the build
+   * @brief Print the summary of mdpu-kit, including the version and the build
    * information.
    * @param[in] pre The prefix to each line.
    */
@@ -1873,7 +1873,7 @@ class DipoleChargeModifier {
             const int &gpu_rank = 0,
             const std::string &name_scope = "") {
     if (dcm) {
-      std::cerr << "WARNING: deepmd-kit should not be initialized twice, do "
+      std::cerr << "WARNING: mdpu-kit should not be initialized twice, do "
                    "nothing at the second call of initializer"
                 << std::endl;
       return;
@@ -1956,7 +1956,7 @@ class DipoleChargeModifier {
   }
 
   /**
-   * @brief Print the summary of DeePMD-kit, including the version and the build
+   * @brief Print the summary of mdpu-kit, including the version and the build
    * information.
    * @param[in] pre The prefix to each line.
    */
@@ -1980,7 +1980,7 @@ void inline read_file_to_string(std::string model, std::string &file_content) {
   if (size < 0) {
     // negtive size indicates error
     std::string error_message = std::string(c_file_content, -size);
-    throw deepmd::hpp::deepmd_exception(error_message);
+    throw mdpu::hpp::mdpu_exception(error_message);
   }
   file_content = std::string(c_file_content, size);
 };
@@ -2041,4 +2041,4 @@ void select_map(std::vector<VT> &out,
 };
 
 }  // namespace hpp
-}  // namespace deepmd
+}  // namespace mdpu

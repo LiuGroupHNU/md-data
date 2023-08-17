@@ -28,10 +28,10 @@ void *GetDsoHandle() {
     void *dso_handle = dlopen(libname.c_str(), RTLD_NOW | RTLD_LOCAL);
 #endif
     if (!dso_handle) {
-      std::cerr << "DeePMD-kit: Cannot find " << libname << std::endl;
+      std::cerr << "mdpu-kit: Cannot find " << libname << std::endl;
       return nullptr;
     }
-    std::cerr << "DeePMD-kit: Successfully load " << libname << std::endl;
+    std::cerr << "mdpu-kit: Successfully load " << libname << std::endl;
     return dso_handle;
   }();
   return handle;

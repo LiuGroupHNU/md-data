@@ -15,7 +15,7 @@ class TestEwald : public ::testing::Test {
       -2, 1, 1, -2, 1, 1,
   };
   std::vector<double> boxt = {13., 0., 0., 0., 13., 0., 0., 0., 13.};
-  deepmd::EwaldParameters<double> eparam;
+  mdpu::EwaldParameters<double> eparam;
   double expected_e = 4.7215808340392229e+00;
   std::vector<double> expected_f = {
       -5.4937025715874448e+00, 5.6659817006308417e+00,  3.8059426028301313e-01,
@@ -36,7 +36,7 @@ class TestEwald : public ::testing::Test {
 TEST_F(TestEwald, cpu) {
   double ener;
   std::vector<double> force, virial;
-  deepmd::Region<double> region;
+  mdpu::Region<double> region;
   init_region_cpu(region, &boxt[0]);
   ewald_recp(ener, force, virial, coord, charge, region, eparam);
   EXPECT_LT(fabs(ener - expected_e), 1e-10);

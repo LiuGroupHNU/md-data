@@ -1,24 +1,24 @@
-# DeePMD-kit Contributing Guide
+# mdpu-kit Contributing Guide
 
-Welcome to [DeePMD-kit](https://github.com/deepmodeling/deepmd-kit)!
+Welcome to [mdpu-kit](https://github.com/deepmodeling/mdpu-kit)!
 
 ## What you can contribute
 
 You can either make a code contribution, help improve our document or offer help to other users. Your help is always appreciated. Come and have fun!
 
 ### Code contribution
-You can start from any one of the following items to help improve deepmd-kit
+You can start from any one of the following items to help improve mdpu-kit
 
 - Smash a bug
-- Implement a feature or add a patch, whatever you think deepmd-kit is missing
-- Browse [issues](https://github.com/deepmodeling/deepmd-kit/issues), find an issue labeled enhancement or bug, and help to solve it.
+- Implement a feature or add a patch, whatever you think mdpu-kit is missing
+- Browse [issues](https://github.com/deepmodeling/mdpu-kit/issues), find an issue labeled enhancement or bug, and help to solve it.
 
 See [here](#before-you-contribute) for some before-hand heads-up.
 
 See [here](#how-to-contribute) to learn how to contribute.
 
 ### Document improvement
-You can start from any one of the following items to help improve [DeePMD-kit Docs](https://deepmd.readthedocs.io/en/latest/?badge=latest):
+You can start from any one of the following items to help improve [mdpu-kit Docs](https://deepmd.readthedocs.io/en/latest/?badge=latest):
 
 - Fix typos or format (punctuation, space, indentation, code block, etc.)
 - Fix or update inappropriate or outdated descriptions
@@ -26,13 +26,13 @@ You can start from any one of the following items to help improve [DeePMD-kit Do
 - Translate docs changes from English to Chinese
 
 ### Offer help
-You can help other users of deepmd-kit in the following way
+You can help other users of mdpu-kit in the following way
 
-- Submit, reply to, and resolve [issues](https://github.com/deepmodeling/deepmd-kit/issues)
+- Submit, reply to, and resolve [issues](https://github.com/deepmodeling/mdpu-kit/issues)
 - (Advanced) Review Pull Requests created by others
 
 ## Before you contribute
-### Overview of DeePMD-kit
+### Overview of mdpu-kit
 Currently, we maintain two main branch:
 - master: stable branch with version tag
 - devel :  branch for developers
@@ -45,14 +45,14 @@ Please perform the following steps to create your Pull Request to this repositor
 
 ### Step 1: Fork the repository
 
-1. Visit the project: <https://github.com/deepmodeling/deepmd-kit>
+1. Visit the project: <https://github.com/deepmodeling/mdpu-kit>
 2. Click the **Fork** button on the top right and wait it to finish.
 
 ### Step 2: Clone the forked repository to local storage and set configurations
 
 1. Clone your own repo, not the public repo (from deepmodeling) ! And change the branch to devel.
     ```bash
-    git clone https://github.com/$username/deepmd-kit.git
+    git clone https://github.com/$username/mdpu-kit.git
     # Replace `$username` with your GitHub ID
 
     git checkout devel
@@ -60,7 +60,7 @@ Please perform the following steps to create your Pull Request to this repositor
 
 2. Add deepmodeling's repo as your remote repo, we can name it "upstream". And fetch upstream's latest codes to your workstation.
     ```bash
-    git remote add upstream https://github.com/deepmodeling/deepmd-kit.git
+    git remote add upstream https://github.com/deepmodeling/mdpu-kit.git
     # After you add a remote repo, your local repo will be automatically named "origin".
 
     git fetch upstream
@@ -89,7 +89,7 @@ Please perform the following steps to create your Pull Request to this repositor
 1. Get your local master up-to-date with upstream/master.
 
     ```bash
-    cd $working_dir/deepmd-kit
+    cd $working_dir/mdpu-kit
     git fetch upstream
     git checkout master
     git rebase upstream/master
@@ -127,10 +127,10 @@ Please perform the following steps to create your Pull Request to this repositor
 
 ### Step 3: Create a pull request
 
-1. Visit your fork at <https://github.com/$username/deepmd-kit> (replace `$username` with your GitHub ID)
+1. Visit your fork at <https://github.com/$username/mdpu-kit> (replace `$username` with your GitHub ID)
 2. Click `pull requests`, followed by `New pull request` and `Compare & pull request` to create your PR.
 
-Now, your PR is successfully submitted! After this PR is merged, you will automatically become a contributor to DeePMD-kit.
+Now, your PR is successfully submitted! After this PR is merged, you will automatically become a contributor to mdpu-kit.
 
 ## Contact us
 E-mail: contact@deepmodeling.org

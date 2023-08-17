@@ -619,7 +619,7 @@ __global__ void tabulate_fusion_se_r_grad_grad_fifth_order_polynomial(
   }
 }
 
-namespace deepmd {
+namespace mdpu {
 template <typename FPTYPE>
 void tabulate_fusion_se_a_gpu_rocm(FPTYPE* out,
                                    const FPTYPE* table,
@@ -1039,4 +1039,4 @@ template void tabulate_fusion_se_r_grad_grad_gpu_rocm<double>(
     const int nnei,
     const int last_layer_size);
 
-}  // namespace deepmd
+}  // namespace mdpu

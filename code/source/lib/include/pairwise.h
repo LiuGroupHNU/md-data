@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 #include <vector>
 
-namespace deepmd {
+namespace mdpu {
 /**
  * Group atoms into different fragments according to indexes.
  *
@@ -41,4 +41,4 @@ void dprc_pairwise_map_cpu(std::vector<int> &forward_qm_map,
                            const std::vector<std::vector<int>> &fragments,
                            const int nloc,
                            const int nall);
-}  // namespace deepmd
+}  // namespace mdpu

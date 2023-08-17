@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 #pragma once
 
-namespace deepmd {
+namespace mdpu {
 
 template <typename FPTYPE>
 void soft_min_switch_virial_cpu(FPTYPE* virial,

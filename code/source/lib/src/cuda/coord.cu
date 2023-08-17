@@ -244,7 +244,7 @@ template <typename FPTYPE>
 void compute_int_data(int *int_data,
                       const FPTYPE *in_c,
                       const int *cell_info,
-                      const deepmd::Region<FPTYPE> &region,
+                      const mdpu::Region<FPTYPE> &region,
                       const int nloc,
                       const int loc_cellnum,
                       const int total_cellnum) {
@@ -312,7 +312,7 @@ void copy_coord(FPTYPE *out_c,
                 const int nall,
                 const int loc_cellnum,
                 const int total_cellnum,
-                const deepmd::Region<FPTYPE> &region) {
+                const mdpu::Region<FPTYPE> &region) {
   const int nblock = (nall + TPB - 1) / TPB;
   const int *cell_map = int_data + 3 * nloc + loc_cellnum + 2 * total_cellnum;
   const int *cell_shift_map = cell_map + total_cellnum;
@@ -330,7 +330,7 @@ void copy_coord(FPTYPE *out_c,
   DPErrcheck(cudaDeviceSynchronize());
 }
 
-namespace deepmd {
+namespace mdpu {
 template <typename FPTYPE>
 void normalize_coord_gpu(FPTYPE *coord,
                          const int natom,
@@ -442,4 +442,4 @@ template int copy_coord_gpu<double>(double *out_c,
                                     const int &total_cellnum,
                                     const int *cell_info,
                                     const Region<double> &region);
-}  // namespace deepmd
+}  // namespace mdpu

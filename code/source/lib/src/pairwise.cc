@@ -18,7 +18,7 @@ std::vector<size_t> sort_indexes(const std::vector<T> &v) {
   return idx;
 }
 
-void deepmd::group_atoms_cpu(std::vector<std::vector<int>> &fragments,
+void mdpu::group_atoms_cpu(std::vector<std::vector<int>> &fragments,
                              const std::vector<int> &idxs) {
   int natoms = idxs.size();
   // sort idxs
@@ -40,7 +40,7 @@ void deepmd::group_atoms_cpu(std::vector<std::vector<int>> &fragments,
   }
 }
 
-void deepmd::dprc_pairwise_map_cpu(
+void mdpu::dprc_pairwise_map_cpu(
     std::vector<int> &forward_qm_map,
     std::vector<int> &backward_qm_map,
     std::vector<int> &forward_qmmm_map,
@@ -54,7 +54,7 @@ void deepmd::dprc_pairwise_map_cpu(
     const int nall) {
   int nfragments = fragments.size();
   if (nfragments == 0) {
-    throw deepmd::deepmd_exception("fragments is empty");
+    throw mdpu::mdpu_exception("fragments is empty");
   }
   int nqm = fragments[0].size();
   // assume fragments = ((3,4,10), (0,1,2,11), (5,6,7), (8,9))

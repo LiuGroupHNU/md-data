@@ -15,12 +15,12 @@ inline void make_index_range(int& idx_start,
     idx_start = nei_idx * 4;
     idx_end = nei_idx * 4 + 4;
   } else {
-    throw deepmd::deepmd_exception("should no reach here");
+    throw mdpu::mdpu_exception("should no reach here");
   }
 }
 
 template <typename FPTYPE>
-void deepmd::prod_virial_a_cpu(FPTYPE* virial,
+void mdpu::prod_virial_a_cpu(FPTYPE* virial,
                                FPTYPE* atom_virial,
                                const FPTYPE* net_deriv,
                                const FPTYPE* env_deriv,
@@ -68,7 +68,7 @@ void deepmd::prod_virial_a_cpu(FPTYPE* virial,
   }
 }
 
-template void deepmd::prod_virial_a_cpu<double>(double* virial,
+template void mdpu::prod_virial_a_cpu<double>(double* virial,
                                                 double* atom_virial,
                                                 const double* net_deriv,
                                                 const double* env_deriv,
@@ -78,7 +78,7 @@ template void deepmd::prod_virial_a_cpu<double>(double* virial,
                                                 const int nall,
                                                 const int nnei);
 
-template void deepmd::prod_virial_a_cpu<float>(float* virial,
+template void mdpu::prod_virial_a_cpu<float>(float* virial,
                                                float* atom_virial,
                                                const float* net_deriv,
                                                const float* env_deriv,
@@ -89,7 +89,7 @@ template void deepmd::prod_virial_a_cpu<float>(float* virial,
                                                const int nnei);
 
 template <typename FPTYPE>
-void deepmd::prod_virial_r_cpu(FPTYPE* virial,
+void mdpu::prod_virial_r_cpu(FPTYPE* virial,
                                FPTYPE* atom_virial,
                                const FPTYPE* net_deriv,
                                const FPTYPE* env_deriv,
@@ -133,7 +133,7 @@ void deepmd::prod_virial_r_cpu(FPTYPE* virial,
   }
 }
 
-template void deepmd::prod_virial_r_cpu<double>(double* virial,
+template void mdpu::prod_virial_r_cpu<double>(double* virial,
                                                 double* atom_virial,
                                                 const double* net_deriv,
                                                 const double* env_deriv,
@@ -143,7 +143,7 @@ template void deepmd::prod_virial_r_cpu<double>(double* virial,
                                                 const int nall,
                                                 const int nnei);
 
-template void deepmd::prod_virial_r_cpu<float>(float* virial,
+template void mdpu::prod_virial_r_cpu<float>(float* virial,
                                                float* atom_virial,
                                                const float* net_deriv,
                                                const float* env_deriv,

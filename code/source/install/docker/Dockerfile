@@ -1,15 +1,15 @@
 FROM python:3.10 AS compile-image
-RUN python -m venv /opt/deepmd-kit
+RUN python -m venv /opt/mdpu-kit
 # Make sure we use the virtualenv
-ENV PATH="/opt/deepmd-kit/bin:$PATH"
+ENV PATH="/opt/mdpu-kit/bin:$PATH"
 # Install package
 COPY dist /dist
-RUN pip install "$(ls /dist/deepmd_kit-*manylinux*_x86_64.whl)[gpu,cu11,lmp]" \
+RUN pip install "$(ls /dist/mdpu_kit-*manylinux*_x86_64.whl)[gpu,cu11,lmp]" \
     && dp -h \
     && lmp -h \
-    && python -m deepmd -h
+    && python -m mdpu -h
 
 FROM python:3.10 AS build-image
-COPY --from=compile-image /opt/deepmd-kit /opt/deepmd-kit
-ENV PATH="/opt/deepmd-kit/bin:$PATH"
+COPY --from=compile-image /opt/mdpu-kit /opt/mdpu-kit
+ENV PATH="/opt/mdpu-kit/bin:$PATH"
 CMD ["/bin/bash"]

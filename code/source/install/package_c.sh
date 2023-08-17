@@ -7,7 +7,7 @@ if [ -z "$INSTALL_PREFIX" ]; then
 	INSTALL_PREFIX=$(realpath -s ${SCRIPT_PATH}/../../dp_c)
 fi
 mkdir -p ${INSTALL_PREFIX}
-echo "Installing DeePMD-kit to ${INSTALL_PREFIX}"
+echo "Installing mdpu-kit to ${INSTALL_PREFIX}"
 NPROC=$(nproc --all)
 
 #------------------
@@ -26,8 +26,8 @@ make install
 #------------------
 
 # fix runpath
-for ii in ${BUILD_TMP_DIR}/libdeepmd_c/lib/*.so*; do
+for ii in ${BUILD_TMP_DIR}/libmdpu_c/lib/*.so*; do
 	patchelf --set-rpath \$ORIGIN $ii
 done
 
-tar vczf ${SCRIPT_PATH}/../../libdeepmd_c.tar.gz -C ${BUILD_TMP_DIR} libdeepmd_c
+tar vczf ${SCRIPT_PATH}/../../libmdpu_c.tar.gz -C ${BUILD_TMP_DIR} libmdpu_c

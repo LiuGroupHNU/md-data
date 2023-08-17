@@ -100,7 +100,7 @@ class TestProdVirialGradA : public ::testing::Test {
       }
       std::vector<double> t_env, t_env_deriv, t_rij;
       // compute env_mat and its deriv, record
-      deepmd::env_mat_a_cpu<double>(t_env, t_env_deriv, t_rij, posi_cpy,
+      mdpu::env_mat_a_cpu<double>(t_env, t_env_deriv, t_rij, posi_cpy,
                                     atype_cpy, ii, fmt_nlist_a, sec_a, rc_smth,
                                     rc);
       for (int jj = 0; jj < ndescrpt; ++jj) {
@@ -124,7 +124,7 @@ class TestProdVirialGradA : public ::testing::Test {
 TEST_F(TestProdVirialGradA, cpu) {
   std::vector<double> grad_net(nloc * ndescrpt);
   int n_a_sel = nnei;
-  deepmd::prod_virial_grad_a_cpu<double>(&grad_net[0], &grad[0], &env_deriv[0],
+  mdpu::prod_virial_grad_a_cpu<double>(&grad_net[0], &grad[0], &env_deriv[0],
                                          &rij[0], &nlist[0], nloc, nnei);
   EXPECT_EQ(grad_net.size(), nloc * ndescrpt);
   EXPECT_EQ(grad_net.size(), expected_grad_net.size());
@@ -145,19 +145,19 @@ TEST_F(TestProdVirialGradA, gpu) {
   double *grad_net_dev = NULL, *grad_dev = NULL, *env_deriv_dev = NULL,
          *rij_dev = NULL;
 
-  deepmd::malloc_device_memory_sync(nlist_dev, nlist);
-  deepmd::malloc_device_memory_sync(grad_dev, grad);
-  deepmd::malloc_device_memory_sync(env_deriv_dev, env_deriv);
-  deepmd::malloc_device_memory_sync(rij_dev, rij);
-  deepmd::malloc_device_memory(grad_net_dev, nloc * ndescrpt);
-  deepmd::prod_virial_grad_a_gpu_cuda<double>(
+  mdpu::malloc_device_memory_sync(nlist_dev, nlist);
+  mdpu::malloc_device_memory_sync(grad_dev, grad);
+  mdpu::malloc_device_memory_sync(env_deriv_dev, env_deriv);
+  mdpu::malloc_device_memory_sync(rij_dev, rij);
+  mdpu::malloc_device_memory(grad_net_dev, nloc * ndescrpt);
+  mdpu::prod_virial_grad_a_gpu_cuda<double>(
       grad_net_dev, grad_dev, env_deriv_dev, rij_dev, nlist_dev, nloc, nnei);
-  deepmd::memcpy_device_to_host(grad_net_dev, grad_net);
-  deepmd::delete_device_memory(nlist_dev);
-  deepmd::delete_device_memory(grad_dev);
-  deepmd::delete_device_memory(env_deriv_dev);
-  deepmd::delete_device_memory(rij_dev);
-  deepmd::delete_device_memory(grad_net_dev);
+  mdpu::memcpy_device_to_host(grad_net_dev, grad_net);
+  mdpu::delete_device_memory(nlist_dev);
+  mdpu::delete_device_memory(grad_dev);
+  mdpu::delete_device_memory(env_deriv_dev);
+  mdpu::delete_device_memory(rij_dev);
+  mdpu::delete_device_memory(grad_net_dev);
 
   EXPECT_EQ(grad_net.size(), nloc * ndescrpt);
   EXPECT_EQ(grad_net.size(), expected_grad_net.size());
@@ -179,19 +179,19 @@ TEST_F(TestProdVirialGradA, gpu) {
   double *grad_net_dev = NULL, *grad_dev = NULL, *env_deriv_dev = NULL,
          *rij_dev = NULL;
 
-  deepmd::malloc_device_memory_sync(nlist_dev, nlist);
-  deepmd::malloc_device_memory_sync(grad_dev, grad);
-  deepmd::malloc_device_memory_sync(env_deriv_dev, env_deriv);
-  deepmd::malloc_device_memory_sync(rij_dev, rij);
-  deepmd::malloc_device_memory(grad_net_dev, nloc * ndescrpt);
-  deepmd::prod_virial_grad_a_gpu_rocm<double>(
+  mdpu::malloc_device_memory_sync(nlist_dev, nlist);
+  mdpu::malloc_device_memory_sync(grad_dev, grad);
+  mdpu::malloc_device_memory_sync(env_deriv_dev, env_deriv);
+  mdpu::malloc_device_memory_sync(rij_dev, rij);
+  mdpu::malloc_device_memory(grad_net_dev, nloc * ndescrpt);
+  mdpu::prod_virial_grad_a_gpu_rocm<double>(
       grad_net_dev, grad_dev, env_deriv_dev, rij_dev, nlist_dev, nloc, nnei);
-  deepmd::memcpy_device_to_host(grad_net_dev, grad_net);
-  deepmd::delete_device_memory(nlist_dev);
-  deepmd::delete_device_memory(grad_dev);
-  deepmd::delete_device_memory(env_deriv_dev);
-  deepmd::delete_device_memory(rij_dev);
-  deepmd::delete_device_memory(grad_net_dev);
+  mdpu::memcpy_device_to_host(grad_net_dev, grad_net);
+  mdpu::delete_device_memory(nlist_dev);
+  mdpu::delete_device_memory(grad_dev);
+  mdpu::delete_device_memory(env_deriv_dev);
+  mdpu::delete_device_memory(rij_dev);
+  mdpu::delete_device_memory(grad_net_dev);
 
   EXPECT_EQ(grad_net.size(), nloc * ndescrpt);
   EXPECT_EQ(grad_net.size(), expected_grad_net.size());

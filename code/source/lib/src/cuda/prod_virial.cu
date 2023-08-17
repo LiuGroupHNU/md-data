@@ -102,7 +102,7 @@ __global__ void virial_deriv_wrt_neighbors_r(FPTYPE* virial,
                 in_deriv[idx * ndescrpt * 3 + idy * 3 + idz / 3]);
 }
 
-namespace deepmd {
+namespace mdpu {
 template <typename FPTYPE>
 void prod_virial_a_gpu_cuda(FPTYPE* virial,
                             FPTYPE* atom_virial,
@@ -199,4 +199,4 @@ template void prod_virial_r_gpu_cuda<double>(double* virial,
                                              const int nloc,
                                              const int nall,
                                              const int nnei);
-}  // namespace deepmd
+}  // namespace mdpu

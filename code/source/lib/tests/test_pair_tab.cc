@@ -248,7 +248,7 @@ class TestPairTab : public ::testing::Test {
       }
       std::vector<double> t_env, t_env_deriv, t_rij;
       // compute env_mat and its deriv, record
-      deepmd::env_mat_a_cpu<double>(t_env, t_env_deriv, t_rij, posi_cpy,
+      mdpu::env_mat_a_cpu<double>(t_env, t_env_deriv, t_rij, posi_cpy,
                                     atype_cpy, ii, fmt_nlist_a, sec_a, rc_smth,
                                     rc);
       for (int jj = 0; jj < ndescrpt; ++jj) {
@@ -280,7 +280,7 @@ TEST_F(TestPairTab, cpu) {
   std::vector<double> virial(nall * 9);
   std::vector<double> scale(nloc, 1.0);
 
-  deepmd::pair_tab_cpu(&energy[0], &force[0], &virial[0], &tab_info[0],
+  mdpu::pair_tab_cpu(&energy[0], &force[0], &virial[0], &tab_info[0],
                        &tab_data[0], &rij[0], &scale[0], &atype_cpy[0],
                        &nlist[0], &natoms[0], sel_a, sel_r);
 
@@ -330,7 +330,7 @@ TEST_F(TestPairTab, cpu_f_num_deriv) {
   std::vector<double> virial(9, 0.);
   std::vector<double> atom_virial(nall * 9);
   std::vector<double> scale(nloc, 1.0);
-  deepmd::pair_tab_cpu(&energy[0], &force[0], &atom_virial[0], &tab_info[0],
+  mdpu::pair_tab_cpu(&energy[0], &force[0], &atom_virial[0], &tab_info[0],
                        &tab_data[0], &rij[0], &scale[0], &atype_cpy[0],
                        &nlist[0], &natoms[0], sel_a, sel_r);
   for (int ii = nloc; ii < nall; ++ii) {
@@ -371,9 +371,9 @@ TEST_F(TestPairTab, cpu_f_num_deriv) {
           numneigh_1(nloc);
       ;
       std::vector<int*> firstneigh_0(nloc), firstneigh_1(nloc);
-      deepmd::InputNlist inlist_0(nloc, &ilist_0[0], &numneigh_0[0],
+      mdpu::InputNlist inlist_0(nloc, &ilist_0[0], &numneigh_0[0],
                                   &firstneigh_0[0]);
-      deepmd::InputNlist inlist_1(nloc, &ilist_1[0], &numneigh_1[0],
+      mdpu::InputNlist inlist_1(nloc, &ilist_1[0], &numneigh_1[0],
                                   &firstneigh_1[0]);
       convert_nlist(inlist_0, nlist_cpy_0);
       convert_nlist(inlist_1, nlist_cpy_1);
@@ -386,21 +386,21 @@ TEST_F(TestPairTab, cpu_f_num_deriv) {
       std::vector<int> nlist_0(nloc * nnei), nlist_1(nloc * nnei);
       std::vector<double> avg(ntypes * ndescrpt, 0);
       std::vector<double> std(ntypes * ndescrpt, 1);
-      deepmd::prod_env_mat_a_cpu(&t_em[0], &t_em_deriv[0], &rij_0[0],
+      mdpu::prod_env_mat_a_cpu(&t_em[0], &t_em_deriv[0], &rij_0[0],
                                  &nlist_0[0], &posi_cpy_0[0], &atype_cpy_0[0],
                                  inlist_0, max_nnei_0, &avg[0], &std[0], nloc,
                                  nall, rc, rc_smth, sec_a);
-      deepmd::prod_env_mat_a_cpu(&t_em[0], &t_em_deriv[0], &rij_1[0],
+      mdpu::prod_env_mat_a_cpu(&t_em[0], &t_em_deriv[0], &rij_1[0],
                                  &nlist_1[0], &posi_cpy_1[0], &atype_cpy_1[0],
                                  inlist_1, max_nnei_1, &avg[0], &std[0], nloc,
                                  nall, rc, rc_smth, sec_a);
       std::vector<double> energy_0(nloc), energy_1(nloc);
       std::vector<double> t_force(nall * 3), t_virial(nall * 9);
-      deepmd::pair_tab_cpu(&energy_0[0], &t_force[0], &t_virial[0],
+      mdpu::pair_tab_cpu(&energy_0[0], &t_force[0], &t_virial[0],
                            &tab_info[0], &tab_data[0], &rij_0[0], &scale[0],
                            &atype_cpy_0[0], &nlist_0[0], &natoms[0], sel_a,
                            sel_r);
-      deepmd::pair_tab_cpu(&energy_1[0], &t_force[0], &t_virial[0],
+      mdpu::pair_tab_cpu(&energy_1[0], &t_force[0], &t_virial[0],
                            &tab_info[0], &tab_data[0], &rij_1[0], &scale[0],
                            &atype_cpy_1[0], &nlist_1[0], &natoms[0], sel_a,
                            sel_r);
@@ -423,7 +423,7 @@ TEST_F(TestPairTab, cpu_f_num_deriv_scale) {
   std::vector<double> virial(9, 0.);
   std::vector<double> atom_virial(nall * 9);
   std::vector<double> scale(nloc, new_scale);
-  deepmd::pair_tab_cpu(&energy[0], &force[0], &atom_virial[0], &tab_info[0],
+  mdpu::pair_tab_cpu(&energy[0], &force[0], &atom_virial[0], &tab_info[0],
                        &tab_data[0], &rij[0], &scale[0], &atype_cpy[0],
                        &nlist[0], &natoms[0], sel_a, sel_r);
   for (int ii = nloc; ii < nall; ++ii) {
@@ -464,9 +464,9 @@ TEST_F(TestPairTab, cpu_f_num_deriv_scale) {
           numneigh_1(nloc);
       ;
       std::vector<int*> firstneigh_0(nloc), firstneigh_1(nloc);
-      deepmd::InputNlist inlist_0(nloc, &ilist_0[0], &numneigh_0[0],
+      mdpu::InputNlist inlist_0(nloc, &ilist_0[0], &numneigh_0[0],
                                   &firstneigh_0[0]);
-      deepmd::InputNlist inlist_1(nloc, &ilist_1[0], &numneigh_1[0],
+      mdpu::InputNlist inlist_1(nloc, &ilist_1[0], &numneigh_1[0],
                                   &firstneigh_1[0]);
       convert_nlist(inlist_0, nlist_cpy_0);
       convert_nlist(inlist_1, nlist_cpy_1);
@@ -479,21 +479,21 @@ TEST_F(TestPairTab, cpu_f_num_deriv_scale) {
       std::vector<int> nlist_0(nloc * nnei), nlist_1(nloc * nnei);
       std::vector<double> avg(ntypes * ndescrpt, 0);
       std::vector<double> std(ntypes * ndescrpt, 1);
-      deepmd::prod_env_mat_a_cpu(&t_em[0], &t_em_deriv[0], &rij_0[0],
+      mdpu::prod_env_mat_a_cpu(&t_em[0], &t_em_deriv[0], &rij_0[0],
                                  &nlist_0[0], &posi_cpy_0[0], &atype_cpy_0[0],
                                  inlist_0, max_nnei_0, &avg[0], &std[0], nloc,
                                  nall, rc, rc_smth, sec_a);
-      deepmd::prod_env_mat_a_cpu(&t_em[0], &t_em_deriv[0], &rij_1[0],
+      mdpu::prod_env_mat_a_cpu(&t_em[0], &t_em_deriv[0], &rij_1[0],
                                  &nlist_1[0], &posi_cpy_1[0], &atype_cpy_1[0],
                                  inlist_1, max_nnei_1, &avg[0], &std[0], nloc,
                                  nall, rc, rc_smth, sec_a);
       std::vector<double> energy_0(nloc), energy_1(nloc);
       std::vector<double> t_force(nall * 3), t_virial(nall * 9);
-      deepmd::pair_tab_cpu(&energy_0[0], &t_force[0], &t_virial[0],
+      mdpu::pair_tab_cpu(&energy_0[0], &t_force[0], &t_virial[0],
                            &tab_info[0], &tab_data[0], &rij_0[0], &scale[0],
                            &atype_cpy_0[0], &nlist_0[0], &natoms[0], sel_a,
                            sel_r);
-      deepmd::pair_tab_cpu(&energy_1[0], &t_force[0], &t_virial[0],
+      mdpu::pair_tab_cpu(&energy_1[0], &t_force[0], &t_virial[0],
                            &tab_info[0], &tab_data[0], &rij_1[0], &scale[0],
                            &atype_cpy_1[0], &nlist_1[0], &natoms[0], sel_a,
                            sel_r);
@@ -515,7 +515,7 @@ TEST_F(TestPairTab, cpu_v_num_deriv) {
   std::vector<double> virial(9, 0.);
   std::vector<double> atom_virial(nall * 9);
   std::vector<double> scale(nloc, 1.0);
-  deepmd::pair_tab_cpu(&energy[0], &force[0], &atom_virial[0], &tab_info[0],
+  mdpu::pair_tab_cpu(&energy[0], &force[0], &atom_virial[0], &tab_info[0],
                        &tab_data[0], &rij[0], &scale[0], &atype_cpy[0],
                        &nlist[0], &natoms[0], sel_a, sel_r);
   for (int ii = nloc; ii < nall; ++ii) {
@@ -571,9 +571,9 @@ TEST_F(TestPairTab, cpu_v_num_deriv) {
           numneigh_1(nloc);
       ;
       std::vector<int*> firstneigh_0(nloc), firstneigh_1(nloc);
-      deepmd::InputNlist inlist_0(nloc, &ilist_0[0], &numneigh_0[0],
+      mdpu::InputNlist inlist_0(nloc, &ilist_0[0], &numneigh_0[0],
                                   &firstneigh_0[0]);
-      deepmd::InputNlist inlist_1(nloc, &ilist_1[0], &numneigh_1[0],
+      mdpu::InputNlist inlist_1(nloc, &ilist_1[0], &numneigh_1[0],
                                   &firstneigh_1[0]);
       convert_nlist(inlist_0, nlist_cpy_0);
       convert_nlist(inlist_1, nlist_cpy_1);
@@ -586,21 +586,21 @@ TEST_F(TestPairTab, cpu_v_num_deriv) {
       std::vector<int> nlist_0(nloc * nnei), nlist_1(nloc * nnei);
       std::vector<double> avg(ntypes * ndescrpt, 0);
       std::vector<double> std(ntypes * ndescrpt, 1);
-      deepmd::prod_env_mat_a_cpu(&t_em[0], &t_em_deriv[0], &rij_0[0],
+      mdpu::prod_env_mat_a_cpu(&t_em[0], &t_em_deriv[0], &rij_0[0],
                                  &nlist_0[0], &posi_cpy_0[0], &atype_cpy_0[0],
                                  inlist_0, max_nnei_0, &avg[0], &std[0], nloc,
                                  nall, rc, rc_smth, sec_a);
-      deepmd::prod_env_mat_a_cpu(&t_em[0], &t_em_deriv[0], &rij_1[0],
+      mdpu::prod_env_mat_a_cpu(&t_em[0], &t_em_deriv[0], &rij_1[0],
                                  &nlist_1[0], &posi_cpy_1[0], &atype_cpy_1[0],
                                  inlist_1, max_nnei_1, &avg[0], &std[0], nloc,
                                  nall, rc, rc_smth, sec_a);
       std::vector<double> energy_0(nloc), energy_1(nloc);
       std::vector<double> t_force(nall * 3), t_virial(nall * 9);
-      deepmd::pair_tab_cpu(&energy_0[0], &t_force[0], &t_virial[0],
+      mdpu::pair_tab_cpu(&energy_0[0], &t_force[0], &t_virial[0],
                            &tab_info[0], &tab_data[0], &rij_0[0], &scale[0],
                            &atype_cpy_0[0], &nlist_0[0], &natoms[0], sel_a,
                            sel_r);
-      deepmd::pair_tab_cpu(&energy_1[0], &t_force[0], &t_virial[0],
+      mdpu::pair_tab_cpu(&energy_1[0], &t_force[0], &t_virial[0],
                            &tab_info[0], &tab_data[0], &rij_1[0], &scale[0],
                            &atype_cpy_1[0], &nlist_1[0], &natoms[0], sel_a,
                            sel_r);
@@ -634,7 +634,7 @@ TEST_F(TestPairTab, cpu_v_num_deriv_scale) {
   std::vector<double> virial(9, 0.);
   std::vector<double> atom_virial(nall * 9);
   std::vector<double> scale(nloc, new_scale);
-  deepmd::pair_tab_cpu(&energy[0], &force[0], &atom_virial[0], &tab_info[0],
+  mdpu::pair_tab_cpu(&energy[0], &force[0], &atom_virial[0], &tab_info[0],
                        &tab_data[0], &rij[0], &scale[0], &atype_cpy[0],
                        &nlist[0], &natoms[0], sel_a, sel_r);
   for (int ii = nloc; ii < nall; ++ii) {
@@ -690,9 +690,9 @@ TEST_F(TestPairTab, cpu_v_num_deriv_scale) {
           numneigh_1(nloc);
       ;
       std::vector<int*> firstneigh_0(nloc), firstneigh_1(nloc);
-      deepmd::InputNlist inlist_0(nloc, &ilist_0[0], &numneigh_0[0],
+      mdpu::InputNlist inlist_0(nloc, &ilist_0[0], &numneigh_0[0],
                                   &firstneigh_0[0]);
-      deepmd::InputNlist inlist_1(nloc, &ilist_1[0], &numneigh_1[0],
+      mdpu::InputNlist inlist_1(nloc, &ilist_1[0], &numneigh_1[0],
                                   &firstneigh_1[0]);
       convert_nlist(inlist_0, nlist_cpy_0);
       convert_nlist(inlist_1, nlist_cpy_1);
@@ -705,21 +705,21 @@ TEST_F(TestPairTab, cpu_v_num_deriv_scale) {
       std::vector<int> nlist_0(nloc * nnei), nlist_1(nloc * nnei);
       std::vector<double> avg(ntypes * ndescrpt, 0);
       std::vector<double> std(ntypes * ndescrpt, 1);
-      deepmd::prod_env_mat_a_cpu(&t_em[0], &t_em_deriv[0], &rij_0[0],
+      mdpu::prod_env_mat_a_cpu(&t_em[0], &t_em_deriv[0], &rij_0[0],
                                  &nlist_0[0], &posi_cpy_0[0], &atype_cpy_0[0],
                                  inlist_0, max_nnei_0, &avg[0], &std[0], nloc,
                                  nall, rc, rc_smth, sec_a);
-      deepmd::prod_env_mat_a_cpu(&t_em[0], &t_em_deriv[0], &rij_1[0],
+      mdpu::prod_env_mat_a_cpu(&t_em[0], &t_em_deriv[0], &rij_1[0],
                                  &nlist_1[0], &posi_cpy_1[0], &atype_cpy_1[0],
                                  inlist_1, max_nnei_1, &avg[0], &std[0], nloc,
                                  nall, rc, rc_smth, sec_a);
       std::vector<double> energy_0(nloc), energy_1(nloc);
       std::vector<double> t_force(nall * 3), t_virial(nall * 9);
-      deepmd::pair_tab_cpu(&energy_0[0], &t_force[0], &t_virial[0],
+      mdpu::pair_tab_cpu(&energy_0[0], &t_force[0], &t_virial[0],
                            &tab_info[0], &tab_data[0], &rij_0[0], &scale[0],
                            &atype_cpy_0[0], &nlist_0[0], &natoms[0], sel_a,
                            sel_r);
-      deepmd::pair_tab_cpu(&energy_1[0], &t_force[0], &t_virial[0],
+      mdpu::pair_tab_cpu(&energy_1[0], &t_force[0], &t_virial[0],
                            &tab_info[0], &tab_data[0], &rij_1[0], &scale[0],
                            &atype_cpy_1[0], &nlist_1[0], &natoms[0], sel_a,
                            sel_r);
@@ -754,7 +754,7 @@ TEST_F(TestPairTabTriBox, cpu_v_num_deriv) {
   std::vector<double> virial(9, 0.);
   std::vector<double> atom_virial(nall * 9);
   std::vector<double> scale(nloc, 1.0);
-  deepmd::pair_tab_cpu(&energy[0], &force[0], &atom_virial[0], &tab_info[0],
+  mdpu::pair_tab_cpu(&energy[0], &force[0], &atom_virial[0], &tab_info[0],
                        &tab_data[0], &rij[0], &scale[0], &atype_cpy[0],
                        &nlist[0], &natoms[0], sel_a, sel_r);
   for (int ii = nloc; ii < nall; ++ii) {
@@ -810,9 +810,9 @@ TEST_F(TestPairTabTriBox, cpu_v_num_deriv) {
           numneigh_1(nloc);
       ;
       std::vector<int*> firstneigh_0(nloc), firstneigh_1(nloc);
-      deepmd::InputNlist inlist_0(nloc, &ilist_0[0], &numneigh_0[0],
+      mdpu::InputNlist inlist_0(nloc, &ilist_0[0], &numneigh_0[0],
                                   &firstneigh_0[0]);
-      deepmd::InputNlist inlist_1(nloc, &ilist_1[0], &numneigh_1[0],
+      mdpu::InputNlist inlist_1(nloc, &ilist_1[0], &numneigh_1[0],
                                   &firstneigh_1[0]);
       convert_nlist(inlist_0, nlist_cpy_0);
       convert_nlist(inlist_1, nlist_cpy_1);
@@ -825,21 +825,21 @@ TEST_F(TestPairTabTriBox, cpu_v_num_deriv) {
       std::vector<int> nlist_0(nloc * nnei), nlist_1(nloc * nnei);
       std::vector<double> avg(ntypes * ndescrpt, 0);
       std::vector<double> std(ntypes * ndescrpt, 1);
-      deepmd::prod_env_mat_a_cpu(&t_em[0], &t_em_deriv[0], &rij_0[0],
+      mdpu::prod_env_mat_a_cpu(&t_em[0], &t_em_deriv[0], &rij_0[0],
                                  &nlist_0[0], &posi_cpy_0[0], &atype_cpy_0[0],
                                  inlist_0, max_nnei_0, &avg[0], &std[0], nloc,
                                  nall, rc, rc_smth, sec_a);
-      deepmd::prod_env_mat_a_cpu(&t_em[0], &t_em_deriv[0], &rij_1[0],
+      mdpu::prod_env_mat_a_cpu(&t_em[0], &t_em_deriv[0], &rij_1[0],
                                  &nlist_1[0], &posi_cpy_1[0], &atype_cpy_1[0],
                                  inlist_1, max_nnei_1, &avg[0], &std[0], nloc,
                                  nall, rc, rc_smth, sec_a);
       std::vector<double> energy_0(nloc), energy_1(nloc);
       std::vector<double> t_force(nall * 3), t_virial(nall * 9);
-      deepmd::pair_tab_cpu(&energy_0[0], &t_force[0], &t_virial[0],
+      mdpu::pair_tab_cpu(&energy_0[0], &t_force[0], &t_virial[0],
                            &tab_info[0], &tab_data[0], &rij_0[0], &scale[0],
                            &atype_cpy_0[0], &nlist_0[0], &natoms[0], sel_a,
                            sel_r);
-      deepmd::pair_tab_cpu(&energy_1[0], &t_force[0], &t_virial[0],
+      mdpu::pair_tab_cpu(&energy_1[0], &t_force[0], &t_virial[0],
                            &tab_info[0], &tab_data[0], &rij_1[0], &scale[0],
                            &atype_cpy_1[0], &nlist_1[0], &natoms[0], sel_a,
                            sel_r);

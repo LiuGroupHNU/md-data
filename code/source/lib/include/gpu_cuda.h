@@ -32,11 +32,11 @@ inline void DPAssert(cudaError_t code,
               "The usage of GPUs is controlled by `CUDA_VISIBLE_DEVICES` "
               "environment variable.\n");
       if (abort) {
-        throw deepmd::deepmd_exception_oom("CUDA Assert");
+        throw mdpu::mdpu_exception_oom("CUDA Assert");
       }
     }
     if (abort) {
-      throw deepmd::deepmd_exception("CUDA Assert");
+      throw mdpu::mdpu_exception("CUDA Assert");
     }
   }
 }
@@ -49,7 +49,7 @@ inline void nborAssert(cudaError_t code,
                        bool abort = true) {
   if (code != cudaSuccess) {
     fprintf(stderr, "cuda assert: %s %s %d\n",
-            "DeePMD-kit:\tillegal nbor list sorting", file, line);
+            "mdpu-kit:\tillegal nbor list sorting", file, line);
     if (code == 2) {
       // out of memory
       fprintf(stderr,
@@ -64,11 +64,11 @@ inline void nborAssert(cudaError_t code,
               "The usage of GPUs is controlled by `CUDA_VISIBLE_DEVICES` "
               "environment variable.\n");
       if (abort) {
-        throw deepmd::deepmd_exception_oom("CUDA Assert");
+        throw mdpu::mdpu_exception_oom("CUDA Assert");
       }
     }
     if (abort) {
-      throw deepmd::deepmd_exception("CUDA Assert");
+      throw mdpu::mdpu_exception("CUDA Assert");
     }
   }
 }
@@ -88,7 +88,7 @@ static __inline__ __device__ double atomicAdd(double *address, double val) {
 }
 #endif
 
-namespace deepmd {
+namespace mdpu {
 
 inline void DPGetDeviceCount(int &gpu_num) { cudaGetDeviceCount(&gpu_num); }
 
@@ -154,4 +154,4 @@ template <typename FPTYPE>
 void memset_device_memory(FPTYPE *device, const int var, const int size) {
   DPErrcheck(cudaMemset(device, var, sizeof(FPTYPE) * size));
 }
-}  // end of namespace deepmd
+}  // end of namespace mdpu

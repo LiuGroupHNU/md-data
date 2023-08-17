@@ -385,7 +385,7 @@ def call(commands: List[str], env={}, **kwargs):
             )
 
 
-# the detailed step to build DeePMD-kit
+# the detailed step to build mdpu-kit
 
 # online resources to download
 RESOURCES = {

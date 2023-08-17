@@ -14,12 +14,12 @@ inline void make_index_range(int& idx_start,
     idx_start = nei_idx * 4;
     idx_end = nei_idx * 4 + 4;
   } else {
-    throw deepmd::deepmd_exception("should no reach here");
+    throw mdpu::mdpu_exception("should no reach here");
   }
 }
 
 template <typename FPTYPE>
-void deepmd::prod_virial_grad_a_cpu(FPTYPE* grad_net,
+void mdpu::prod_virial_grad_a_cpu(FPTYPE* grad_net,
                                     const FPTYPE* grad,
                                     const FPTYPE* env_deriv,
                                     const FPTYPE* rij,
@@ -62,7 +62,7 @@ void deepmd::prod_virial_grad_a_cpu(FPTYPE* grad_net,
   }
 }
 
-template void deepmd::prod_virial_grad_a_cpu<double>(double* grad_net,
+template void mdpu::prod_virial_grad_a_cpu<double>(double* grad_net,
                                                      const double* grad,
                                                      const double* env_deriv,
                                                      const double* rij,
@@ -70,7 +70,7 @@ template void deepmd::prod_virial_grad_a_cpu<double>(double* grad_net,
                                                      const int nloc,
                                                      const int nnei);
 
-template void deepmd::prod_virial_grad_a_cpu<float>(float* grad_net,
+template void mdpu::prod_virial_grad_a_cpu<float>(float* grad_net,
                                                     const float* grad,
                                                     const float* env_deriv,
                                                     const float* rij,
@@ -79,7 +79,7 @@ template void deepmd::prod_virial_grad_a_cpu<float>(float* grad_net,
                                                     const int nnei);
 
 template <typename FPTYPE>
-void deepmd::prod_virial_grad_r_cpu(FPTYPE* grad_net,
+void mdpu::prod_virial_grad_r_cpu(FPTYPE* grad_net,
                                     const FPTYPE* grad,
                                     const FPTYPE* env_deriv,
                                     const FPTYPE* rij,
@@ -126,7 +126,7 @@ void deepmd::prod_virial_grad_r_cpu(FPTYPE* grad_net,
   }
 }
 
-template void deepmd::prod_virial_grad_r_cpu<double>(double* grad_net,
+template void mdpu::prod_virial_grad_r_cpu<double>(double* grad_net,
                                                      const double* grad,
                                                      const double* env_deriv,
                                                      const double* rij,
@@ -134,7 +134,7 @@ template void deepmd::prod_virial_grad_r_cpu<double>(double* grad_net,
                                                      const int nloc,
                                                      const int nnei);
 
-template void deepmd::prod_virial_grad_r_cpu<float>(float* grad_net,
+template void mdpu::prod_virial_grad_r_cpu<float>(float* grad_net,
                                                     const float* grad,
                                                     const float* env_deriv,
                                                     const float* rij,

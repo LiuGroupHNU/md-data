@@ -132,7 +132,7 @@ class TestSoftMinSwitchVirial : public ::testing::Test {
       }
       std::vector<double> t_env, t_env_deriv, t_rij;
       // compute env_mat and its deriv, record
-      deepmd::env_mat_a_cpu<double>(t_env, t_env_deriv, t_rij, posi_cpy,
+      mdpu::env_mat_a_cpu<double>(t_env, t_env_deriv, t_rij, posi_cpy,
                                     atype_cpy, ii, fmt_nlist_a, sec_a, rc_smth,
                                     rc);
       for (int jj = 0; jj < nnei * 3; ++jj) {
@@ -141,7 +141,7 @@ class TestSoftMinSwitchVirial : public ::testing::Test {
     }
     sw_value.resize(nloc);
     sw_deriv.resize(nloc * nnei * 3);
-    deepmd::soft_min_switch_cpu<double>(&sw_value[0], &sw_deriv[0], &rij[0],
+    mdpu::soft_min_switch_cpu<double>(&sw_value[0], &sw_deriv[0], &rij[0],
                                         &nlist[0], nloc, nnei, alpha, rmin,
                                         rmax);
     du.resize(nloc);
@@ -155,7 +155,7 @@ class TestSoftMinSwitchVirial : public ::testing::Test {
 TEST_F(TestSoftMinSwitchVirial, cpu) {
   std::vector<double> virial(9);
   std::vector<double> atom_virial(nall * 9);
-  deepmd::soft_min_switch_virial_cpu(&virial[0], &atom_virial[0], &du[0],
+  mdpu::soft_min_switch_virial_cpu(&virial[0], &atom_virial[0], &du[0],
                                      &sw_deriv[0], &rij[0], &nlist[0], nloc,
                                      nall, nnei);
   EXPECT_EQ(virial.size(), expected_virial.size());

@@ -61,7 +61,7 @@ __global__ void gelu_grad_grad(FPTYPE* out,
               var2);
 }
 
-namespace deepmd {
+namespace mdpu {
 template <typename FPTYPE>
 void gelu_gpu_cuda(FPTYPE* out, const FPTYPE* xx, const int_64 size) {
   if (size <= 0) {
@@ -138,4 +138,4 @@ template void gelu_grad_grad_gpu_cuda<double>(double* out,
                                               const double* dy,
                                               const double* dy_2,
                                               const int_64 size);
-}  // namespace deepmd
+}  // namespace mdpu

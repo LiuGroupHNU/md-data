@@ -1,7 +1,7 @@
 # required cmake version 3.23: CMAKE_CUDA_ARCHITECTURES all
 cmake_minimum_required(VERSION 3.23)
 # project name
-project(deepmd_op_cuda)
+project(_op_cuda)
 
 set(CMAKE_CUDA_ARCHITECTURES all)
 enable_language(CUDA)
@@ -15,8 +15,8 @@ find_package(CUDAToolkit REQUIRED)
 # when using CPUs
 add_subdirectory(cudart)
 
-# nvcc -o libdeepmd_op_cuda.so -I/usr/local/cub-1.8.0 -rdc=true -DHIGH_PREC=true
-# -gencode arch=compute_61,code=sm_61 -shared -Xcompiler -fPIC deepmd_op.cu
+# nvcc -o libmdpu_op_cuda.so -I/usr/local/cub-1.8.0 -rdc=true -DHIGH_PREC=true
+# -gencode arch=compute_61,code=sm_61 -shared -Xcompiler -fPIC _op.cu
 # -L/usr/local/cuda/lib64 -lcudadevrt very important here! Include path to cub.
 # for searching device compute capability,
 # https://developer.nvidia.com/cuda-gpus
@@ -36,25 +36,25 @@ set(CMAKE_CUDA_FLAGS
 
 file(GLOB SOURCE_FILES "*.cu")
 
-add_library(deepmd_op_cuda SHARED ${SOURCE_FILES})
-target_link_libraries(deepmd_op_cuda PRIVATE deepmd_dyn_cudart)
+add_library(_op_cuda SHARED ${SOURCE_FILES})
+target_link_libraries(_op_cuda PRIVATE _dyn_cudart)
 target_include_directories(
-  deepmd_op_cuda
+  _op_cuda
   PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../../include/>
          $<INSTALL_INTERFACE:include>)
-target_precompile_headers(deepmd_op_cuda PUBLIC [["device.h"]])
+target_precompile_headers(_op_cuda PUBLIC [["device.h"]])
 if(APPLE)
-  set_target_properties(deepmd_op_cuda PROPERTIES INSTALL_RPATH @loader_path)
+  set_target_properties(_op_cuda PROPERTIES INSTALL_RPATH @loader_path)
 else()
-  set_target_properties(deepmd_op_cuda PROPERTIES INSTALL_RPATH "$ORIGIN")
+  set_target_properties(_op_cuda PROPERTIES INSTALL_RPATH "$ORIGIN")
 endif()
 
 if(BUILD_CPP_IF AND NOT BUILD_PY_IF)
   install(
-    TARGETS deepmd_op_cuda
+    TARGETS _op_cuda
     EXPORT ${CMAKE_PROJECT_NAME}Targets
     DESTINATION lib/)
 endif(BUILD_CPP_IF AND NOT BUILD_PY_IF)
 if(BUILD_PY_IF)
-  install(TARGETS deepmd_op_cuda DESTINATION deepmd/op/)
+  install(TARGETS _op_cuda DESTINATION mdpu/op/)
 endif(BUILD_PY_IF)

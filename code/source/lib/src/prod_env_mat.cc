@@ -9,10 +9,10 @@
 #include "env_mat.h"
 #include "fmt_nlist.h"
 
-using namespace deepmd;
+using namespace mdpu;
 
 template <typename FPTYPE>
-void deepmd::prod_env_mat_a_cpu(FPTYPE *em,
+void mdpu::prod_env_mat_a_cpu(FPTYPE *em,
                                 FPTYPE *em_deriv,
                                 FPTYPE *rij,
                                 int *nlist,
@@ -108,7 +108,7 @@ void deepmd::prod_env_mat_a_cpu(FPTYPE *em,
 }
 
 template <typename FPTYPE>
-void deepmd::prod_env_mat_r_cpu(FPTYPE *em,
+void mdpu::prod_env_mat_r_cpu(FPTYPE *em,
                                 FPTYPE *em_deriv,
                                 FPTYPE *rij,
                                 int *nlist,
@@ -191,7 +191,7 @@ void deepmd::prod_env_mat_r_cpu(FPTYPE *em,
   }
 }
 
-template void deepmd::prod_env_mat_a_cpu<double>(double *em,
+template void mdpu::prod_env_mat_a_cpu<double>(double *em,
                                                  double *em_deriv,
                                                  double *rij,
                                                  int *nlist,
@@ -208,7 +208,7 @@ template void deepmd::prod_env_mat_a_cpu<double>(double *em,
                                                  const std::vector<int> sec,
                                                  const int *f_type);
 
-template void deepmd::prod_env_mat_a_cpu<float>(float *em,
+template void mdpu::prod_env_mat_a_cpu<float>(float *em,
                                                 float *em_deriv,
                                                 float *rij,
                                                 int *nlist,
@@ -225,7 +225,7 @@ template void deepmd::prod_env_mat_a_cpu<float>(float *em,
                                                 const std::vector<int> sec,
                                                 const int *f_type);
 
-template void deepmd::prod_env_mat_r_cpu<double>(double *em,
+template void mdpu::prod_env_mat_r_cpu<double>(double *em,
                                                  double *em_deriv,
                                                  double *rij,
                                                  int *nlist,
@@ -241,7 +241,7 @@ template void deepmd::prod_env_mat_r_cpu<double>(double *em,
                                                  const float rcut_smth,
                                                  const std::vector<int> sec);
 
-template void deepmd::prod_env_mat_r_cpu<float>(float *em,
+template void mdpu::prod_env_mat_r_cpu<float>(float *em,
                                                 float *em_deriv,
                                                 float *rij,
                                                 int *nlist,
@@ -258,7 +258,7 @@ template void deepmd::prod_env_mat_r_cpu<float>(float *em,
                                                 const std::vector<int> sec);
 
 #if GOOGLE_CUDA || TENSORFLOW_USE_ROCM
-void deepmd::env_mat_nbor_update(InputNlist &inlist,
+void mdpu::env_mat_nbor_update(InputNlist &inlist,
                                  InputNlist &gpu_inlist,
                                  int &max_nbor_size,
                                  int *&nbor_list_dev,

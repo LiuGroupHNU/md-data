@@ -4,7 +4,7 @@
 #include <iostream>
 
 template <typename FPTYPE>
-void deepmd::soft_min_switch_virial_cpu(FPTYPE* virial,
+void mdpu::soft_min_switch_virial_cpu(FPTYPE* virial,
                                         FPTYPE* atom_virial,
                                         const FPTYPE* du,
                                         const FPTYPE* sw_deriv,
@@ -49,7 +49,7 @@ void deepmd::soft_min_switch_virial_cpu(FPTYPE* virial,
   }
 }
 
-template void deepmd::soft_min_switch_virial_cpu<double>(double* virial,
+template void mdpu::soft_min_switch_virial_cpu<double>(double* virial,
                                                          double* atom_virial,
                                                          const double* du,
                                                          const double* sw_deriv,
@@ -59,7 +59,7 @@ template void deepmd::soft_min_switch_virial_cpu<double>(double* virial,
                                                          const int nall,
                                                          const int nnei);
 
-template void deepmd::soft_min_switch_virial_cpu<float>(float* virial,
+template void mdpu::soft_min_switch_virial_cpu<float>(float* virial,
                                                         float* atom_virial,
                                                         const float* du,
                                                         const float* sw_deriv,

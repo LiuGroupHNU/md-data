@@ -10,7 +10,7 @@
 #include "region.h"
 #include "utilities.h"
 
-namespace deepmd {
+namespace mdpu {
 
 /**
  * @brief             Construct InputNlist with the input LAMMPS nbor list info.
@@ -206,7 +206,7 @@ void use_nei_info_gpu_rocm(int* nlist,
 
 #endif  // TENSORFLOW_USE_ROCM
 
-}  // namespace deepmd
+}  // namespace mdpu
 
 ////////////////////////////////////////////////////////
 // legacy code

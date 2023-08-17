@@ -12,7 +12,7 @@ if [ -z "$INSTALL_PREFIX" ]; then
 	INSTALL_PREFIX=$(realpath -s ${SCRIPT_PATH}/../../dp)
 fi
 mkdir -p ${INSTALL_PREFIX}
-echo "Installing DeePMD-kit to ${INSTALL_PREFIX}"
+echo "Installing mdpu-kit to ${INSTALL_PREFIX}"
 NPROC=$(nproc --all)
 
 #------------------
@@ -25,4 +25,4 @@ make -j${NPROC}
 make install
 
 #------------------
-echo "Congratulations! DeePMD-kit has been installed at ${INSTALL_PREFIX}"
+echo "Congratulations! mdpu-kit has been installed at ${INSTALL_PREFIX}"

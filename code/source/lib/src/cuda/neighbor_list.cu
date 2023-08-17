@@ -174,7 +174,7 @@ __global__ void map_nei_info_noconvert(int *nlist,
   }
 }
 
-namespace deepmd {
+namespace mdpu {
 template <typename FPTYPE>
 int build_nlist_gpu(InputNlist &nlist,
                     int *max_list_size,
@@ -305,4 +305,4 @@ void filter_ftype_gpu_cuda(int *ftype_out,
   DPErrcheck(cudaDeviceSynchronize());
 }
 
-}  // namespace deepmd
+}  // namespace mdpu

@@ -210,7 +210,7 @@ TEST_F(TestEnvMatAMdpu, cpu) {
     int ret = format_nlist_i_cpu<double>(fmt_nlist_a, posi_cpy, atype_cpy, ii,
                                          nlist_a_cpy[ii], rc, sec_a);
     EXPECT_EQ(ret, -1);
-    deepmd::env_mat_a_mdpu_quantize_cpu<double>(
+    mdpu::env_mat_a_mdpu_quantize_cpu<double>(
         env, env_deriv, rij_a, posi_cpy, atype_cpy, ii, fmt_nlist_a, sec_a,
         rc_smth, rc);
     EXPECT_EQ(env.size(), sec_a[2] * 4);
@@ -242,7 +242,7 @@ TEST_F(TestEnvMatAMdpuShortSel, cpu) {
     int ret = format_nlist_i_cpu<double>(fmt_nlist_a, posi_cpy, atype_cpy, ii,
                                          nlist_a_cpy[ii], rc, sec_a);
     EXPECT_EQ(ret, 1);
-    deepmd::env_mat_a_mdpu_quantize_cpu<double>(
+    mdpu::env_mat_a_mdpu_quantize_cpu<double>(
         env, env_deriv, rij_a, posi_cpy, atype_cpy, ii, fmt_nlist_a, sec_a,
         rc_smth, rc);
     EXPECT_EQ(env.size(), sec_a[2] * 4);
@@ -270,15 +270,15 @@ TEST_F(TestEnvMatAMdpu, prod_cpu) {
   }
   std::vector<int> ilist(nloc), numneigh(nloc);
   std::vector<int*> firstneigh(nloc);
-  deepmd::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
-  deepmd::convert_nlist(inlist, nlist_a_cpy);
+  mdpu::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
+  mdpu::convert_nlist(inlist, nlist_a_cpy);
 
   std::vector<double> em(nloc * ndescrpt), em_deriv(nloc * ndescrpt * 3),
       rij(nloc * nnei * 3);
   std::vector<int> nlist(nloc * nnei);
   std::vector<double> avg(ntypes * ndescrpt, 0);
   std::vector<double> std(ntypes * ndescrpt, 1);
-  deepmd::prod_env_mat_a_mdpu_quantize_cpu(
+  mdpu::prod_env_mat_a_mdpu_quantize_cpu(
       &em[0], &em_deriv[0], &rij[0], &nlist[0], &posi_cpy[0], &atype_cpy[0],
       inlist, max_nbor_size, &avg[0], &std[0], nloc, nall, rc, rc_smth, sec_a);
 
@@ -305,14 +305,14 @@ TEST_F(TestEnvMatAMdpu, prod_cpu_equal_cpu) {
   }
   std::vector<int> ilist(nloc), numneigh(nloc);
   std::vector<int*> firstneigh(nloc);
-  deepmd::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
+  mdpu::InputNlist inlist(nloc, &ilist[0], &numneigh[0], &firstneigh[0]);
   convert_nlist(inlist, nlist_a_cpy);
   std::vector<double> em(nloc * ndescrpt), em_deriv(nloc * ndescrpt * 3),
       rij(nloc * nnei * 3);
   std::vector<int> nlist(nloc * nnei);
   std::vector<double> avg(ntypes * ndescrpt, 0);
   std::vector<double> std(ntypes * ndescrpt, 1);
-  deepmd::prod_env_mat_a_mdpu_quantize_cpu(
+  mdpu::prod_env_mat_a_mdpu_quantize_cpu(
       &em[0], &em_deriv[0], &rij[0], &nlist[0], &posi_cpy[0], &atype_cpy[0],
       inlist, max_nbor_size, &avg[0], &std[0], nloc, nall, rc, rc_smth, sec_a);
 
@@ -322,7 +322,7 @@ TEST_F(TestEnvMatAMdpu, prod_cpu_equal_cpu) {
     int ret_1 = format_nlist_i_cpu<double>(fmt_nlist_a_1, posi_cpy, atype_cpy,
                                            ii, nlist_a_cpy[ii], rc, sec_a);
     EXPECT_EQ(ret_1, -1);
-    deepmd::env_mat_a_mdpu_quantize_cpu<double>(
+    mdpu::env_mat_a_mdpu_quantize_cpu<double>(
         env_1, env_deriv_1, rij_a_1, posi_cpy, atype_cpy, ii, fmt_nlist_a_1,
         sec_a, rc_smth, rc);
     EXPECT_EQ(env_1.size(), nnei * 4);

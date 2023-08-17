@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 #pragma once
 
-namespace deepmd {
+namespace mdpu {
 
 /**
  * @brief Produce force from net_deriv and in_deriv.
@@ -111,4 +111,4 @@ void prod_force_r_gpu_rocm(FPTYPE* force,
                            const int nframes);
 #endif  // TENSORFLOW_USE_ROCM
 
-}  // namespace deepmd
+}  // namespace mdpu

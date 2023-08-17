@@ -80,7 +80,7 @@ class TestProdForceGradR : public ::testing::Test {
       }
       std::vector<double> t_env, t_env_deriv, t_rij_a;
       // compute env_mat and its deriv, record
-      deepmd::env_mat_a_cpu<double>(t_env, t_env_deriv, t_rij_a, posi_cpy,
+      mdpu::env_mat_a_cpu<double>(t_env, t_env_deriv, t_rij_a, posi_cpy,
                                     atype_cpy, ii, fmt_nlist_a, sec_a, rc_smth,
                                     rc);
       for (int jj = 0; jj < ndescrpt; ++jj) {
@@ -104,7 +104,7 @@ class TestProdForceGradR : public ::testing::Test {
 
 TEST_F(TestProdForceGradR, cpu) {
   std::vector<double> grad_net(nframes * nloc * ndescrpt);
-  deepmd::prod_force_grad_r_cpu<double>(&grad_net[0], &grad[0], &env_deriv[0],
+  mdpu::prod_force_grad_r_cpu<double>(&grad_net[0], &grad[0], &env_deriv[0],
                                         &nlist[0], nloc, nnei, nframes);
   EXPECT_EQ(grad_net.size(), nframes * nloc * ndescrpt);
   EXPECT_EQ(grad_net.size(), expected_grad_net.size());
@@ -123,17 +123,17 @@ TEST_F(TestProdForceGradR, gpu) {
   int* nlist_dev = NULL;
   double *grad_net_dev = NULL, *grad_dev = NULL, *env_deriv_dev = NULL;
 
-  deepmd::malloc_device_memory_sync(nlist_dev, nlist);
-  deepmd::malloc_device_memory_sync(grad_dev, grad);
-  deepmd::malloc_device_memory_sync(env_deriv_dev, env_deriv);
-  deepmd::malloc_device_memory(grad_net_dev, nframes * nloc * ndescrpt);
-  deepmd::prod_force_grad_r_gpu_cuda<double>(
+  mdpu::malloc_device_memory_sync(nlist_dev, nlist);
+  mdpu::malloc_device_memory_sync(grad_dev, grad);
+  mdpu::malloc_device_memory_sync(env_deriv_dev, env_deriv);
+  mdpu::malloc_device_memory(grad_net_dev, nframes * nloc * ndescrpt);
+  mdpu::prod_force_grad_r_gpu_cuda<double>(
       grad_net_dev, grad_dev, env_deriv_dev, nlist_dev, nloc, nnei, nframes);
-  deepmd::memcpy_device_to_host(grad_net_dev, grad_net);
-  deepmd::delete_device_memory(nlist_dev);
-  deepmd::delete_device_memory(grad_dev);
-  deepmd::delete_device_memory(env_deriv_dev);
-  deepmd::delete_device_memory(grad_net_dev);
+  mdpu::memcpy_device_to_host(grad_net_dev, grad_net);
+  mdpu::delete_device_memory(nlist_dev);
+  mdpu::delete_device_memory(grad_dev);
+  mdpu::delete_device_memory(env_deriv_dev);
+  mdpu::delete_device_memory(grad_net_dev);
 
   EXPECT_EQ(grad_net.size(), nframes * nloc * ndescrpt);
   EXPECT_EQ(grad_net.size(), expected_grad_net.size());
@@ -153,17 +153,17 @@ TEST_F(TestProdForceGradR, gpu) {
   int* nlist_dev = NULL;
   double *grad_net_dev = NULL, *grad_dev = NULL, *env_deriv_dev = NULL;
 
-  deepmd::malloc_device_memory_sync(nlist_dev, nlist);
-  deepmd::malloc_device_memory_sync(grad_dev, grad);
-  deepmd::malloc_device_memory_sync(env_deriv_dev, env_deriv);
-  deepmd::malloc_device_memory(grad_net_dev, nframes * nloc * ndescrpt);
-  deepmd::prod_force_grad_r_gpu_rocm<double>(
+  mdpu::malloc_device_memory_sync(nlist_dev, nlist);
+  mdpu::malloc_device_memory_sync(grad_dev, grad);
+  mdpu::malloc_device_memory_sync(env_deriv_dev, env_deriv);
+  mdpu::malloc_device_memory(grad_net_dev, nframes * nloc * ndescrpt);
+  mdpu::prod_force_grad_r_gpu_rocm<double>(
       grad_net_dev, grad_dev, env_deriv_dev, nlist_dev, nloc, nnei, nframes);
-  deepmd::memcpy_device_to_host(grad_net_dev, grad_net);
-  deepmd::delete_device_memory(nlist_dev);
-  deepmd::delete_device_memory(grad_dev);
-  deepmd::delete_device_memory(env_deriv_dev);
-  deepmd::delete_device_memory(grad_net_dev);
+  mdpu::memcpy_device_to_host(grad_net_dev, grad_net);
+  mdpu::delete_device_memory(nlist_dev);
+  mdpu::delete_device_memory(grad_dev);
+  mdpu::delete_device_memory(env_deriv_dev);
+  mdpu::delete_device_memory(grad_net_dev);
 
   EXPECT_EQ(grad_net.size(), nframes * nloc * ndescrpt);
   EXPECT_EQ(grad_net.size(), expected_grad_net.size());
