@@ -1,8 +1,8 @@
 # Python interface
 
-One may use the python interface of DeePMD-kit for model inference, an example is given as follows
+One may use the python interface of mdpu-kit for model inference, an example is given as follows
 ```python
-from deepmd.infer import DeepPot
+from mdpu.infer import DeepPot
 import numpy as np
 
 dp = DeepPot("graph.pb")
@@ -15,8 +15,8 @@ where `e`, `f` and `v` are predicted energy, force and virial of the system, res
 
 Furthermore, one can use the python interface to calculate model deviation.
 ```python
-from deepmd.infer import calc_model_devi
-from deepmd.infer import DeepPot as DP
+from mdpu.infer import calc_model_devi
+from mdpu.infer import DeepPot as DP
 import numpy as np
 
 coord = np.array([[1, 0, 0], [0, 0, 1.5], [1, 0, 3]]).reshape([1, -1])

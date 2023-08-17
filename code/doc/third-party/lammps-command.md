@@ -1,31 +1,31 @@
 # LAMMPS commands
 
-## Enable DeePMD-kit plugin (plugin mode)
+## Enable mdpu-kit plugin (plugin mode)
 
-If you are using the plugin mode, enable DeePMD-kit package in LAMMPS with `plugin` command:
+If you are using the plugin mode, enable mdpu-kit package in LAMMPS with `plugin` command:
 
 ```lammps
-plugin load libdeepmd_lmp.so
+plugin load libmdpu_lmp.so
 ```
 
 After LAMMPS version `patch_24Mar2022`, another way to load plugins is to set the environmental variable `LAMMPS_PLUGIN_PATH`:
 
 ```sh
-LAMMPS_PLUGIN_PATH=$deepmd_root/lib/deepmd_lmp
+LAMMPS_PLUGIN_PATH=$mdpu_root/lib/mdpu_lmp
 ```
 
-where `$deepmd_root` is the directory to [install C++ interface](../install/install-from-source.md).
+where `$mdpu_root` is the directory to [install C++ interface](../install/install-from-source.md).
 
 The built-in mode doesn't need this step.
 
-## pair_style `deepmd`
+## pair_style `mdpu`
 
-The DeePMD-kit package provides the pair_style `deepmd`
+The mdpu-kit package provides the pair_style `mdpu`
 
 ```lammps
-pair_style deepmd models ... keyword value ...
+pair_style mdpu models ... keyword value ...
 ```
-- deepmd = style of this pair_style
+- mdpu = style of this pair_style
 - models = frozen model(s) to compute the interaction.
 If multiple models are provided, then only the first model serves to provide energy and force prediction for each timestep of molecular dynamics,
 and the model deviation will be computed among all models every `out_freq` timesteps.
@@ -53,19 +53,19 @@ and the model deviation will be computed among all models every `out_freq` times
 
 ### Examples
 ```lammps
-pair_style deepmd graph.pb
-pair_style deepmd graph.pb fparam 1.2
-pair_style deepmd graph_0.pb graph_1.pb graph_2.pb out_file md.out out_freq 10 atomic relative 1.0
+pair_style mdpu graph.pb
+pair_style mdpu graph.pb fparam 1.2
+pair_style mdpu graph_0.pb graph_1.pb graph_2.pb out_file md.out out_freq 10 atomic relative 1.0
 pair_coeff * * O H
 
-pair_style deepmd cp.pb fparam_from_compute TEMP
+pair_style mdpu cp.pb fparam_from_compute TEMP
 compute    TEMP all temp
 ```
 
 ### Description
 Evaluate the interaction of the system by using [Deep Potential][DP] or [Deep Potential Smooth Edition][DP-SE]. It is noticed that deep potential is not a "pairwise" interaction, but a multi-body interaction.
 
-This pair style takes the deep potential defined in a model file that usually has the .pb extension. The model can be trained and frozen by package [DeePMD-kit](https://github.com/deepmodeling/deepmd-kit), which can have either double or single float precision interface.
+This pair style takes the deep potential defined in a model file that usually has the .pb extension. The model can be trained and frozen by package [mdpu-kit](https://github.com/deepmodeling/deepmd-kit), which can have either double or single float precision interface.
 
 The model deviation evalulates the consistency of the force predictions from multiple models. By default, only the maximal, minimal and average model deviations are output. If the key `atomic` is set, then the model deviation of force prediction of each atom will be output.
 
@@ -83,19 +83,19 @@ If the keyword `fparam_from_compute` is set, the global parameter(s) from comput
 If the keyword `aparam` is set, the given atomic parameter(s) will be fed to the model, where each atom is assumed to have the same atomic parameter(s).
 If the keyword `ttm` is set, electronic temperatures from [fix ttm command](https://docs.lammps.org/fix_ttm.html) will be fed to the model as the atomic parameters.
 
-Only a single `pair_coeff` command is used with the deepmd style which specifies atom names. These are mapped to LAMMPS atom types (integers from 1 to Ntypes) by specifying Ntypes additional arguments after `* *` in the `pair_coeff` command.
+Only a single `pair_coeff` command is used with the mdpu style which specifies atom names. These are mapped to LAMMPS atom types (integers from 1 to Ntypes) by specifying Ntypes additional arguments after `* *` in the `pair_coeff` command.
 If atom names are not set in the `pair_coeff` command, the training parameter {ref}`type_map <model/type_map>` will be used by default.
 If the training parameter {ref}`type_map <model/type_map>` is not set, atom names in the `pair_coeff` command cannot be set. In this case, atom type indexes in [`type.raw`](../data/system.md) (integers from 0 to Ntypes-1) will map to LAMMPS atom types.
 
 Spin is specified by keywords `virtual_len` and `spin_norm`. If the keyword `virtual_len` is set, the distance between virtual atom and its corresponding real atom for each type of magnetic atoms will be fed to the model as the spin parameters. If the keyword `spin_norm` is set, the magnitude of the magnetic moment for each type of magnetic atoms will be fed to the model as the spin parameters.
 
 ### Restrictions
-- The `deepmd` pair style is provided in the USER-DEEPMD package, which is compiled from the DeePMD-kit, visit the [DeePMD-kit website](https://github.com/deepmodeling/deepmd-kit) for more information.
+- The `mdpu` pair style is provided in the USER-mdpu package, which is compiled from the mdpu-kit, visit the [mdpu-kit website](https://github.com/deepmodeling/deepmd-kit) for more information.
 
 
 ## Compute tensorial properties
 
-The DeePMD-kit package provides the compute `deeptensor/atom` for computing atomic tensorial properties.
+The mdpu-kit package provides the compute `deeptensor/atom` for computing atomic tensorial properties.
 
 ```lammps
 compute ID group-ID deeptensor/atom model_file
@@ -117,22 +117,22 @@ dump            1 all custom 100 water.dump id type c_dipole[1] c_dipole[2] c_di
 ```
 
 ### Restrictions
-- The `deeptensor/atom` compute is provided in the USER-DEEPMD package, which is compiled from the DeePMD-kit, visit the [DeePMD-kit website](https://github.com/deepmodeling/deepmd-kit) for more information.
+- The `deeptensor/atom` compute is provided in the USER-mdpu package, which is compiled from the mdpu-kit, visit the [mdpu-kit website](https://github.com/deepmodeling/deepmd-kit) for more information.
 
 
 ## Long-range interaction
-The reciprocal space part of the long-range interaction can be calculated by LAMMPS command `kspace_style`. To use it with DeePMD-kit, one writes
+The reciprocal space part of the long-range interaction can be calculated by LAMMPS command `kspace_style`. To use it with mdpu-kit, one writes
 ```lammps
-pair_style	deepmd graph.pb
+pair_style	mdpu graph.pb
 pair_coeff  * *
 kspace_style	pppm 1.0e-5
 kspace_modify	gewald 0.45
 ```
-Please notice that the DeePMD does nothing to the direct space part of the electrostatic interaction, because this part is assumed to be fitted in the DeePMD model (the direct space cut-off is thus the cut-off of the DeePMD model). The splitting parameter `gewald` is modified by the `kspace_modify` command.
+Please notice that the mdpu does nothing to the direct space part of the electrostatic interaction, because this part is assumed to be fitted in the mdpu model (the direct space cut-off is thus the cut-off of the mdpu model). The splitting parameter `gewald` is modified by the `kspace_modify` command.
 
 ## Use of the centroid/stress/atom to get the full 3x3 "atomic-virial"
 
-The [DeePMD-kit](https://github.com/deepmodeling/deepmd-kit) also allows the computation of per-atom stress tensor defined as:
+The [mdpu-kit](https://github.com/deepmodeling/deepmd-kit) also allows the computation of per-atom stress tensor defined as:
 
 $$dvatom=-\sum_{m}( \mathbf{r}_n- \mathbf{r}_m) \frac{de_m}{d\mathbf{r}_n}$$
 

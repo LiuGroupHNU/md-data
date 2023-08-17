@@ -1,18 +1,16 @@
 # Install from source code
 
-Please follow our [GitHub](https://github.com/deepmodeling/deepmd-kit) webpage to download the [latest released version](https://github.com/deepmodeling/deepmd-kit/tree/master) and [development version](https://github.com/deepmodeling/deepmd-kit/tree/devel).
-
-Or get the DeePMD-kit source code by `git clone`
+Get the mdpu-kit source code by `git clone`
 ```bash
 cd /some/workspace
-git clone --recursive https://github.com/deepmodeling/deepmd-kit.git deepmd-kit
+git clone --recursive https://github.com/LiuGroupHNU/md-data.git mdpu-kit
 ```
-The `--recursive` option clones all [submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules) needed by DeePMD-kit.
+The `--recursive` option clones all [submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules) needed by mdpu-kit.
 
-For convenience, you may want to record the location of the source to a variable, saying `deepmd_source_dir` by
+For convenience, you may want to record the location of the source to a variable, saying `mdpu_source_dir` by
 ```bash
-cd deepmd-kit
-deepmd_source_dir=`pwd`
+cd mdpu-kit
+mdpu_source_dir=`pwd`
 ```
 
 ## Install the python interface
@@ -29,7 +27,7 @@ source $tensorflow_venv/bin/activate
 pip install --upgrade pip
 pip install --upgrade tensorflow
 ```
-It is important that every time a new shell is started and one wants to use `DeePMD-kit`, the virtual environment should be activated by
+It is important that every time a new shell is started and one wants to use `mdpu-kit`, the virtual environment should be activated by
 ```bash
 source $tensorflow_venv/bin/activate
 ```
@@ -41,7 +39,7 @@ If one has multiple python interpreters named something like python3.x, it can b
 ```bash
 virtualenv -p python3.8 $tensorflow_venv
 ```
-If one does not need the GPU support of DeePMD-kit and is concerned about package size, the CPU-only version of TensorFlow should be installed by
+If one does not need the GPU support of mdpu-kit and is concerned about package size, the CPU-only version of TensorFlow should be installed by
 ```bash
 pip install --upgrade tensorflow-cpu
 ```
@@ -49,11 +47,11 @@ To verify the installation, run
 ```bash
 python -c "import tensorflow as tf;print(tf.reduce_sum(tf.random.normal([1000, 1000])))"
 ```
-One should remember to activate the virtual environment every time he/she uses DeePMD-kit.
+One should remember to activate the virtual environment every time he/she uses mdpu-kit.
 
 One can also [build the TensorFlow Python interface from source](https://www.tensorflow.org/install/source) for custom hardware optimization, such as CUDA, ROCM, or OneDNN support.
 
-### Install the DeePMD-kit's python interface
+### Install the mdpu-kit's python interface
 
 Check the compiler version on your machine
 
@@ -61,11 +59,11 @@ Check the compiler version on your machine
 gcc --version
 ```
 
-The compiler GCC 4.8 or later is supported in the DeePMD-kit. Note that TensorFlow may have specific requirements for the compiler version to support the C++ standard version and [`_GLIBCXX_USE_CXX11_ABI`](https://gcc.gnu.org/onlinedocs/libstdc++/manual/using_dual_abi.html) used by TensorFlow. It is recommended to use [the same compiler version as TensorFlow](https://www.tensorflow.org/install/source#tested_build_configurations), which can be printed by `python -c "import tensorflow;print(tensorflow.version.COMPILER_VERSION)"`.
+The compiler GCC 4.8 or later is supported in the mdpu-kit. Note that TensorFlow may have specific requirements for the compiler version to support the C++ standard version and [`_GLIBCXX_USE_CXX11_ABI`](https://gcc.gnu.org/onlinedocs/libstdc++/manual/using_dual_abi.html) used by TensorFlow. It is recommended to use [the same compiler version as TensorFlow](https://www.tensorflow.org/install/source#tested_build_configurations), which can be printed by `python -c "import tensorflow;print(tensorflow.version.COMPILER_VERSION)"`.
 
 Execute
 ```bash
-cd $deepmd_source_dir
+cd $mdpu_source_dir
 pip install .
 ```
 
@@ -91,7 +89,7 @@ It will print the help information like
 ```text
 usage: dp [-h] {train,freeze,test} ...
 
-DeePMD-kit: A deep learning package for many-body potential energy
+mdpu-kit: A deep learning package for many-body potential energy
 representation and molecular dynamics
 
 optional arguments:
@@ -144,31 +142,31 @@ Available Tensor Operations:
 
 Since version 2.0.1, Horovod and mpi4py with MPICH support are shipped with the installer.
 
-If you don't install Horovod, DeePMD-kit will fall back to serial mode.
+If you don't install Horovod, mdpu-kit will fall back to serial mode.
 
 ## Install the C++ interface
 
-If one does not need to use DeePMD-kit with Lammps or I-Pi, then the python interface installed in the previous section does everything and he/she can safely skip this section.
+If one does not need to use mdpu-kit with Lammps or I-Pi, then the python interface installed in the previous section does everything and he/she can safely skip this section.
 
 ### Install Tensorflow's C++ interface (optional)
 
 Since TensorFlow 2.12, TensorFlow C++ library (`libtensorflow_cc`) is packaged inside the Python library. Thus, you can skip building TensorFlow C++ library manually. If that does not work for you, you can still build it manually.
 
-The C++ interface of DeePMD-kit was tested with compiler GCC >= 4.8. It is noticed that the I-Pi support is only compiled with GCC >= 4.8. Note that TensorFlow may have specific requirements for the compiler version.
+The C++ interface of mdpu-kit was tested with compiler GCC >= 4.8. It is noticed that the I-Pi support is only compiled with GCC >= 4.8. Note that TensorFlow may have specific requirements for the compiler version.
 
-First, the C++ interface of Tensorflow should be installed. It is noted that the version of Tensorflow should be consistent with the python interface. You may follow [the instruction](install-tf.2.12.md) or run the script `$deepmd_source_dir/source/install/build_tf.py` to install the corresponding C++ interface.
+First, the C++ interface of Tensorflow should be installed. It is noted that the version of Tensorflow should be consistent with the python interface. You may follow [the instruction](install-tf.2.12.md) or run the script `$mdpu_source_dir/source/install/build_tf.py` to install the corresponding C++ interface.
 
-### Install DeePMD-kit's C++ interface
+### Install mdpu-kit's C++ interface
 
-Now go to the source code directory of DeePMD-kit and make a building place.
+Now go to the source code directory of mdpu-kit and make a building place.
 ```bash
-cd $deepmd_source_dir/source
+cd $mdpu_source_dir/source
 mkdir build
 cd build
 ```
-I assume you have activated the TensorFlow Python environment and want to install DeePMD-kit into path `$deepmd_root`, then execute CMake
+I assume you have activated the TensorFlow Python environment and want to install mdpu-kit into path `$mdpu_root`, then execute CMake
 ```bash
-cmake -DUSE_TF_PYTHON_LIBS=TRUE -DCMAKE_INSTALL_PREFIX=$deepmd_root ..
+cmake -DUSE_TF_PYTHON_LIBS=TRUE -DCMAKE_INSTALL_PREFIX=$mdpu_root ..
 ```
 
 If you specify `-DUSE_TF_PYTHON_LIBS=FALSE`, you need to give the location where TensorFlow's C++ interface is installed to `-DTENSORFLOW_ROOT=${tensorflow_root}`.
@@ -178,7 +176,7 @@ One may add the following arguments to `cmake`:
 | CMake Aurgements         | Allowed value       | Default value | Usage                   |
 | ------------------------ | ------------------- | ------------- | ------------------------|
 | -DTENSORFLOW_ROOT=&lt;value&gt;  | Path              | -             | The Path to TensorFlow's C++ interface. |
-| -DCMAKE_INSTALL_PREFIX=&lt;value&gt; | Path          | -             | The Path where DeePMD-kit will be installed. |
+| -DCMAKE_INSTALL_PREFIX=&lt;value&gt; | Path          | -             | The Path where mdpu-kit will be installed. |
 | -DUSE_CUDA_TOOLKIT=&lt;value&gt; | `TRUE` or `FALSE` | `FALSE`       | If `TRUE`, Build GPU support with CUDA toolkit. |
 | -DCUDAToolkit_ROOT=&lt;value&gt; | Path         | Detected automatically | The path to the CUDA toolkit directory. CUDA 7.0 or later is supported. NVCC is required. |
 | -DUSE_ROCM_TOOLKIT=&lt;value&gt; | `TRUE` or `FALSE` | `FALSE`       | If `TRUE`, Build GPU support with ROCM toolkit. |
@@ -194,8 +192,8 @@ make install
 ```
 Option `-j4` means using 4 processes in parallel. You may want to use a different number according to your hardware.
 
-If everything works fine, you will have the executable and libraries installed in `$deepmd_root/bin` and `$deepmd_root/lib`
+If everything works fine, you will have the executable and libraries installed in `$mdpu_root/bin` and `$mdpu_root/lib`
 ```bash
-$ ls $deepmd_root/bin
-$ ls $deepmd_root/lib
+$ ls $mdpu_root/bin
+$ ls $mdpu_root/lib
 ```

@@ -6,7 +6,5 @@ Note that the model for inference is required to be compatible with the DeePMD-k
 .. toctree::
    :maxdepth: 1
 
-   ase
    lammps
    lammps-command
-   out-of-deepmd-kit

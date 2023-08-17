@@ -1,11 +1,11 @@
 # C/C++ interface
 ## C++ interface
-The C++ interface of DeePMD-kit is also available for the model interface, which is considered faster than the Python interface. An example `infer_water.cpp` is given below:
+The C++ interface of mdpu-kit is also available for the model interface, which is considered faster than the Python interface. An example `infer_water.cpp` is given below:
 ```cpp
-#include "deepmd/DeepPot.h"
+#include "mdpu/DeepPot.h"
 
 int main(){
-  deepmd::DeepPot dp ("graph.pb");
+  mdpu::DeepPot dp ("graph.pb");
   std::vector<double > coord = {1., 0., 0., 0., 0., 1.5, 1. ,0. ,3.};
   std::vector<double > cell = {10., 0., 0., 0., 10., 0., 0., 0., 10.};
   std::vector<int > atype = {1, 0, 1};
@@ -15,11 +15,11 @@ int main(){
 }
 ```
 where `e`, `f` and `v` are predicted energy, force and virial of the system, respectively.
-See {cpp:class}`deepmd::DeepPot` for details.
+See {cpp:class}`mdpu::DeepPot` for details.
 
 You can compile `infer_water.cpp` using `gcc`:
 ```sh
-gcc infer_water.cpp -L $deepmd_root/lib -L $tensorflow_root/lib -I $deepmd_root/include -Wl,--no-as-needed -ldeepmd_cc -lstdc++ -ltensorflow_cc -Wl,-rpath=$deepmd_root/lib -Wl,-rpath=$tensorflow_root/lib -o infer_water
+gcc infer_water.cpp -L $mdpu_root/lib -L $tensorflow_root/lib -I $mdpu_root/include -Wl,--no-as-needed -lmdpu_cc -lstdc++ -ltensorflow_cc -Wl,-rpath=$mdpu_root/lib -Wl,-rpath=$tensorflow_root/lib -o infer_water
 ```
 and then run the program:
 ```sh
@@ -34,7 +34,7 @@ An example `infer_water.c` is given below:
 ```cpp
 #include <stdio.h>
 #include <stdlib.h>
-#include "deepmd/c_api.h"
+#include "mdpu/c_api.h"
 
 int main(){
   const char* model = "graph.pb";
@@ -72,7 +72,7 @@ See {cpp:func}`DP_DeepPotCompute` for details.
 
 You can compile `infer_water.c` using `gcc`:
 ```sh
-gcc infer_water.c -L $deepmd_root/lib -L $tensorflow_root/lib -I $deepmd_root/include -Wl,--no-as-needed -ldeepmd_c -Wl,-rpath=$deepmd_root/lib -Wl,-rpath=$tensorflow_root/lib -o infer_water
+gcc infer_water.c -L $mdpu_root/lib -L $tensorflow_root/lib -I $mdpu_root/include -Wl,--no-as-needed -lmdpu_c -Wl,-rpath=$mdpu_root/lib -Wl,-rpath=$tensorflow_root/lib -o infer_water
 ```
 and then run the program:
 ```sh
@@ -83,13 +83,13 @@ and then run the program:
 
 The header-only C++ library is built based on the C library.
 Thus, it has the same ABI compatibility as the C library but provides a powerful C++ interface.
-To use it, include `deepmd/deepmd.hpp`.
+To use it, include `mdpu/mdpu.hpp`.
 
 ```cpp
-#include "deepmd/deepmd.hpp"
+#include "mdpu/mdpu.hpp"
 
 int main(){
-  deepmd::hpp::DeepPot dp ("graph.pb");
+  mdpu::hpp::DeepPot dp ("graph.pb");
   std::vector<double > coord = {1., 0., 0., 0., 0., 1.5, 1. ,0. ,3.};
   std::vector<double > cell = {10., 0., 0., 0., 10., 0., 0., 0., 10.};
   std::vector<int > atype = {1, 0, 1};
@@ -100,11 +100,11 @@ int main(){
 ```
 
 Note that the feature of the header-only C++ library is still limited compared to the original C++ library.
-See {cpp:class}`deepmd::hpp::DeepPot` for details.
+See {cpp:class}`mdpu::hpp::DeepPot` for details.
 
 You can compile `infer_water_hpp.cpp` using `gcc`:
 ```sh
-gcc infer_water_hpp.cpp -L $deepmd_root/lib -L $tensorflow_root/lib -I $deepmd_root/include -Wl,--no-as-needed -ldeepmd_c -Wl,-rpath=$deepmd_root/lib -Wl,-rpath=$tensorflow_root/lib -o infer_water_hpp
+gcc infer_water_hpp.cpp -L $mdpu_root/lib -L $tensorflow_root/lib -I $mdpu_root/include -Wl,--no-as-needed -lmdpu_c -Wl,-rpath=$mdpu_root/lib -Wl,-rpath=$tensorflow_root/lib -o infer_water_hpp
 ```
 and then run the program:
 ```sh

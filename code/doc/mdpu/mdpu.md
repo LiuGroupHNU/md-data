@@ -12,7 +12,7 @@ Our training procedure consists of not only continuous neural network (CNN) trai
 
 To train an ML model that can decently reproduce the PES, a training and testing data set should be prepared first. This can be done by using either the state-of-the-art active learning tools or the outdated (i.e., less efficient) brute-force density functional theory (DFT)-based ab-initio molecular dynamics (AIMD) sampling.
 
-If you just want to simply test the training function, you can use the example in the `$deepmd_source_dir/examples/mdpu` directory. .
+If you just want to simply test the training function, you can use the example in the `$mdpu_source_dir/examples/mdpu` directory. .
 
 Then, copy the data set to the working directory
 
@@ -38,8 +38,8 @@ cd train
 Then copy the input script `train_cnn.json` and `train_qnn.json` to the directory `train`
 
 ```bash
-cp -r $deepmd_source_dir/examples/mdpu/train/train_cnn.json train_cnn.json
-cp -r $deepmd_source_dir/examples/mdpu/train/train_qnn.json train_qnn.json
+cp -r $mdpu_source_dir/examples/mdpu/train/train_cnn.json train_cnn.json
+cp -r $mdpu_source_dir/examples/mdpu/train/train_qnn.json train_qnn.json
 ```
 
 The structure of the input script is as follows
