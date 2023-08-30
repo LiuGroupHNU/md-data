@@ -1,6 +1,6 @@
 # Introduction
 
-MDPU stands for non-von Neumann molecular dynamics.
+MDPU stands for Molecular Dynamics Processing Unit.
 
 This is the training code we used to generate the results in our paper entitled "Breaking the Speed, Power, Cost and Size Limits of Molecular Dynamics with Ab Initio Accuracy" #NATCOMPUTSCI-23-0729.
 
