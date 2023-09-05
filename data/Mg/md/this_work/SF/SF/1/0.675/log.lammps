@@ -7,7 +7,7 @@ atom_style	atomic
 box         tilt large
 read_data   input.dat
 Reading data file ...
-  triclinic box = (-0.0047826767 -0.037661076 -0.011393905) to (6.3993317 22.120539 5.1938599) with tilt (2.1597744 0 0)
+  triclinic box = (-0.0034762621 -0.042732179 0.015788496) to (6.3980253 22.12561 5.1666775) with tilt (2.1593335 4.4107437e-06 -0.0001500845)
   1 by 1 by 1 MPI processor grid
   reading atoms ...
   32 atoms
@@ -19,7 +19,7 @@ mass            2 65
 mass            3 88
 #mass            2 88.906
 neigh_modify    every 1 delay 0 check no
-pair_style mdpu model.pb
+pair_style nvnmd model.pb
 pair_coeff * *
 compute         mype all pe
 thermo          1
@@ -33,62 +33,61 @@ Generated 0 of 3 mixed pair_coeff terms from geometric mixing rule
 Neighbor list info ...
   update every 1 steps, delay 0 steps, check yes
   max neighbors/atom: 2000, page size: 100000
-  master list distance cutoff = 8
-  ghost atom cutoff = 8
-  binsize = 4, bins = 3 6 2
+  master list distance cutoff = 10
+  ghost atom cutoff = 10
+  binsize = 5, bins = 2 5 2
   1 neighbor lists, perpetual/occasional/extra = 1 0 0
-  (1) pair mdpu, perpetual
+  (1) pair nvnmd, perpetual
       attributes: full, newton on
       pair build: full/bin/atomonly
       stencil: full/bin/3d
       bin: standard
-Per MPI rank memory allocation (min/avg/max) = 5.469 | 5.469 | 5.469 Mbytes
+Per MPI rank memory allocation (min/avg/max) = 5.479 | 5.479 | 5.479 Mbytes
    Step         PotEng          Pxx            Pyy            Pzz            Pxy            Pxz            Pyz             Lx             Ly             Lz           Volume         c_mype    
-         0  -20.646071     -2636.4751      9716.2583     -2810.121       3983.9564     -0.016548741   -0.037234668    6.4041144      22.1582        5.2052538      738.6445      -20.646071    
-         1  -20.765495     -1714.1517      7095.7113     -2297.47        2524.0761      0.024823112    0.020685926    6.4041144      22.1582        5.2052538      738.6445      -20.765495    
-         2  -20.791661     -2144.5017      7057.041      -2682.5799      2275.8698     -0.086880891    0.057920594    6.4041144      22.1582        5.2052538      738.6445      -20.791661    
-         3  -20.800014     -2417.4773      7143.864      -2769.6635      2153.227      -0.0082743706  -0.057920594    6.4041144      22.1582        5.2052538      738.6445      -20.800014    
-         4  -20.802572     -2490.7345      7114.4528     -2790.7259      2160.2603      0.024823112   -0.045509038    6.4041144      22.1582        5.2052538      738.6445      -20.802572    
-         5  -20.802854     -2367.1526      7016.0457     -2760.33        2127.6055      0.037234668    0.012411556    6.4041144      22.1582        5.2052538      738.6445      -20.802854    
-         6  -20.802948     -2264.8483      6941.957      -2761.6705      2136.2398      0.041371853   -0.082743706    6.4041144      22.1582        5.2052538      738.6445      -20.802948    
-         7  -20.802963     -2225.1603      6914.0434     -2759.7715      2128.9997     -0.095155262    0.037234668    6.4041144      22.1582        5.2052538      738.6445      -20.802963    
-         8  -20.802973     -2222.6035      6914.8294     -2764.1611      2129.3679     -0.016548741   -0.111704       6.4041144      22.1582        5.2052538      738.6445      -20.802973    
-         9  -20.802977     -2223.2696      6913.2656     -2763.9211      2129.1404     -0.012411556   -0.049646223    6.4041144      22.1582        5.2052538      738.6445      -20.802977    
-        10  -20.802977     -2223.2696      6913.2656     -2763.9211      2129.1404     -0.012411556   -0.049646223    6.4041144      22.1582        5.2052538      738.6445      -20.802977    
-Loop time of 0.00370315 on 1 procs for 10 steps with 32 atoms
+         0  -8.470423      -1805.5574      9752.1797     -2252.5936      3943.0161     -0.25919992     4.0175988      6.4015015      22.168342      5.150889       730.96615     -8.470423     
+         1  -8.5949569     -990.93802      7738.3301     -1705.6776      2502.6547     -0.20903219     5.2968758      6.4015015      22.168342      5.150889       730.96615     -8.5949569    
+         2  -8.6218204     -1417.811       8044.2654     -1947.8122      2307.2012     -0.24665799     4.2684374      6.4015015      22.168342      5.150889       730.96615     -8.6218204    
+         3  -8.6302423     -1623.7705      8201.93       -1975.9437      2216.4353     -0.91974166     4.5694438      6.4015015      22.168342      5.150889       730.96615     -8.6302423    
+         4  -8.6329573     -1629.753       8168.3636     -1955.9519      2214.2697     -0.75669655     5.0334953      6.4015015      22.168342      5.150889       730.96615     -8.6329573    
+         5  -8.6332372     -1519.3003      8072.3217     -1935.3246      2196.9158     -0.59783208     4.6948631      6.4015015      22.168342      5.150889       730.96615     -8.6332372    
+         6  -8.633309      -1444.1909      8008.7508     -1932.5988      2202.5304     -0.57692886     4.954063       6.4015015      22.168342      5.150889       730.96615     -8.633309     
+         7  -8.6333166     -1427.7735      7998.2407     -1933.0587      2196.7904     -0.53512242     5.2634307      6.4015015      22.168342      5.150889       730.96615     -8.6333166    
+         8  -8.6333227     -1429.822       7999.8084     -1937.7243      2198.007      -0.36789666     5.505908       6.4015015      22.168342      5.150889       730.96615     -8.6333227    
+         9  -8.6333227     -1431.5277      8001.2967     -1936.2527      2196.0003     -0.40134181     4.1262955      6.4015015      22.168342      5.150889       730.96615     -8.6333227    
+Loop time of 0.00459305 on 1 procs for 9 steps with 32 atoms
 
-44.7% CPU use with 1 MPI tasks x no OpenMP threads
+72.0% CPU use with 1 MPI tasks x no OpenMP threads
 
 Minimization stats:
-  Stopping criterion = linesearch alpha is zero
+  Stopping criterion = energy tolerance
   Energy initial, next-to-last, final = 
-     -20.6460708379745  -20.8029772043228  -20.8029772043228
-  Force two-norm initial, final = 1.1334018 0.00023938555
-  Force max component initial, final = 0.4866848 0.00010681152
-  Final line search alpha, max atom move = 0.125 1.335144e-05
-  Iterations, force evaluations = 10 25
+     -8.47042298316956  -8.63332271575928  -8.63332271575928
+  Force two-norm initial, final = 1.1736 0.00057211557
+  Force max component initial, final = 0.51669312 0.00016212463
+  Final line search alpha, max atom move = 1 0.00016212463
+  Iterations, force evaluations = 9 18
 
 MPI task timing breakdown:
 Section |  min time  |  avg time  |  max time  |%varavg| %total
 ---------------------------------------------------------------
-Pair    | 0.0031229  | 0.0031229  | 0.0031229  |   0.0 | 84.33
+Pair    | 0.0034468  | 0.0034468  | 0.0034468  |   0.0 | 75.04
 Neigh   | 0          | 0          | 0          |   0.0 |  0.00
-Comm    | 5.5426e-05 | 5.5426e-05 | 5.5426e-05 |   0.0 |  1.50
-Output  | 0.00042043 | 0.00042043 | 0.00042043 |   0.0 | 11.35
-Modify  | 5.738e-06  | 5.738e-06  | 5.738e-06  |   0.0 |  0.15
-Other   |            | 9.87e-05   |            |       |  2.67
+Comm    | 0.00013958 | 0.00013958 | 0.00013958 |   0.0 |  3.04
+Output  | 0.00080594 | 0.00080594 | 0.00080594 |   0.0 | 17.55
+Modify  | 8.042e-06  | 8.042e-06  | 8.042e-06  |   0.0 |  0.18
+Other   |            | 0.0001927  |            |       |  4.20
 
 Nlocal:             32 ave          32 max          32 min
 Histogram: 1 0 0 0 0 0 0 0 0 0
-Nghost:            760 ave         760 max         760 min
+Nghost:           1218 ave        1218 max        1218 min
 Histogram: 1 0 0 0 0 0 0 0 0 0
 Neighs:              0 ave           0 max           0 min
 Histogram: 1 0 0 0 0 0 0 0 0 0
-FullNghs:         2792 ave        2792 max        2792 min
+FullNghs:         5792 ave        5792 max        5792 min
 Histogram: 1 0 0 0 0 0 0 0 0 0
 
-Total # of neighbors = 2792
-Ave neighs/atom = 87.25
+Total # of neighbors = 5792
+Ave neighs/atom = 181
 Neighbor list builds = 0
 Dangerous builds not checked
 variable        N equal count(all)
@@ -103,24 +102,24 @@ variable        Pxy equal pxy
 variable        Pxz equal pxz
 variable        Pyz equal pyz
 variable        Epa equal ${E}/${N}
-variable        Epa equal -20.8029772043228/${N}
-variable        Epa equal -20.8029772043228/32
+variable        Epa equal -8.63332271575928/${N}
+variable        Epa equal -8.63332271575928/32
 variable        Vpa equal ${V}/${N}
-variable        Vpa equal 738.644499415951/${N}
-variable        Vpa equal 738.644499415951/32
+variable        Vpa equal 730.966145440366/${N}
+variable        Vpa equal 730.966145440366/32
 variable        AA equal (${tmplx}*${tmply})
-variable        AA equal (6.4041143655777*${tmply})
-variable        AA equal (6.4041143655777*22.1582001447678)
+variable        AA equal (6.40150153636932*${tmply})
+variable        AA equal (6.40150153636932*22.1683423519135)
 print "All done"
 All done
 print "Total number of atoms = ${N}"
 Total number of atoms = 32
 print "Final energy per atoms = ${Epa}"
-Final energy per atoms = -0.650093037635088
+Final energy per atoms = -0.269791334867477
 print "Final volume per atoms = ${Vpa}"
-Final volume per atoms = 23.0826406067485
+Final volume per atoms = 22.8426920450114
 print "Final Base area = ${AA}"
-Final Base area = 141.903647862453
+Final Base area = 141.910677624535
 print "Final Stress (xx yy zz xy xz yz) = ${Pxx} ${Pyy} ${Pzz} ${Pxy} ${Pxz} ${Pyz}"
-Final Stress (xx yy zz xy xz yz) = -2223.26959091066 6913.26557824967 -2763.9211016651 2129.14035121488 -0.0124115558670604 -0.0496462234682416
+Final Stress (xx yy zz xy xz yz) = -1431.52772283662 8001.29673378006 -1936.25268019967 2196.00026632996 -0.401341814368156 4.12629552897261
 Total wall time: 0:00:00

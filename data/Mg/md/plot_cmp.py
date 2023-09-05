@@ -55,12 +55,12 @@ def plot_all(dirs, labels):
                 marker=ms[jj], linestyle=lss[jj], linewidth=lws[jj], markersize=mss[jj])
         #
         plt.xticks([0, 0.2, 0.4, 0.6, 0.8, 1.0])
-        if np.max(SF[ii][0:41]) > 200:
-            plt.ylim([0, 450])
-            plt.yticks([0, 100, 200, 300, 400])
+        if np.max(SF[ii][0:41]) > 250:
+            plt.ylim([0, 500])
+            plt.yticks([0, 100, 200, 300, 400, 500])
         else:
-            plt.ylim([0, 225])
-            plt.yticks([0, 50, 100, 150, 200])
+            plt.ylim([0, 250])
+            plt.yticks([0, 50, 100, 150, 200, 250])
         plt.grid()
 
         plt.xlabel('Normalized Coordinates')

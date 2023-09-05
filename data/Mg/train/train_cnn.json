@@ -2,16 +2,16 @@
   "mdpu": {
     "version": 0,
     "net_size": 128,
-    "sel": [58, 134, 42],
-    "rcut": 6.0,
-    "rcut_smth": 2.0,
-    "type_map": ["Mg", "Zn", "Y"]
+    "sel": [128],
+    "rcut": 8.0,
+    "rcut_smth": 1.5,
+    "type_map": ["Mg"]
   },
   "learning_rate": {
     "type": "exp",
     "start_lr": 1e-3,
     "stop_lr": 3.51e-08,
-    "decay_steps": 50000
+    "decay_steps": 10000
   },
   "loss": {
     "start_pref_e": 0.02,
@@ -23,14 +23,14 @@
   },
   "training": {
     "seed": 320152394,
-    "stop_batch": 10000000,
-    "numb_test": 1,
+    "stop_batch": 2000000,
+    "numb_test": 2,
     "disp_file": "lcurve.out",
     "disp_freq": 1000,
     "save_ckpt": "model.ckpt",
     "save_freq": 10000,
     "training_data": {
-      "systems": "/home/mph/WorkSpace/DP_DATA/MgZnY/data",
+      "systems": "/home/mph/WorkSpace/DP_DATA/MgZnY/data2",
       "batch_size": "auto"
     }
   }

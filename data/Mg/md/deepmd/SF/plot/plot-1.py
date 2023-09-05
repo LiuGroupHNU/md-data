@@ -47,8 +47,6 @@ plt.xlabel('Normalized Coordinates',fontsize=20)
 plt.ylabel('SF energy, mJ/m$^{2}$',fontsize=20)
 plt.legend(loc='upper right', borderaxespad=0,fontsize=20)
 plt.savefig("SF-bench.jpg")
-plt.show()
-plt.close()
 
 
 # In[ ]:

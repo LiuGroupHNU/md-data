@@ -1,4 +1,4 @@
 Basal
 Prismatic
-Pyramidal-I
-Pyramidal-II
+PyramidalI
+PyramidalII

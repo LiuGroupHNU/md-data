@@ -9,7 +9,7 @@ mass            1 24.305
 mass            2 65.409
 mass            3 88.906
 neigh_modify    every 1 delay 0 check no
-pair_style mdpu model.pb
+pair_style nvnmd model.pb
 pair_coeff * *
 change_box  all triclinic
 compute         mype all pe
