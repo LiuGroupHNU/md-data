@@ -1,5 +1,5 @@
-# NATCOMPUTSCI-23-0729
-This is open-sourced code and data for paper entitiled "Breaking the Speed, Power, Cost and Size Limits of Molecular Dynamics with Ab Initio Accuracy" (manuscript # NATCOMPUTSCI-23-0729).
+# Usage
+This is open-sourced code and data for paper entitiled "Breaking the Speed, Power, Cost and Size Limits of Molecular Dynamics with Ab Initio Accuracy".
 
 # code
 The `code` folder, which contains the generation that implements mdpu (Molecular Dynamics Processing Unit) training. You can install and use the code according to the [documentation](code/README.md).

@@ -2,7 +2,7 @@
 
 MDPU stands for Molecular Dynamics Processing Unit.
 
-This is the training code we used to generate the results in our paper entitled "Breaking the Speed, Power, Cost and Size Limits of Molecular Dynamics with Ab Initio Accuracy" #NATCOMPUTSCI-23-0729.
+This is the training code we used to generate the results in our paper entitled "Breaking the Speed, Power, Cost and Size Limits of Molecular Dynamics with Ab Initio Accuracy".
 
 Any user can follow two consecutive steps to run molecular dynamics (MD) on the proposed MDPU computer, which has been released online: (i) to train a machine learning (ML) model that can decently reproduce the potential energy surface (PES); and (ii) to deploy the trained ML model on the proposed MDPU computer, then run MD there to obtain the atomistic trajectories.
 
